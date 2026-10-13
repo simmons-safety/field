@@ -228,6 +228,30 @@ code{background:var(--panel2);border:0;border-radius:0;padding:2px 7px;font-size
 .mbtn .ttl{font-size:18px;font-weight:600;letter-spacing:-.04em;margin-top:auto;padding-top:26px;line-height:1.3}
 .mbtn .en{font-size:9px;font-weight:600;letter-spacing:.2em;color:var(--ink3);margin-top:9px;line-height:1.5}
 .mbtn:hover .en{color:rgba(255,255,255,.52)}
+/* 교육자료 · 소식지 · MSDS 한 화면 3분할 — 좁은 화면에서는 세로로 쌓임 */
+.lib3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch;
+  height:var(--libh,calc(100vh - 200px));min-height:360px}
+.libcol{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  border:1px solid var(--line);background:#fff;padding:14px}
+.libcol .pagetop{margin-bottom:14px;position:sticky;top:-14px;z-index:2;background:#fff;
+  margin-top:-14px;padding-top:14px;padding-bottom:10px}
+.libcol .pagetop .pt{font-size:18px}
+.libcol .card{padding:20px 18px 22px}
+.libcol .searchrow{flex-wrap:wrap}
+.libcol .searchrow input{min-width:0;flex:1 1 140px}
+.libcol .gal,.libcol .gal.big{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px 14px}
+.libcol .boards{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+.libcol .grid{grid-template-columns:1fr}
+@media(max-width:1000px){
+  .lib3{gap:8px}
+  .libcol{padding:10px}
+  .libcol .pagetop{top:-10px;margin-top:-10px;padding-top:10px}
+  .libcol .pagetop .pt{font-size:15px}
+  .libcol .pagetop .pe{display:none}
+  .libcol .card{padding:14px 10px 16px}
+  .libcol .gal,.libcol .gal.big{grid-template-columns:1fr}
+  .libcol .boards{grid-template-columns:1fr 1fr}
+}
 
 /* ══════════ 홈 팝업 공지 (검정 테마) ══════════
    .mbox 기본 규칙(흰 배경)과 클래스 개수(특정도)가 같아서 뒤에 나오는 쪽이 이기므로,
@@ -953,25 +977,11 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
         <span class="en">FIRE PREVENTION INSPECTION</span>
       </button>
 
-      <button class="mbtn" data-go="materials">
+      <button class="mbtn" data-go="library">
         <span class="arw">↗</span>
         <span class="ico">▤</span>
         <span class="ttl">안전보건 교육자료</span>
         <span class="en">TRAINING MATERIALS</span>
-      </button>
-
-      <button class="mbtn" data-go="news">
-        <span class="arw">↗</span>
-        <span class="ico">▣</span>
-        <span class="ttl">안전보건 소식지</span>
-        <span class="en">SAFETY NEWSLETTER</span>
-      </button>
-
-      <button class="mbtn" data-go="msds">
-        <span class="arw">↗</span>
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.7 3.9a1.5 1.5 0 0 1 2.6 0l8 14.1a1.5 1.5 0 0 1-1.3 2.25H4a1.5 1.5 0 0 1-1.3-2.25Z"/><path d="M12 9.2v4.6"/><path d="M12 16.9h.01"/></svg></span>
-        <span class="ttl">MSDS 자료</span>
-        <span class="en">SAFETY DATA SHEET</span>
       </button>
 
       <button class="mbtn" data-go="voice">
@@ -1237,14 +1247,20 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   </div>
 </section>
 
-<!-- ═══════════ 안전보건 교육자료 (JS로 채움) ═══════════ -->
-<section class="panel" id="p-materials" hidden></section>
-
-<!-- ═══════════ MSDS 자료 (JS로 채움) ═══════════ -->
-<section class="panel" id="p-msds" hidden></section>
-
-<!-- ═══════════ 안전보건 소식지 (JS로 채움) ═══════════ -->
-<section class="panel" id="p-news" hidden></section>
+<!-- ═══════════ 안전보건 교육자료 모음 (교육자료 · 소식지 · MSDS 3분할) ═══════════ -->
+<section class="panel" id="p-library" hidden>
+  <div class="pagetop">
+    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
+    <span class="pt">안전보건 교육자료</span>
+    <span class="pe">TRAINING MATERIALS</span>
+  </div>
+  <!-- 세 자료실을 한 화면에 나란히 (각 칸은 JS로 채움) -->
+  <div class="lib3">
+    <div class="libcol" id="p-materials"></div>
+    <div class="libcol" id="p-news"></div>
+    <div class="libcol" id="p-msds"></div>
+  </div>
+</section>
 
 <!-- ═══════════ 경영방침 및 안전보건방침 ═══════════ -->
 <section class="panel" id="p-policy" hidden>
@@ -1343,7 +1359,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
 
   <div class="subnav">
     <button data-s="new" aria-pressed="true">의견 남기기</button>
-    <button data-s="list" aria-pressed="false">접수 현황</button>
+    <button data-s="list" data-lock="voice" aria-pressed="false">접수 현황 🔒</button>
   </div>
 
   <div data-sp="new">
@@ -1552,7 +1568,6 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
 <!-- ═══════════ 관리감독자 월간활동 ═══════════ -->
 <section class="panel" id="p-super" hidden>
   <div class="pagetop">
-    <button class="homebtn" id="btnSvHome"><span class="hi">←</span>홈으로</button>
     <span class="pt">관리감독자 월간활동</span>
     <button class="btn sm ghost iconbtn" id="btnSvAdmin" title="관리자 모드 · 이행현황 대시보드"
       style="margin-left:auto">
@@ -1964,6 +1979,7 @@ function checkPw(message){
   return true;
 }
 function checkDeletePw(){ return checkPw('삭제 비밀번호를 입력하세요'); }
+const UNLOCKED = {};              // 비밀번호로 잠금 해제한 화면 (새로고침 시 다시 잠김)
 let SCHEMA_WARNED = false;
 function schemaWarn(){
   if(SCHEMA_WARNED) return;
@@ -2095,12 +2111,27 @@ async function boot(){
   renderGuide();
 }
 
+/* 교육자료 3분할 : 세 칸이 화면 높이에 딱 맞도록 (각 칸 안에서만 스크롤) */
+function fitLib(){
+  const box = document.querySelector('#p-library .lib3');
+  if(!box || box.closest('.panel').hidden) return;
+  const top = box.getBoundingClientRect().top + scrollY;
+  box.style.setProperty('--libh', Math.max(360, innerHeight - top - 16) + 'px');
+}
+addEventListener('resize', fitLib);
+
 /* ===================== 화면 이동 ===================== */
 function go(p){
+  /* 교육자료 · 소식지 · MSDS 는 한 화면(library)에 나란히 있으므로 해당 칸으로 이동 */
+  if(p === 'materials' || p === 'news' || p === 'msds'){
+    go('library');
+    return;
+  }
   $$('.panel').forEach(s => s.hidden = (s.id !== 'p-' + p));
   const hero = document.getElementById('hero');
   if(hero) hero.hidden = (p !== 'home');
   window.scrollTo({ top:0, behavior:'smooth' });
+  if(p === 'library') fitLib();
   if(p === 'council') ccEnter();
   if(p === 'super') svEnter();
 }
@@ -2767,7 +2798,6 @@ const boardOpts = sel => BOARDS.map(b =>
 function matPanelHTML(c){
   return `
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">${c.nav}</span>
     <span class="pe">${c.navEn}</span>
   </div>
@@ -5873,7 +5903,7 @@ function homeSearchResults(q){
   out.guide  = matGroup(GUIDE_CAT);
   out.policy = matGroup(POLICY_CAT);
 
-  out.voice = VOICES.filter(v => hHit(v.content,q) || hHit(v.department,q) || hHit(v.writer,q)).map(v => ({
+  out.voice = !UNLOCKED.voice ? [] : VOICES.filter(v => hHit(v.content,q) || hHit(v.department,q) || hHit(v.writer,q)).map(v => ({
     title:(v.department ? v.department+' · ' : '') + (v.is_anon ? '익명' : (v.writer || '작성자 미상')),
     snippet:v.content || '', date:v.voice_date,
     go:() => goSub('voice','list')
@@ -6014,6 +6044,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $$('.subnav').forEach(nav => nav.onclick = e => {
     const b = e.target.closest('[data-s]'); if(!b) return;
+    const lock = b.dataset.lock;
+    if(lock && !UNLOCKED[lock]){
+      if(!checkPw('접수 현황 열람 비밀번호를 입력하세요')) return;
+      UNLOCKED[lock] = true;
+    }
     nav.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     Array.from(nav.parentElement.children).forEach(s => {
       if(s.dataset && s.dataset.sp) s.hidden = (s.dataset.sp !== b.dataset.s);
@@ -6311,8 +6346,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSvFilters(); renderSvGrid();
   $('#btnSvPersonCsv').onclick = svPersonCsv;
   $('#btnSvBack').onclick = svBack;
-  /* 이 화면의 '홈으로' 는 관리감독자 월간활동 첫 페이지(명단)로 돌아갑니다 */
-  $('#btnSvHome').onclick = svBack;
 
   $('#svSiteTabs').onclick = e => {
     const b = e.target.closest('[data-svsite]'); if(!b) return;
@@ -6360,7 +6393,11 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#btnSvIsoBack').onclick = svIsoBack;
   /* 관리자 모드 */
   $('#btnSvAdmin').onclick = () => {
-    if(SV_LOCK && !checkPw('관리자 비밀번호를 입력하세요')) return;
+    /* 관리자 모드는 SV_LOCK 과 상관없이 항상 비밀번호(DELETE_PW)로 잠금 — 새로고침 전까지 한 번만 입력 */
+    if(!UNLOCKED.svadmin){
+      if(!checkPw('관리자 비밀번호를 입력하세요')) return;
+      UNLOCKED.svadmin = true;
+    }
     svAdminOpen();
   };
   $('#btnSvAdminBack').onclick = svBack;
