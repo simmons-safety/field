@@ -148,15 +148,14 @@ button,input,select,textarea{font-family:var(--f)}
 .gw-results button:hover{background:var(--panel2)}
 .gw-results small{display:block;font-size:11px;color:var(--ink3)}
 
-/* 날씨 단독 페이지 (차량 QR · ?wx) — 플랫폼 화면 · 다른 팝업은 모두 숨기고 날씨 창만 전체 화면으로 */
-.wx-home{display:none}
+/* 날씨 단독 페이지 (차량 QR · ?wx) — 플랫폼 화면 · 다른 팝업은 모두 숨기고 날씨 창만 전체 화면으로.
+   다른 페이지로 나가는 길(닫기 버튼 · 기상청 링크)도 막습니다 */
 html.wx-only body{padding:0}
+html.wx-only .wxalert{pointer-events:none;cursor:default}
 html.wx-only body > :not(#gpsWxModal):not(.toast):not(#__err){display:none !important}
 html.wx-only #gpsWxModal{display:block;position:static;background:none;padding:0;backdrop-filter:none}
 html.wx-only #gpsWxModal .mbox{width:100%;max-width:640px;margin:0 auto;max-height:none;overflow:visible}
 html.wx-only #gpsWxModal [data-close]{display:none}
-html.wx-only .wx-home{display:block;margin-left:auto;color:rgba(255,255,255,.7);font-size:12px;text-decoration:none}
-html.wx-only .wx-home:hover{color:#fff}
 
 /* 내 위치 날씨 (GPS) 팝업 */
 .gw-loc{font-size:12px;font-weight:500;color:var(--ink3);margin:0 0 6px}
@@ -1793,7 +1792,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
 <!-- ═══════════ 내 위치 날씨 (GPS) ═══════════ -->
 <div class="modal" id="gpsWxModal">
   <div class="mbox">
-    <div class="mhead"><h3>지역별 날씨</h3><a class="wx-home" href="./">플랫폼 홈 →</a><button data-close>&times;</button></div>
+    <div class="mhead"><h3>지역별 날씨</h3><button data-close>&times;</button></div>
     <div class="mbody">
       <form class="gw-search" id="gwSearchForm">
         <input type="search" id="gwSearchInput" placeholder="지역 검색 (예: 김해시, 해운대구, 모가면)" enterkeyhint="search">
