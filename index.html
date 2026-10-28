@@ -7,7 +7,7 @@
 
 <!-- 휴대폰 홈 화면 앱 설치 -->
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -28,6 +28,11 @@
 <!-- 기상특보 띠 : 공공데이터포털(data.go.kr) '기상청_기상특보 조회서비스' 인증키(Decoding)를 넣으면
      지역별 날씨 팝업에서 그 지역 날씨 위에 특보(또는 '특보 없음') 문구가 나옵니다. 비워 두면 표시 안 함 -->
 <meta name="tbm-kma-key"       content="75c8402532d8e702328e7e4b4e812aa4fc66e2fc45b7f577c39e85cafbbc7e60">
+
+<!-- 전날 중대재해 사례 (오늘의 TBM 자료 오른쪽) : 공공데이터포털 '한국산업안전보건공단_사고사망 게시판 정보 조회서비스'
+     (data.go.kr/data/15119137) 활용신청 후 인증키(Decoding)를 넣으세요. 비워 두면 위 기상특보 키를 같이 씁니다
+     (공공데이터포털 인증키는 계정당 하나라, 같은 계정으로 활용신청만 해 두면 그대로 동작합니다) -->
+<meta name="tbm-kosha-key"     content="">
 
 <!-- 알림 메일 : 여기에 넣어 두면 파일을 새로 받아도 설정이 유지됩니다 -->
 <meta name="tbm-mail-to"       content="hk7149@simmons.co.kr">
@@ -371,6 +376,61 @@ select.bmv{width:auto;min-width:74px;font-size:12px;font-weight:500;padding:8px 
 .dsub{font-size:11px;color:var(--ink3);margin-top:10px;font-variant-numeric:tabular-nums}
 .dtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .dimg{max-width:100%;margin-top:20px;border:1px solid var(--line);border-radius:0;display:block}
+.dlayout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.dmain{min-width:0}
+@media(max-width:960px){ .dlayout{grid-template-columns:minmax(0,1fr)} }
+
+/* ══════════ 전날 중대재해 사례 (KOSHA 사고사망 게시판) ══════════ */
+.acc{border:1px solid var(--ink);background:var(--panel);position:sticky;top:16px}
+@media(max-width:960px){ .acc{position:static} }
+.acc .ah{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:14px 16px;
+  background:var(--human,#B3261E);color:#fff}
+.acc .ah .at{font-size:13px;font-weight:700;letter-spacing:-.02em}
+.acc .ah .ad{font-size:11.5px;font-weight:500;color:rgba(255,255,255,.75);font-variant-numeric:tabular-nums}
+.acc .alist{list-style:none;margin:0;padding:0}
+.acc .ai{padding:15px 16px;border-top:1px solid var(--line)}
+.acc .ai:first-child{border-top:0}
+.acc .apost{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 16px}
+.acc .apost figure{position:relative;margin:0}
+.acc .apost img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block;
+  background:var(--panel2);border:1px solid var(--line);cursor:zoom-in;transition:opacity .2s}
+.acc .apost img:hover{opacity:.82}
+.acc .apost .apx{position:absolute;top:0;right:0;width:22px;height:22px;padding:0;border:0;cursor:pointer;
+  background:rgba(17,17,17,.55);color:#fff;font-size:13px;line-height:1}
+.acc .apost .apx:hover{background:var(--human)}
+@media(max-width:960px){ .acc .apost{grid-template-columns:repeat(4,minmax(0,1fr))} }
+@media(max-width:560px){ .acc .apost{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.acc .aman{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--line)}
+.acc .aman .sp{flex:1}
+.acc .aman .hint{font-size:10.5px}
+.acc .be{flex:0 0 auto;font:inherit;font-size:11px;font-weight:600;padding:3px 9px;cursor:pointer;
+  background:var(--panel);color:var(--ink);border:1px solid var(--ink)}
+.acc .aform{padding:14px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.acc .aform label{font-size:11px;font-weight:700;color:var(--ink2)}
+.acc .aform .thumbs{margin-top:0}
+.acc .aform .bedf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
+.acc .ai .am{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;
+  font-size:10.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.acc .ai .att{font-size:13.5px;font-weight:700;line-height:1.55;letter-spacing:-.03em}
+.acc .ai details{margin-top:7px}
+.acc .ai summary{list-style:none;cursor:pointer;font-size:12.5px;line-height:1.75;color:var(--ink2);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.acc .ai summary::-webkit-details-marker{display:none}
+.acc .ai details[open] summary{display:block;-webkit-line-clamp:unset;white-space:pre-wrap}
+.acc .ai .amore{font-size:11px;font-weight:600;color:var(--ink3);margin-top:4px}
+.acc .ai details[open] .amore{display:none}
+.acc .ai .alink{display:inline-block;margin-top:8px;font-size:11px;font-weight:600;color:var(--ink)}
+.acc .asub{padding:10px 16px;font-size:11px;font-weight:700;color:var(--ink3);
+  background:var(--panel2);border-top:1px solid var(--line)}
+.acc .amsg{padding:16px;font-size:12.5px;line-height:1.75;color:var(--ink2)}
+.acc .amsg a{color:var(--ink);font-weight:600}
+.acc .af{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px;
+  border-top:1px solid var(--line);font-size:10.5px;color:var(--ink3)}
+.acc .af .sp{flex:1}
+.acc .af a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--ink)}
+.acc .skelw{padding:16px}
+.acc .skel{height:13px;background:var(--panel2);margin-bottom:10px;animation:briefPulse 1.3s ease-in-out infinite}
+.acc .skel.w70{width:70%} .acc .skel.w85{width:85%}
 
 /* ══════════ 오늘의 브리핑 (자동 요약) ══════════ */
 .brief{border:1px solid var(--ink);margin-bottom:28px;background:var(--panel)}
@@ -925,7 +985,6 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   .card > header{margin-bottom:18px}
   .hdr-search{padding:6px 8px}
   .hdr-search input{width:72px;font-size:12px}
-  .tb-row2{padding:6px 16px 8px}
   .mbtn{min-height:0;padding:20px 18px 20px}
   .mbtn .ttl{font-size:15.5px;padding-top:20px}
   .mbtn .ico{width:34px;height:34px;font-size:15px}
@@ -943,6 +1002,228 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 </style>
+<!-- ══════════════════════════════════════════════════════════
+     HYBE CONCEPT LAYER
+     · hybecorp.com 의 무드: 순수 흑백, 거대한 영문 타이포, 넉넉한 여백,
+       라운드 그레이 패널, 필(pill) 버튼 — 관리자용 대시보드와 같은 체계
+     · 위의 기본 스타일을 덮어쓰는 층입니다. 이 블록만 지우면 이전 디자인으로 돌아갑니다.
+     ══════════════════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --ink:#000000; --ink2:#4D4D4D; --ink3:#999999;
+  --line:#E3E3E3; --line2:#EAEAEA;
+  --paper:#FFFFFF; --panel:#FFFFFF; --panel2:#F4F4F4; --panel3:#E9E9E9;
+  --acc:#000000; --acc-b:#000000; --acc-d:#000000; --navy:#000000;
+  --hover:rgba(0,0,0,.045);
+  --r-xl:28px; --r-l:20px; --r-m:14px; --r-s:8px; --pill:999px;
+  --fd:'Outfit','Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --w:1280px; --gx:40px;
+}
+body{padding-bottom:0}
+::selection{background:#000;color:#fff}
+.wrap,.tb-in,.hero-in{max-width:var(--w);padding-left:var(--gx);padding-right:var(--gx)}
+.wrap{padding-bottom:96px}
+
+/* ── 상단 바 ── */
+.topbar{background:rgba(255,255,255,.94);border-bottom:none}
+.tb-in{height:76px;gap:14px}
+.wordmark-logo{height:30px}
+.wx .t{font-family:var(--fd);font-weight:500;font-size:21px;letter-spacing:-.02em}
+.wx[role=button]{border-radius:var(--pill);padding:7px 14px;margin:0 -4px}
+.hdr-search{border:none;background:var(--panel2);border-radius:var(--pill);padding:9px 16px}
+.hdr-search input{width:140px}
+.instbtn{border-radius:var(--pill);padding:10px 18px}
+.instbtn:hover{background:#fff;color:#000}
+.tb-row2{max-width:none;margin:0;padding:0;gap:6px;flex:none}
+.hdr-ic{width:38px;height:38px;border:none;border-radius:50%;background:var(--panel2);color:var(--ink2)}
+.hdr-ic:hover{background:#000;color:#fff}
+.hdr-ic svg{width:17px;height:17px}
+
+/* ── 홈 히어로 : 검은 판 위 거대한 영문 문장 ── */
+.hero{background:#000;color:#fff;padding:0;border-bottom:none;overflow:hidden}
+.hero-in{margin:0 auto;padding-top:28px;padding-bottom:16px}
+.hx-big{margin:0;font-family:var(--fd);font-weight:600;color:#fff;
+  font-size:clamp(34px,4.6vw,64px);line-height:.9;letter-spacing:-.055em;
+  animation:hxIn .8s cubic-bezier(.2,.75,.15,1) both}
+.hx-big span{display:block}
+.hx-big span + span{animation:hxIn .8s .08s cubic-bezier(.2,.75,.15,1) both}
+@keyframes hxIn{from{opacity:0;transform:translateY(30%)}to{opacity:1;transform:none}}
+.hx-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 28px;flex-wrap:wrap;
+  margin-top:18px;padding-top:12px;border-top:1px solid rgba(255,255,255,.24)}
+.hero h1{font-size:19px;font-weight:700;letter-spacing:-.04em;color:#fff;line-height:1.3;white-space:normal}
+.hx-date{font-family:var(--fd);font-size:14px;color:rgba(255,255,255,.62);font-variant-numeric:tabular-nums}
+#app{display:block;margin-top:24px}
+#app[hidden]{display:none !important}
+
+/* ── 홈 메뉴 : 라운드 그레이 타일, 누르면 검정 ── */
+.menu{gap:12px;border:none}
+.mbtn{background:var(--panel2);border:none;border-radius:var(--r-xl);padding:22px 24px;min-height:148px}
+.mbtn:hover{background:#000;color:#fff}
+.mbtn:focus-visible{outline:2px solid #000;outline-offset:3px}
+.mbtn .ico{border:none;background:#fff;border-radius:50%;width:40px;height:40px}
+.mbtn:hover .ico{background:rgba(255,255,255,.12);color:#fff}
+.mbtn .arw{top:22px;right:24px;font-size:15px;color:var(--ink)}
+.mbtn .ttl{font-size:19px;font-weight:700;letter-spacing:-.045em;padding-top:16px}
+.mbtn .en{font-family:var(--fd);font-size:14px;font-weight:400;letter-spacing:-.01em;color:var(--ink3);margin-top:6px}
+
+/* ── 하위 페이지 머리 : 거대한 영문 제목 + 한글 제목 ── */
+.pagetop{padding:28px 0 16px;margin-bottom:24px;border-bottom:none;gap:10px 14px}
+.pagetop .pe,.pagetop .pe[style]{order:-1;flex:1 0 100%;margin:0 0 10px !important;display:block;
+  font-family:var(--fd);font-size:clamp(34px,4.6vw,64px);font-weight:600;line-height:.92;
+  letter-spacing:-.05em;color:#000}
+.pagetop .pt{font-size:22px}
+.homebtn{border-radius:var(--pill);border:none;background:var(--panel2);color:var(--ink);padding:10px 18px}
+.homebtn:hover{background:#000;color:#fff}
+
+/* ── 서브 탭 : 필 ── */
+.subnav{border-bottom:none;gap:6px;margin-bottom:28px}
+.subnav button{border:1px solid var(--line);border-radius:var(--pill);margin:0;padding:11px 20px;color:var(--ink2);font-size:13.5px}
+.subnav button:hover{border-color:#000;color:#000}
+.subnav button[aria-pressed="true"]{background:#000;border-color:#000;color:#fff;font-weight:600}
+
+/* ── 카드 ── */
+.card{background:var(--panel2);border:none;border-radius:var(--r-xl);padding:34px 36px 36px}
+.card > header{border-bottom:none;padding-bottom:0;margin-bottom:24px}
+.card h2{font-size:21px;font-weight:700;letter-spacing:-.045em}
+.card header .note{font-size:12px;font-weight:400;letter-spacing:-.01em}
+.secttl,.extrow .exlbl{font-size:12.5px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.foot,.rec-acts,.extrow{border-top-color:var(--line)}
+label{font-size:12px;letter-spacing:-.01em;color:var(--ink2)}
+
+/* ── 입력 ── */
+select,input,textarea,.datefield,.searchrow input,select.bmv,.svsearch{border-radius:var(--r-m)}
+.svfound{border-radius:var(--r-m)}
+code{border-radius:6px}
+
+/* ── 버튼 · 배지 : 필 ── */
+.btn,.hstabs button,.hsmore,.fb,.tg,.qb,.fres,.extbtn,.b,.brief .be,.acc .be,.fr-ires,.toast,.svwho .y,
+table.svtb th.it .lk,table.svtb th.it details.dsc summary{border-radius:var(--pill)}
+.btn{padding:13px 28px}
+.btn.sm{padding:9px 17px}
+.btn.ghost{background:#fff}
+.calnav,.thumb .x,.brow .bh .x{border-radius:50%}
+.extbtn .ic{border-radius:50%}
+.b{padding:5px 11px}
+.b.gray{background:#fff;border-color:var(--line)}
+
+/* ── 타일 그리드 (부서 · 게시판 · 사업장 · KPI) ── */
+.deptpick,.sitebar,.boards,.kpirow{gap:8px;border:none}
+.dbtn,.bd-btn,.kpi{border:none;border-radius:var(--r-l);background:#fff}
+.kpi{padding:20px 22px 22px}
+.dbtn:hover,.bd-btn:hover{background:#fff;box-shadow:inset 0 0 0 1px #000}
+.dbtn[aria-pressed="true"],.bd-btn[aria-pressed="true"]{background:#000;box-shadow:none}
+.bd-btn .bn,.kpi .v{font-family:var(--fd);font-weight:500;letter-spacing:-.04em}
+.kpi .v{font-size:36px}
+.kpi .k{font-size:12px;font-weight:600;letter-spacing:-.01em;color:var(--ink2)}
+
+/* ── 목록 · 기록 ── */
+.rec{border-top-color:var(--line)}
+.rec:last-child{border-bottom-color:var(--line)}
+.rec:hover,.hscard:hover,.hnm:hover,.svfound .fi:hover,.gw-results button:hover{background:var(--hover)}
+.rec-ph img,.dimg,.thumb,.gcard .gimg,.gcard .gpdf,.gthumb,.pdfview,.pdfview canvas{border-radius:var(--r-m)}
+.thumb .x{top:4px;right:4px}
+.mat{border:none;border-radius:var(--r-l)}
+.mat:hover{border:none;box-shadow:inset 0 0 0 1px #000}
+.matwrap .mat{border-radius:var(--r-l) var(--r-l) 0 0}
+.matwrap .pv{border:none;background:#fff;border-radius:0 0 var(--r-l) var(--r-l)}
+.hsband,.ccband{border-radius:var(--r-l)}
+.card .hsband,.card .ccband{background:#fff}
+.hscard{border-bottom-color:var(--line)}
+.answer{border-left:none;border-radius:var(--r-m);background:#fff}
+.quote{border-radius:var(--r-m)}
+.drop{border-radius:var(--r-l);background:#fff}
+.drop:hover,.drop.over{background:#fff;border-color:#000}
+.brow{border-radius:var(--r-m)}
+.brow.done{background:#fff;border-color:#000}
+.fr-fail{border-left:none;border-radius:var(--r-m)}
+.ficat{border-bottom-color:#000}
+.empty{border:none;border-radius:var(--r-xl);background:var(--panel2)}
+.card .empty{background:#fff}
+
+/* ── 교육자료 3분할 ── */
+.libcol{border:none;border-radius:var(--r-xl);background:var(--panel2);padding:18px}
+.libcol .pagetop{background:var(--panel2);top:-18px;margin-top:-18px;padding-top:18px;padding-bottom:12px;margin-bottom:14px}
+.libcol .pagetop .pe,.libcol .pagetop .pe[style]{font-size:clamp(26px,2.6vw,38px);margin-bottom:6px !important}
+.libcol .pagetop .pt{font-size:15px;font-weight:600;color:var(--ink2)}
+.libcol .card{background:#fff;border-radius:var(--r-l)}
+.libcol .card .empty,.libcol .card .hsband{background:var(--panel2)}
+
+/* ── 오늘의 브리핑 · 전날 중대재해 ── */
+.brief,.acc{border:none;border-radius:var(--r-l);overflow:hidden;background:#fff}
+.brief .script{border:none;border-radius:var(--r-m)}
+.brief ul.bl li .k{border-radius:var(--pill);padding:0 8px}
+.acc .apost img{border-radius:var(--r-s)}
+
+/* ── 협의체 표 · 달력 ── */
+.ccwrap,.svwrap{border-radius:var(--r-m)}
+table.cctb,table.svtb,table.svheat{background:#fff}
+.cal{border-radius:var(--r-m);overflow:hidden;background:#fff}
+.cal .dw{font-family:var(--fd);font-weight:500;letter-spacing:.02em}
+.cd .n{font-family:var(--fd);font-weight:500;border-radius:var(--pill)}
+.cd.today .n{background:#000}
+.cd .ev{border-radius:4px}
+.callg i{border-radius:3px}
+.ccday{border:none;border-radius:var(--r-l);box-shadow:inset 0 0 0 2px #000}
+.mrow .tr,.mrow .tr i{border-radius:var(--pill)}
+.cols .cl .bx i{border-radius:6px 6px 0 0}
+.cols{border-bottom-color:#000}
+
+/* ── 날씨 팝업 ── */
+.wxalert{border-radius:var(--pill)}
+.wxalert.none{padding:0 16px}
+.gw-now .t{font-family:var(--fd);font-weight:500;font-size:56px;letter-spacing:-.04em}
+.gw-now{border-bottom-color:#000}
+.gw-grid{gap:6px;background:none;border:none}
+.gw-grid div{background:var(--panel2);border-radius:var(--r-m)}
+.gw-hours div{border-radius:var(--r-m)}
+.gw-alert{border-radius:var(--r-m)}
+.gw-results{border-radius:var(--r-m);overflow:hidden auto}
+
+/* ── 창 · 사진 ── */
+.modal{background:rgba(0,0,0,.55)}
+.mbox{border-radius:var(--r-xl)}
+.mhead{padding:14px 28px}
+.mhead h3{font-size:19px}
+.lightbox{background:rgba(0,0,0,.95)}
+
+@media(max-width:1000px){
+  .menu{gap:10px}
+  .lib3{gap:8px}
+  .libcol{padding:10px;border-radius:var(--r-l)}
+  .libcol .pagetop{top:-10px;margin-top:-10px;padding-top:10px}
+  .libcol .pagetop .pt{font-size:14px}
+  .libcol .card{padding:14px 10px 16px;border-radius:var(--r-m)}
+  .libcol .card h2{font-size:15px}
+}
+@media(max-width:720px){
+  :root{--gx:16px}
+  .tb-in{height:62px}
+  .hdr-search{padding:7px 12px}
+  .tb-in{gap:10px}
+  .hdr-search input{width:58px}
+  .hdr-ic{width:34px;height:34px}
+  .hero-in{padding-top:22px;padding-bottom:14px}
+  .hx-row{margin-top:14px;padding-top:10px}
+  .hero h1{font-size:16px}
+  #app{margin-top:20px}
+  .mbtn{border-radius:var(--r-l);padding:20px 18px;min-height:0}
+  .mbtn .ico{width:38px;height:38px}
+  .mbtn .arw{top:20px;right:20px}
+  .mbtn .ttl{font-size:16px;padding-top:22px}
+  .mbtn .en{font-size:12px}
+  .pagetop{padding:22px 0 14px;margin-bottom:18px}
+  .pagetop .pe,.pagetop .pe[style]{display:block;margin-bottom:10px !important}
+  .pagetop .pt{font-size:18px}
+  .subnav button{padding:9px 15px;font-size:13px}
+  .card{border-radius:var(--r-l);padding:22px 18px 24px}
+  .card h2{font-size:18px}
+  .libcol .pagetop .pe,.libcol .pagetop .pe[style]{font-size:24px}
+}
+</style>
+
 </head>
 <body>
 
@@ -959,17 +1240,8 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
       <span class="sky" id="wxSky">기상 확인 중</span>
       <span class="ap num" id="wxAp"></span>
     </div>
-    <div class="hdr-search">
-      <input type="text" id="homeSearchInput" placeholder="검색">
-      <button id="btnHomeSearch" title="검색" aria-label="검색">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
-        </svg>
-      </button>
-    </div>
     <button class="instbtn" id="btnInstall" hidden>앱 설치</button>
-  </div>
-  <div class="tb-row2">
+    <div class="tb-row2">
     <button class="hdr-ic" id="btnAccident" title="사고보고체계" aria-label="사고보고체계">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
@@ -991,15 +1263,22 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
       </svg>
     </button>
+    </div>
   </div>
 </header>
 
-<div class="wrap">
-
-<!-- ═══════════ 히어로 ═══════════ -->
+<!-- ═══════════ 히어로 (홈에서만 보임) ═══════════ -->
 <div class="hero" id="hero">
-  <h1>안전보건 통합 플랫폼<span class="title-sub"><span class="num" id="hDate">—</span></span></h1>
+  <div class="hero-in">
+    <p class="hx-big"><span>We believe</span><span>in safety.</span></p>
+    <div class="hx-row">
+      <h1>안전보건 통합 플랫폼</h1>
+      <span class="hx-date num" id="hDate">—</span>
+    </div>
+  </div>
 </div>
+
+<div class="wrap">
 
 <!-- ═══════════ 최초 연결 ═══════════ -->
 <div class="card setup" id="setup" hidden>
@@ -1028,63 +1307,63 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
         <span class="arw">↗</span>
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5.6" r="2.3"/><path d="M9.3 10.7a3.4 3.4 0 0 1 5.4 0"/><circle cx="6.2" cy="12.1" r="2.3"/><path d="M2.6 18.6a4 4 0 0 1 7.2 0"/><circle cx="17.8" cy="12.1" r="2.3"/><path d="M14.2 18.6a4 4 0 0 1 7.2 0"/></svg></span>
         <span class="ttl">TBM</span>
-        <span class="en">TOOL BOX MEETING</span>
+        <span class="en">Tool Box Meeting</span>
       </button>
 
       <button class="mbtn" data-go="fire">
         <span class="arw">↗</span>
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 4.5h3.2a1 1 0 0 1 1 1V8"/><path d="M17.7 8h-2.2"/><path d="M9.5 6.2A2.2 2.2 0 0 1 11.7 4h1.8v2.5"/><rect x="8" y="6.2" width="6.5" height="14.3" rx="2"/><path d="M8 11h6.5"/></svg></span>
         <span class="ttl">화재예방점검</span>
-        <span class="en">FIRE PREVENTION INSPECTION</span>
+        <span class="en">Fire Prevention</span>
       </button>
 
       <button class="mbtn" data-go="library">
         <span class="arw">↗</span>
         <span class="ico">▤</span>
         <span class="ttl">안전보건 교육자료</span>
-        <span class="en">TRAINING MATERIALS</span>
+        <span class="en">Training Materials</span>
       </button>
 
       <button class="mbtn" data-go="voice">
         <span class="arw">↗</span>
         <span class="ico">✉</span>
         <span class="ttl">근로자의견청취</span>
-        <span class="en">WORKER VOICE</span>
+        <span class="en">Worker Voice</span>
       </button>
 
       <button class="mbtn" data-go="ppe">
         <span class="arw">↗</span>
         <span class="ico">⛑</span>
         <span class="ttl">보호구 신청</span>
-        <span class="en">PPE REQUEST</span>
+        <span class="en">PPE Request</span>
       </button>
 
       <button class="mbtn" data-go="policy">
         <span class="arw">↗</span>
         <span class="ico">⚑</span>
         <span class="ttl">경영방침 및 안전보건방침</span>
-        <span class="en">MANAGEMENT &amp; SAFETY POLICY</span>
+        <span class="en">Safety Policy</span>
       </button>
 
       <button class="mbtn" data-go="guide">
         <span class="arw">↗</span>
         <span class="ico">✚</span>
         <span class="ttl">사업장 안내도</span>
-        <span class="en">SITE GUIDE</span>
+        <span class="en">Site Guide</span>
       </button>
 
       <button class="mbtn" data-go="council">
         <span class="arw">↗</span>
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="1.5"/><path d="M3 9h18"/><path d="M8 3v3"/><path d="M16 3v3"/><path d="M7.5 13h4"/><path d="M7.5 16.5h9"/></svg></span>
         <span class="ttl">안전보건협의체</span>
-        <span class="en">SAFETY &amp; HEALTH COUNCIL</span>
+        <span class="en">Safety Council</span>
       </button>
 
       <button class="mbtn" data-go="super">
         <span class="arw">↗</span>
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5h6v2.2H9z"/><path d="M15 5.6h2.4a1.4 1.4 0 0 1 1.4 1.4v12.1a1.4 1.4 0 0 1-1.4 1.4H6.6a1.4 1.4 0 0 1-1.4-1.4V7a1.4 1.4 0 0 1 1.4-1.4H9"/><path d="m8.6 12.6 1.9 1.9 4-4"/><path d="M8.6 17.4h6.8"/></svg></span>
         <span class="ttl">관리감독자 월간활동</span>
-        <span class="en">SUPERVISOR MONTHLY ACTIVITY</span>
+        <span class="en">Supervisor Activity</span>
       </button>
 
     </div>
@@ -1098,7 +1377,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">TBM 기록관리</span>
-    <span class="pe">TOOL BOX MEETING</span>
+    <span class="pe">Tool Box Meeting</span>
   </div>
 
   <div class="subnav">
@@ -1151,8 +1430,13 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
         <span class="sp"></span>
         <button class="btn ghost sm" data-go="materials">교육자료 전체 보기 ↗</button>
       </div>
-      <div id="dailyBrief"></div>
-      <div id="dailyBody"></div>
+      <div class="dlayout">
+        <div class="dmain">
+          <div id="dailyBrief"></div>
+          <div id="dailyBody"></div>
+        </div>
+        <aside class="acc" id="dailyAcc"></aside>
+      </div>
     </div>
   </div>
 
@@ -1180,7 +1464,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">화재예방점검</span>
-    <span class="pe">FIRE PREVENTION INSPECTION</span>
+    <span class="pe">Fire Prevention</span>
   </div>
 
   <div class="subnav">
@@ -1239,7 +1523,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">보호구 신청</span>
-    <span class="pe">PPE REQUEST</span>
+    <span class="pe">PPE Request</span>
   </div>
 
   <div class="subnav">
@@ -1313,7 +1597,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">안전보건 교육자료</span>
-    <span class="pe">TRAINING MATERIALS</span>
+    <span class="pe">Library</span>
   </div>
   <!-- 세 자료실을 한 화면에 나란히 (각 칸은 JS로 채움) -->
   <div class="lib3">
@@ -1328,7 +1612,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">경영방침 및 안전보건방침</span>
-    <span class="pe">MANAGEMENT &amp; SAFETY POLICY</span>
+    <span class="pe">Safety Policy</span>
   </div>
 
   <div class="card">
@@ -1370,7 +1654,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">사업장 안내도</span>
-    <span class="pe">SITE GUIDE</span>
+    <span class="pe">Site Guide</span>
   </div>
 
   <div class="card">
@@ -1415,7 +1699,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   <div class="pagetop">
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">근로자의견청취</span>
-    <span class="pe">WORKER VOICE</span>
+    <span class="pe">Worker Voice</span>
   </div>
 
   <div class="subnav">
@@ -1479,7 +1763,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
     <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">안전보건협의체</span>
     <button class="btn sm ghost" id="btnCcNotice" style="margin-left:auto">공지 팝업 작성</button>
-    <span class="pe" style="margin-left:0">SAFETY &amp; HEALTH COUNCIL</span>
+    <span class="pe" style="margin-left:0">Safety Council</span>
   </div>
 
   <div class="subnav">
@@ -1635,7 +1919,7 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V10"/><path d="M9.3 19.5V5.5"/><path d="M14.7 19.5v-6"/><path d="M20 19.5V8"/></svg>
       관리자 모드
     </button>
-    <span class="pe" style="margin-left:0">SUPERVISOR MONTHLY ACTIVITY</span>
+    <span class="pe" style="margin-left:0">Supervisor Activity</span>
   </div>
 
   <!-- ── 첫 페이지 : 사업장 · 이름 두 가지 필터만 ── -->
@@ -3083,6 +3367,7 @@ async function loadMaterials(){
   Object.values(VIEWS).forEach(v => { v.renderTags(); v.render(); });
   if($('#guideList').innerHTML || !$('#p-guide').hidden) renderGuide();
   if($('#polList').innerHTML || !$('#p-policy').hidden) renderPolicy();
+  if($('#dailyAcc').innerHTML) paintAccidents();
 }
 
 /* 파일명에 자주 나오는 낱말 → 표준 태그 */
@@ -3546,6 +3831,7 @@ function pickDaily(force){
   renderDaily();
 }
 function renderDaily(){
+  loadAccidents();
   const box = $('#dailyBody'), pool = eduPool();
   if(!DAILY){
     $('#dailyNote').textContent = '자료 없음';
@@ -3559,6 +3845,227 @@ function renderDaily(){
   box.innerHTML = '<div class="gal one">' + matCard(m, {}) + '</div>';
   paintPdfThumbs(box);
   renderBrief();
+}
+
+/* ===================== 전날 중대재해 사례 =====================
+   공공데이터포털 '한국산업안전보건공단_사고사망 게시판 정보 조회서비스'(callApiId 1040)에서
+   최근 사고사망 속보를 받아 오늘의 TBM 자료 오른쪽에 보여 줍니다.
+   응답 항목: keyword "[10/22, 서울 은평구] 엘리베이터 점검구에서 떨어짐" · contents(HTML 본문)
+            · arno "20261023175255EJCURG"(앞 8자리 = 공단 등록일)
+   공단은 사고 며칠 뒤에 여러 건을 한꺼번에 올리므로, 어제 발생한 사례가 있으면 그것을,
+   없으면 가장 최근에 등록된 묶음(같은 등록일)을 보여 줍니다. */
+const KOSHA_KEY  = meta('tbm-kosha-key') || KMA_KEY;
+const KOSHA_API  = 'https://apis.data.go.kr/B552468/news_api02/getNews_api02';
+const KOSHA_PAGE = 'https://portal.kosha.or.kr/archive/imprtnDsstrAlrame/CSADV50000/CSADV50000M01';
+const KOSHA_APPLY = 'https://www.data.go.kr/data/15119137/openapi.do';
+let ACC = null, ACC_LOADING = null;          // ACC = { yday, list:[...], recent:bool } | { err }
+
+const accYday = () => { const d = new Date(); d.setDate(d.getDate() - 1); return ymd(d); };
+/** HTML 본문 → 한 문단 글 (빈 줄 · 안내 문구 정리) */
+const accStrip = s => String(s ?? '').replace(/<br\s*\/?>|<\/p>/gi, ' ').replace(/<[^>]+>/g, '')
+  .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+  .replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+  .replace(/※\s*위 내용은[^.]*\./g, '').replace(/\s+/g, ' ').trim();
+/** "2026. 10. 22.(목)" · "20261023…" → "2026-10-22" */
+function accDate(v){
+  const m = String(v ?? '').match(/(20\d{2})[-.\s]*(\d{1,2})[-.\s]*(\d{1,2})/);
+  return m ? `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}` : '';
+}
+function accNorm(o){
+  const kw = accStrip(o.keyword), body = accStrip(o.contents);
+  const reg = /^20\d{6}/.test(o.arno || '') ? accDate(o.arno.slice(0, 8)) : '';
+  // "[10/22, 서울 은평구] 엘리베이터 점검구에서 떨어짐"
+  const m = kw.match(/^\[\s*(\d{1,2})\s*\/\s*(\d{1,2})\s*,?\s*([^\]]*)\]\s*(.*)$/);
+  let date = accDate(body.slice(0, 40));                  // 본문 첫머리 "2026. 10. 22.(목), 18:05 경"
+  if(!date && m){
+    let y = +(reg || TODAY).slice(0, 4);
+    if(reg && +m[1] > +reg.slice(5, 7)) y--;              // 12월 사고를 1월에 올린 경우
+    date = `${y}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+  }
+  return { date, reg, place: m ? m[3].trim() : '', title: m ? m[4].trim() : kw, body };
+}
+function accErr(text, status){
+  const code = (String(text).match(/returnReasonCode"?\s*[:>]\s*"?(\d+)/) || [])[1];
+  const msg  = (String(text).match(/(SERVICE_[A-Z_]+|NO_OPENAPI_[A-Z_]+|LIMITED_[A-Z_]+|DEADLINE_[A-Z_]+|INVALID_[A-Z_]+)/) || [])[1];
+  if(!code && !msg && status < 400) return '';
+  if(/NOT_REGISTERED|ACCESS_DENIED|PERMISSION/.test(msg || '') || code === '20' || code === '30' || status === 401 || status === 403)
+    return 'apply';
+  if(/LIMITED/.test(msg || '') || code === '22') return '오늘 조회 한도를 넘었습니다. 내일 다시 표시됩니다.';
+  if(/DEADLINE/.test(msg || '') || code === '31') return '인증키 활용기간이 끝났습니다. 공공데이터포털에서 연장 신청해 주세요.';
+  return `조회 오류 (${msg || code || status})`;
+}
+async function fetchAccidents(){
+  const key = KOSHA_KEY.includes('%') ? KOSHA_KEY : encodeURIComponent(KOSHA_KEY);   // Encoding/Decoding 키 모두 허용
+  const r = await fetch(`${KOSHA_API}?serviceKey=${key}&callApiId=1040&pageNo=1&numOfRows=30`);
+  const text = await r.text();
+  const err = accErr(text, r.status);
+  if(err) return { err };
+  let items = JSON.parse(text)?.body?.items?.item || [];
+  if(!Array.isArray(items)) items = [items];
+  const list = items.map(accNorm).filter(a => a.title)
+    .sort((a, b) => (b.reg + b.date).localeCompare(a.reg + a.date));
+  const yday = accYday(), y = list.filter(a => a.date === yday);
+  if(y.length) return { yday, list: y, recent: false };
+  const last = list[0] ? list[0].reg : '';                 // 가장 최근 등록일의 묶음
+  return { yday, reg: last, list: list.filter(a => a.reg === last).slice(0, 5), recent: true };
+}
+function loadAccidents(){
+  if(ACC || ACC_LOADING) return paintAccidents();
+  if(!KOSHA_KEY){ ACC = { err: 'nokey' }; return paintAccidents(); }
+  /* 기기마다 2시간 동안 저장해 두고 다시 씁니다 (개발계정 하루 1,000회 한도 보호 · 어제 사례는 하루 종일) */
+  const ck = 'acc2_' + TODAY, hit = STORE.get(ck);
+  if(hit){ try{
+    const v = JSON.parse(hit);
+    if(!v.recent || Date.now() - (v.at || 0) < 2 * 3600e3){ ACC = v; return paintAccidents(); }
+  }catch(e){} }
+  paintAccidents();
+  ACC_LOADING = fetchAccidents()
+    .then(v => { ACC = v; if(!v.err) try{
+        Object.keys(localStorage).forEach(k => { if(k.indexOf('tbm_acc_') === 0) localStorage.removeItem(k); });
+        STORE.set(ck, JSON.stringify({ ...v, at: Date.now() }));
+      }catch(e){} })
+    .catch(e => { console.warn('[중대재해] 불러오지 못했습니다', e); ACC = { err: '사례를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.' }; })
+    .finally(() => { ACC_LOADING = null; paintAccidents(); onWeatherUpdated(); });
+}
+function paintAccidents(){
+  const box = $('#dailyAcc'); if(!box) return;
+  const md = (s, w) => { const d = new Date(s + 'T00:00:00');
+    return `${d.getMonth()+1}. ${d.getDate()}.` + (w ? ` (${DOW[d.getDay()]})` : ''); };
+  const head = t => `<div class="ah"><span class="at">${t}</span><span class="ad">${
+    ACC && ACC.recent && ACC.reg ? md(ACC.reg) + ' 공단 등록' : md(accYday(), true)}</span></div>`;
+  const foot = `<div class="af"><span>출처 · 한국산업안전보건공단 · 신고 기준이라 조사 후 바뀔 수 있음</span><span class="sp"></span>
+    <a href="${KOSHA_PAGE}" target="_blank" rel="noopener">공단 중대재해 알림 ↗</a></div>`;
+  const p = accPosters();
+  /* 포스터가 있으면 맨 위에 크게, 공단 게시판 자동 연동 글은 그 아래에 */
+  const wrap = (title, sub, feed) => p.list.length
+    ? posterHtml(p, md) + `<div class="asub">사고사망 속보 · 공단 게시판 자동 연동</div>` + feed + foot
+    : head(title) + posterForm() + (sub ? `<div class="asub">${sub}</div>` : '') + feed + foot;
+  if(!ACC){
+    box.innerHTML = wrap('전날 중대재해 사례', '',
+      '<div class="skelw"><div class="skel"></div><div class="skel w85"></div><div class="skel w70"></div></div>');
+    return;
+  }
+  if(ACC.err){
+    const why = ACC.err === 'nokey'
+      ? `공공데이터포털 인증키가 없어 표시하지 못했습니다. <code>index.html</code> 상단 <code>tbm-kosha-key</code>에 키를 넣어 주세요.`
+      : ACC.err === 'apply'
+      ? `공공데이터포털에서 <a href="${KOSHA_APPLY}" target="_blank" rel="noopener">사고사망 게시판 정보 조회서비스</a>
+         활용신청이 필요합니다(자동승인). 승인 후 1시간쯤 지나면 표시됩니다.`
+      : esc(ACC.err);
+    box.innerHTML = wrap('전날 중대재해 사례', '', `<div class="amsg">${why}<br>
+      그동안은 아래 공단 사이트에서 직접 확인해 주세요.</div>`);
+    return;
+  }
+  const items = ACC.list.map(a => {
+    const d = a.date ? new Date(a.date + 'T00:00:00') : null;
+    return `<li class="ai">
+      <div class="am">${d ? `<span class="b">${d.getMonth()+1}.${d.getDate()} (${DOW[d.getDay()]})</span>` : ''}
+        ${a.place ? `<span>${esc(a.place)}</span>` : ''}</div>
+      <div class="att">${esc(a.title)}</div>
+      ${a.body ? `<details><summary>${esc(a.body)}</summary><div class="amore">더보기</div></details>` : ''}
+    </li>`;
+  }).join('');
+  box.innerHTML = wrap(ACC.recent ? `최근 중대재해 사례 ${ACC.list.length}건` : `전날 중대재해 사례 ${ACC.list.length}건`,
+    ACC.recent ? '공단은 사고 며칠 뒤 사례를 등록합니다 · 가장 최근 등록분' : '',
+    items ? `<ul class="alist">${items}</ul>` : '<div class="amsg">표시할 사례가 없습니다.</div>');
+}
+
+/* ── 중대재해 발생 알림 포스터 ──
+   공단 포털 '중대재해 발생 알림' 포스터는 공개 API가 없어, 담당자가 받아서 올립니다.
+   training_materials 에 category '중대재해', tags[0] = 공단 등록일 로 저장하고, 가장 최근 등록일 묶음만 보여 줍니다. */
+const ACC_CAT = '중대재해';
+let P_OPEN = false, P_FILES = [], P_DATE = TODAY, P_BUSY = false;
+function accPosters(){
+  const all = MATERIALS.filter(m => m.category === ACC_CAT && m.file_url);
+  const day = m => accDate((m.tags || [])[0]) || String(m.created_at || '').slice(0, 10);
+  const last = all.map(day).sort().pop() || '';
+  const list = all.filter(m => day(m) === last)
+    .sort((a, b) => String(a.title).localeCompare(String(b.title), 'ko', { numeric: true }));
+  return { day: last, list };
+}
+function posterHtml(p, md){
+  return `<div class="ah"><span class="at">중대재해 발생 알림 ${p.list.length}건</span>
+      <span class="ad">${md(p.day)} 공단 등록</span></div>
+    <div class="apost">${p.list.map(m => `<figure>
+        <img src="${esc(m.file_url)}" data-zoom="${esc(m.file_url)}" alt="${esc(m.title)}" loading="lazy" title="누르면 원본 크기로 봅니다">
+        <button type="button" class="apx" data-pdel="${m.id}" data-path="${esc(m.file_path || '')}" title="삭제">&times;</button>
+      </figure>`).join('')}</div>` + posterForm();
+}
+function posterForm(){
+  if(!P_OPEN) return `<div class="aman"><span class="hint">공단 포털의 포스터를 받아 올려 두면 여기에 크게 나옵니다</span>
+      <span class="sp"></span><button type="button" class="be" data-pact="open">포스터 등록</button></div>`;
+  return `<div class="aform">
+      <label>공단 등록일</label><input type="date" data-pact="date" value="${esc(P_DATE)}">
+      <label>포스터 사진 (여러 장 가능)</label>
+      <input type="file" data-pact="files" accept="image/*" multiple>
+      ${P_FILES.length ? `<div class="thumbs">${P_FILES.map((f, i) =>
+        `<div class="thumb"><img src="${f.preview}" alt=""><button type="button" class="x" data-prm="${i}">&times;</button></div>`).join('')}</div>` : ''}
+      <div class="bedf">
+        <button type="button" class="btn sm" data-pact="save" ${P_BUSY ? 'disabled' : ''}>${P_BUSY ? '등록 중…' : '등록'}</button>
+        <button type="button" class="btn sm ghost" data-pact="cancel">취소</button>
+        <a class="hint" href="${KOSHA_PAGE}" target="_blank" rel="noopener">공단 포털 열기 ↗</a>
+      </div>
+    </div>`;
+}
+function posterReset(){
+  P_FILES.forEach(f => URL.revokeObjectURL(f.preview));
+  P_FILES = []; P_OPEN = false; P_DATE = TODAY;
+}
+async function onAccClick(e){
+  const z = e.target.dataset.zoom;
+  if(z){ $('#lightboxImg').src = z; $('#lightbox').classList.add('on'); return; }
+  const rm = e.target.dataset.prm;
+  if(rm != null){ URL.revokeObjectURL(P_FILES[rm].preview); P_FILES.splice(rm, 1); return paintAccidents(); }
+  const del = e.target.dataset.pdel;
+  if(del){
+    if(!confirm('이 포스터를 삭제할까요?') || !checkDeletePw()) return;
+    if(e.target.dataset.path) await db.storage.from('tbm-materials').remove([e.target.dataset.path]);
+    const { error } = await db.from('training_materials').delete().eq('id', del);
+    if(error) return toast('삭제 실패: ' + error.message, 'err');
+    toast('삭제했습니다', 'ok');
+    return loadMaterials();
+  }
+  const act = e.target.dataset.pact;
+  if(act === 'open'){ if(!checkDeletePw()) return; P_OPEN = true; return paintAccidents(); }
+  if(act === 'cancel'){ posterReset(); return paintAccidents(); }
+  if(act === 'save') return savePosters();
+}
+async function onAccChange(e){
+  const act = e.target.dataset.pact;
+  if(act === 'date') P_DATE = e.target.value || TODAY;
+  if(act === 'files'){
+    for(const f of Array.from(e.target.files || [])){
+      if(!f.type.startsWith('image/')) continue;
+      const sm = await shrink(f);
+      P_FILES.push({ file: sm, name: f.name, preview: URL.createObjectURL(sm) });
+    }
+    paintAccidents();
+  }
+}
+async function savePosters(){
+  if(!P_FILES.length) return toast('포스터 사진을 한 장 이상 골라 주세요', 'err');
+  if(!HAS_CATEGORY){ schemaWarn(); return; }
+  P_BUSY = true; paintAccidents();
+  const tag = P_DATE.slice(2).replace(/-/g, '');            // "261027"
+  let ok = 0;
+  try{
+    for(let i = 0; i < P_FILES.length; i++){
+      const f = P_FILES[i], path = `kosha/${P_DATE}/${safeName(f.name)}`;
+      const up = await db.storage.from('tbm-materials').upload(path, f.file);
+      if(up.error) throw new Error(up.error.message);
+      const url = db.storage.from('tbm-materials').getPublicUrl(path).data.publicUrl;
+      const { error } = await db.from('training_materials').insert([{
+        title: `(${tag})중대재해 발생 알림` + (P_FILES.length > 1 ? ` (${i + 1})` : ''),
+        category: ACC_CAT, tags: [P_DATE], file_url: url, file_path: path, file_name: f.name, pinned: false }]);
+      if(error) throw new Error(error.message);
+      ok++;
+    }
+    toast(`포스터 ${ok}장을 등록했습니다`, 'ok');
+    posterReset();
+  }catch(err){ toast('등록 실패: ' + err.message, 'err'); }
+  P_BUSY = false;
+  await loadMaterials();
+  paintAccidents();
 }
 
 /* ===================== 오늘의 브리핑 (자동 요약) =====================
@@ -3889,6 +4396,12 @@ function tbmScript(wp, sum, m){
     ? `오늘 교육자료는 「${m.title}」입니다. 자료는 아래에서 함께 보시고, 먼저 공통 안전수칙을 짚겠습니다.`
     : `오늘 교육자료는 「${m.title}」입니다. 핵심만 짚겠습니다.`);
   sum.pts.slice(0, 3).forEach((s, i) => L.push(`${i+1}. ${s}`));
+  if(ACC && ACC.list && ACC.list[0]){
+    const a = ACC.list[0];
+    L.push('');
+    L.push(`${ACC.recent ? '최근' : '어제'} ${a.place ? a.place + ' ' : '다른 '}사업장에서 「${a.title}」 사망사고가 있었습니다.`
+      + ' 우리 작업장에도 같은 위험이 없는지 함께 살펴봅시다.');
+  }
   L.push('');
   L.push('지금 옆 사람과 서로 보호구 착용 상태를 봐 주시고, 몸이 안 좋거나 오늘 걱정되는 작업이 있으면 지금 말씀해 주세요.');
   L.push('다치지 않고 퇴근하는 것이 오늘의 첫 번째 목표입니다. 안전하게 작업합시다.');
@@ -6342,7 +6855,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 자료실 두 개 생성 */
   VIEWS.edu = new MatView('교육', '#p-materials', {
     boards:true,
-    nav:'안전보건 교육자료', navEn:'TRAINING MATERIALS',
+    nav:'안전보건 교육자료', navEn:'Training Materials',
     h:'안전보건 교육자료 검색',
     ph:'공정 · 위험요인 입력    예) 밀폐공간, 용접, 추락',
     ext:'산업안전포털에서 찾기',
@@ -6353,7 +6866,7 @@ document.addEventListener('DOMContentLoaded', () => {
     empty:'<b>자료 등록</b> 버튼으로 첫 교육자료를 올려 두면 모든 부서가 검색해 쓸 수 있습니다.'
   });
   VIEWS.msds = new MatView('MSDS', '#p-msds', {
-    nav:'MSDS 자료', navEn:'SAFETY DATA SHEET',
+    nav:'MSDS 자료', navEn:'MSDS',
     h:'MSDS 자료 검색',
     ph:'물질명 · CAS번호 · UN번호 입력    예) 톨루엔, 108-88-3, UN1294',
     ext:'KOSHA MSDS 바로 검색',
@@ -6378,7 +6891,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   VIEWS.news = new MatView('소식지', '#p-news', {
     monthFilter:true, noSearch:true, alwaysShow:true, bigCards:true,
-    nav:'안전보건 소식지', navEn:'SAFETY NEWSLETTER',
+    nav:'안전보건 소식지', navEn:'Newsletter',
     h:'안전보건 소식지 보기',
     ph:'제목 검색    예) 2026년 8월호, 폭염',
     titleLbl:'제목', titlePh:'예) 2026년 8월호 SIMMONS 안전보건소식지',
@@ -6388,8 +6901,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* 홈 통합검색 */
   $('#btnLogoHome').onclick = resetHome;
-  $('#btnHomeSearch').onclick = runHomeSearch;
-  $('#homeSearchInput').addEventListener('keydown', e => { if(e.key === 'Enter') runHomeSearch(); });
   $('#hsTabs').onclick = e => { const b = e.target.closest('[data-htab]'); if(b){ HOME_TAB = b.dataset.htab; renderHomeSearch(); } };
   $('#hsBody').onclick = e => {
     const m = e.target.closest('[data-hmore]');
@@ -6445,6 +6956,8 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#eThumbs').onclick = e => { const i = e.target.dataset.ermv; if(i != null){ EDIT_PH.splice(i,1); renderEditThumbs(); } };
   $('#btnSaveEdit').onclick = saveEdit;
   $('#btnDailyNew').onclick = () => pickDaily(true);
+  $('#dailyAcc').onclick = onAccClick;                  /* 중대재해 포스터 보기 · 등록 · 삭제 */
+  $('#dailyAcc').onchange = onAccChange;
   $('#dailyBody').onclick = e => {
     const z = e.target.dataset.zoom;
     if(z){ $('#lightboxImg').src = z; $('#lightbox').classList.add('on'); return; }
