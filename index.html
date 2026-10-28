@@ -27,7 +27,7 @@
 
 <!-- 알림 메일 : 여기에 넣어 두면 파일을 새로 받아도 설정이 유지됩니다 -->
 <meta name="tbm-mail-to"       content="hk7149@simmons.co.kr">
-<meta name="tbm-mail-endpoint" content="">
+<meta name="tbm-mail-endpoint" content="https://hook.us2.make.com/9frcxsboo2gs042apvsmip2wx76oj4i7">
 <!-- ══════════════════════════════════════════════════════════ -->
 
 <script>
@@ -117,6 +117,27 @@ button,input,select,textarea{font-family:var(--f)}
   display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
 .hdr-ic svg{width:16px;height:16px}
 .hdr-ic:hover{color:var(--ink);border-color:var(--ink)}
+.hdr-ic.wide{width:auto;gap:6px;padding:0 11px;font-size:12px;font-weight:600;letter-spacing:-.01em}
+
+/* 내 위치 날씨 (GPS) 팝업 */
+.gw-loc{font-size:12px;font-weight:500;color:var(--ink3);margin:0 0 6px}
+.gw-now{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--ink)}
+.gw-now .t{font-size:44px;font-weight:700;letter-spacing:-.05em;line-height:1}
+.gw-now .sky{font-size:16px;font-weight:600}
+.gw-now .fl{font-size:12.5px;color:var(--ink2)}
+.gw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);margin:18px 0}
+.gw-grid div{background:#fff;padding:11px 12px}
+.gw-grid .k{display:block;font-size:10.5px;font-weight:600;color:var(--ink3);letter-spacing:.02em}
+.gw-grid .v{font-size:15px;font-weight:700;letter-spacing:-.03em}
+.gw-hours{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.gw-hours div{flex:none;min-width:58px;text-align:center;background:var(--panel2);padding:8px 6px;font-size:11.5px}
+.gw-hours b{display:block;font-size:14px;margin:2px 0}
+.gw-alert{margin:16px 0 0;padding:11px 14px;background:#FDF0EE;color:var(--human);font-size:12.5px;font-weight:600}
+.gw-msg{padding:28px 0;text-align:center;color:var(--ink2);font-size:13.5px;line-height:1.7}
+.gw-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:20px;
+  font-size:11px;color:var(--ink3)}
+@media(max-width:720px){ .gw-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .gw-now .t{font-size:38px} }
 
 /* ══════════ 히어로 ══════════ */
 .hero{padding:38px 0;border-bottom:1px solid var(--ink);margin-bottom:0}
@@ -854,6 +875,8 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   .tb-in{padding:0 16px;height:58px;gap:12px}
   .wordmark-logo{height:26px}
   .wx .lbl{display:none}
+  .wx.gps .lbl{display:inline}   /* 내 위치 날씨일 때는 지역명을 보여 주고 하늘 상태를 줄임 */
+  .wx.gps .sky{display:none}
   .wx .t{font-size:16px}
   .wx .sky{font-size:11px}
   .hero{padding:26px 0}
@@ -909,6 +932,13 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
     <button class="instbtn" id="btnInstall" hidden>앱 설치</button>
   </div>
   <div class="tb-row2">
+    <button class="hdr-ic wide" id="btnGpsWeather" title="내 위치 날씨" aria-label="내 위치 날씨">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/>
+        <circle cx="12" cy="9.5" r="2.5"/>
+      </svg>
+      내 위치 날씨
+    </button>
     <button class="hdr-ic" id="btnAccident" title="사고보고체계" aria-label="사고보고체계">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
@@ -1728,6 +1758,14 @@ a.tg:hover{border-color:var(--ink);color:var(--ink)}
   </div>
 </div>
 
+<!-- ═══════════ 내 위치 날씨 (GPS) ═══════════ -->
+<div class="modal" id="gpsWxModal">
+  <div class="mbox">
+    <div class="mhead"><h3>내 위치 날씨</h3><button data-close>&times;</button></div>
+    <div class="mbody" id="gpsWxBody"></div>
+  </div>
+</div>
+
 <!-- ═══════════ 오늘의 안전보건 전달 사항 (자동 팝업) ═══════════ -->
 <div class="modal" id="noticeModal">
   <div class="mbox notice-mbox">
@@ -2037,9 +2075,28 @@ const SKY = {0:'맑음',1:'대체로 맑음',2:'구름 조금',3:'흐림',45:'�
 /** 헤더에 쓰는 값 외에 체감온도 · 습도 · 바람 · 강수확률 · 자외선까지 함께 받아
  *  `오늘의 브리핑`의 기상 안전 포인트를 만드는 데 씁니다. (WX) */
 let WX = null;
+/** 상단 바 날씨 표시 — 사업장 날씨와 GPS 내 위치 날씨가 함께 씁니다 */
+let GPS_LOC = null;   // { lat, lon, name } — 내 위치 날씨를 확인하면 상단 바가 이 위치를 따라갑니다
+function wxStats(d){
+  const cur = Math.round(d.current.temperature_2m);
+  const at = t => { const i = d.hourly.time.findIndex(x => x.endsWith('T'+t));
+                    return i >= 0 ? Math.round(d.hourly.temperature_2m[i]) : null; };
+  const a = at('09:00') ?? Math.round(d.daily.temperature_2m_min[0]);
+  const p = at('15:00') ?? Math.round(d.daily.temperature_2m_max[0]);
+  return { cur, a, p, hi: Math.max(cur,a,p), lo: Math.min(cur,a,p) };
+}
+function paintHeaderWx(d, name){
+  const { cur, a, p, hi, lo } = wxStats(d);
+  $('#wxLoc').textContent = name;
+  $('#wxLoc').parentElement.classList.toggle('gps', !!GPS_LOC);
+  $('#wxTemp').textContent = cur + '°';
+  $('#wxSky').textContent = SKY[d.current.weather_code] ?? '';
+  $('#wxAp').textContent = `오전 ${a}°  ·  오후 ${p}°`;
+  $('#wxTemp').style.color = hi >= 31 ? '#16A085' : lo <= -5 ? '#2F6FB0' : '#111';
+}
 async function loadWeather(){
   const { lat, lon, name } = CONFIG.site;
-  $('#wxLoc').textContent = name;
+  if(!GPS_LOC) $('#wxLoc').textContent = name;
   try{
     const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
       + `&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m`
@@ -2049,16 +2106,9 @@ async function loadWeather(){
       + `&wind_speed_unit=ms&timezone=Asia%2FSeoul&forecast_days=1`);
     if(!r.ok) throw new Error();
     const d = await r.json();
-    const cur = Math.round(d.current.temperature_2m);
-    $('#wxTemp').textContent = cur + '°';
-    $('#wxSky').textContent = SKY[d.current.weather_code] ?? '';
-    const at = t => { const i = d.hourly.time.findIndex(x => x.endsWith('T'+t));
-                      return i >= 0 ? Math.round(d.hourly.temperature_2m[i]) : null; };
-    const a = at('09:00') ?? Math.round(d.daily.temperature_2m_min[0]);
-    const p = at('15:00') ?? Math.round(d.daily.temperature_2m_max[0]);
-    $('#wxAp').textContent = `오전 ${a}°  ·  오후 ${p}°`;
-    const hi = Math.max(cur,a,p), lo = Math.min(cur,a,p);
-    $('#wxTemp').style.color = hi >= 31 ? '#16A085' : lo <= -5 ? '#2F6FB0' : '#111';
+    // GPS 내 위치를 쓰는 중이면 상단 바는 그대로 두고, 브리핑용 WX만 사업장 기준으로 갱신
+    const { cur, a, p, hi, lo } = wxStats(d);
+    if(!GPS_LOC) paintHeaderWx(d, name);
 
     const dy = d.daily || {}, one = (k, f) => { const v = (dy[k]||[])[0]; return v == null ? f : v; };
     const r1 = n => Math.round(n * 10) / 10;
@@ -2075,9 +2125,155 @@ async function loadWeather(){
       uv: Math.round(one('uv_index_max', 0)),
       am: a, pm: p
     };
-  }catch(e){ $('#wxTemp').textContent = '—'; $('#wxSky').textContent = '기상 정보 없음';
-             $('#wxAp').textContent = ''; WX = null; }
+  }catch(e){ if(!GPS_LOC){ $('#wxTemp').textContent = '—'; $('#wxSky').textContent = '기상 정보 없음';
+                           $('#wxAp').textContent = ''; }
+             WX = null; }
   if(typeof onWeatherUpdated === 'function') onWeatherUpdated();
+  if(GPS_LOC) refreshGpsHeader();
+}
+
+/* ===================== 내 위치 날씨 (GPS) =====================
+ * 배송 · 출장 중인 직원이 지금 있는 곳의 날씨를 바로 확인합니다.
+ * 위치 권한은 브라우저가 처음 한 번 묻고, HTTPS(또는 localhost)에서만 동작합니다.
+ * 헤더 · 브리핑의 사업장 날씨(CONFIG.site)는 그대로 둡니다. */
+function openGpsWeather(){
+  $('#gpsWxModal').classList.add('on');
+  const body = $('#gpsWxBody');
+  const msg = html => { body.innerHTML = `<div class="gw-msg">${html}</div>`; };
+
+  if(!('geolocation' in navigator)){ msg('이 기기(브라우저)는 위치 확인을 지원하지 않습니다.'); return; }
+  if(!window.isSecureContext){ msg('위치 확인은 보안 연결(https)에서만 가능합니다.<br>관리자에게 문의해 주세요.'); return; }
+
+  msg('현재 위치를 확인하는 중입니다…<br><small>위치 권한을 묻는 창이 뜨면 <b>허용</b>을 눌러 주세요.</small>');
+  navigator.geolocation.getCurrentPosition(
+    pos => loadGpsWeather(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy),
+    err => {
+      const why = err.code === 1
+        ? '위치 권한이 거부되어 있습니다.<br>휴대폰 설정 또는 브라우저 주소창의 자물쇠 아이콘에서<br><b>위치 권한을 허용</b>한 뒤 다시 눌러 주세요.'
+        : err.code === 3 ? '위치 확인 시간이 초과되었습니다. GPS가 켜져 있는지 확인 후 다시 시도해 주세요.'
+        : '현재 위치를 확인할 수 없습니다. GPS(위치 서비스)를 켜고 다시 시도해 주세요.';
+      msg(why + '<br><br><button class="btn sm" id="btnGpsRetry">다시 시도</button>');
+      $('#btnGpsRetry').onclick = openGpsWeather;
+    },
+    { enableHighAccuracy: false, timeout: 15000, maximumAge: 5 * 60 * 1000 }
+  );
+}
+
+/** 좌표 → 행정구역 이름 (실패하면 좌표로 표시) */
+async function gpsPlaceName(lat, lon){
+  try{
+    const r = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=ko`);
+    if(!r.ok) throw new Error();
+    const d = await r.json();
+    const name = [d.principalSubdivision, d.city, d.locality].filter(Boolean)
+      .filter((v, i, a) => a.indexOf(v) === i).join(' ');
+    if(name) return name;
+  }catch(e){}
+  return `위도 ${lat.toFixed(3)}, 경도 ${lon.toFixed(3)}`;
+}
+
+const gpsForecast = (lat, lon) =>
+  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
+    + `&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m`
+    + `&hourly=temperature_2m,weather_code,precipitation_probability`
+    + `&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max`
+    + `&wind_speed_unit=ms&timezone=Asia%2FSeoul&forecast_days=2`)
+    .then(r => { if(!r.ok) throw new Error(); return r.json(); });
+
+/** 상단 바용 짧은 이름: "경상남도 김해시 내동" → "📍 김해시 내동" */
+const gpsShortName = place => '📍 ' + place.split(' ').slice(-2).join(' ');
+
+/** 20분마다(loadWeather 끝에서) 현재 위치를 다시 잡아 상단 바를 갱신합니다.
+ *  이미 권한을 받은 상태라 다시 묻지 않으며, 위치를 못 잡으면 마지막 위치로 갱신합니다. */
+function refreshGpsHeader(){
+  const paint = async (lat, lon) => {
+    try{
+      const [place, d] = await Promise.all([gpsPlaceName(lat, lon), gpsForecast(lat, lon)]);
+      if(!GPS_LOC) return;                     // 그사이 사업장 날씨로 되돌린 경우
+      GPS_LOC = { lat, lon, name: place };
+      paintHeaderWx(d, gpsShortName(place));
+    }catch(e){}
+  };
+  navigator.geolocation.getCurrentPosition(
+    pos => paint(pos.coords.latitude, pos.coords.longitude),
+    ()  => paint(GPS_LOC.lat, GPS_LOC.lon),
+    { enableHighAccuracy: false, timeout: 15000, maximumAge: 5 * 60 * 1000 });
+}
+
+/** 상단 바를 다시 사업장(CONFIG.site) 날씨로 */
+function resetHeaderToSite(){
+  GPS_LOC = null;
+  loadWeather();
+  $('#gpsWxModal').classList.remove('on');
+  toast('상단 날씨를 사업장 기준으로 되돌렸습니다', 'ok');
+}
+
+async function loadGpsWeather(lat, lon, acc){
+  const body = $('#gpsWxBody');
+  body.innerHTML = '<div class="gw-msg">날씨를 불러오는 중입니다…</div>';
+  try{
+    const [place, d] = await Promise.all([gpsPlaceName(lat, lon), gpsForecast(lat, lon)]);
+    GPS_LOC = { lat, lon, name: place };
+    paintHeaderWx(d, gpsShortName(place));
+    const c = d.current, dy = d.daily;
+    const cur = Math.round(c.temperature_2m), feels = Math.round(c.apparent_temperature ?? cur);
+    const wind = Math.round((c.wind_speed_10m ?? 0) * 10) / 10;
+    const pop = Math.round(dy.precipitation_probability_max[0] ?? 0);
+    const uv = Math.round(dy.uv_index_max[0] ?? 0);
+
+    // 지금부터 6시간 (1시간 단위)
+    const now = c.time.slice(0, 13);
+    const i0 = Math.max(0, d.hourly.time.findIndex(t => t.slice(0, 13) === now));
+    const hours = d.hourly.time.slice(i0 + 1, i0 + 7).map((t, k) => {
+      const i = i0 + 1 + k;
+      return `<div><span>${+t.slice(11, 13)}시</span><b class="num">${Math.round(d.hourly.temperature_2m[i])}°</b>`
+        + `<span>${esc(SKY[d.hourly.weather_code[i]] ?? '')}</span>`
+        + `<br><span style="color:var(--ink3)">☂ ${d.hourly.precipitation_probability[i] ?? 0}%</span></div>`;
+    }).join('');
+
+    // 작업 안전 주의 문구
+    const alerts = [];
+    if(feels >= 33) alerts.push('폭염 주의 — 물 · 그늘 · 휴식을 지키고 무리한 상하차 작업을 피하세요.');
+    else if(feels >= 31) alerts.push('더위 주의 — 수분을 자주 보충하세요.');
+    if(feels <= -10) alerts.push('한파 주의 — 방한구 착용, 결빙 구간 미끄럼에 주의하세요.');
+    if([71,73,75,77,85,86].includes(c.weather_code)) alerts.push('눈 — 노면 결빙 · 감속 운전, 하역 시 미끄럼 주의.');
+    else if((c.precipitation ?? 0) > 0 || pop >= 60) alerts.push('비 예보 — 빗길 감속 운전, 제품 · 적재함 방수 확인.');
+    if([95,96,99].includes(c.weather_code)) alerts.push('뇌우 — 야외 작업을 멈추고 안전한 곳으로 대피하세요.');
+    if(wind >= 10) alerts.push(`강풍(${wind}m/s) — 대형 매트리스 등 판형 화물 하역 시 바람에 주의하세요.`);
+    if([45,48].includes(c.weather_code)) alerts.push('안개 — 전조등을 켜고 차간 거리를 넉넉히 두세요.');
+
+    body.innerHTML = `
+      <p class="gw-loc">📍 ${esc(place)}${acc > 1000 ? ' (대략적 위치)' : ''}</p>
+      <div class="gw-now">
+        <span class="t num">${cur}°</span>
+        <span class="sky">${esc(SKY[c.weather_code] ?? '')}</span>
+        <span class="fl num">체감 ${feels}° · 최고 ${Math.round(dy.temperature_2m_max[0])}° / 최저 ${Math.round(dy.temperature_2m_min[0])}°</span>
+      </div>
+      <div class="gw-grid">
+        <div><span class="k">습도</span><span class="v num">${Math.round(c.relative_humidity_2m ?? 0)}%</span></div>
+        <div><span class="k">바람</span><span class="v num">${wind}m/s</span></div>
+        <div><span class="k">강수확률</span><span class="v num">${pop}%</span></div>
+        <div><span class="k">현재 강수량</span><span class="v num">${c.precipitation ?? 0}mm</span></div>
+        <div><span class="k">자외선</span><span class="v num">${uv}</span></div>
+        <div><span class="k">기준 시각</span><span class="v num">${c.time.slice(11, 16)}</span></div>
+      </div>
+      <p class="secttl" style="margin:0 0 10px">앞으로 6시간</p>
+      <div class="gw-hours num">${hours}</div>
+      ${alerts.map(a => `<p class="gw-alert">⚠ ${esc(a)}</p>`).join('')}
+      <div class="gw-foot">
+        <span>기상 자료: Open-Meteo<br>상단 날씨도 이 위치로 바뀌었습니다</span>
+        <span style="display:flex;gap:6px">
+          <button class="btn sm ghost" id="btnGpsToSite">사업장 날씨로</button>
+          <button class="btn sm ghost" id="btnGpsRefresh">새로고침</button>
+        </span>
+      </div>`;
+    $('#btnGpsRefresh').onclick = openGpsWeather;
+    $('#btnGpsToSite').onclick = resetHeaderToSite;
+  }catch(e){
+    body.innerHTML = '<div class="gw-msg">날씨 정보를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'
+      + '<br><br><button class="btn sm" id="btnGpsRetry">다시 시도</button></div>';
+    $('#btnGpsRetry').onclick = () => loadGpsWeather(lat, lon, acc);
+  }
 }
 
 /* ===================== 연결 ===================== */
@@ -6442,6 +6638,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* 하단 바 */
   $('#btnAccident').onclick = openAccident;
+  $('#btnGpsWeather').onclick = openGpsWeather;
   $('#btnSettings').onclick = () => { if(checkPw('설정 비밀번호를 입력하세요')) $('#setModal').classList.add('on'); };
   $$('[data-close]').forEach(b => b.onclick = () => b.closest('.modal').classList.remove('on'));
   $$('.modal').forEach(m => bindOverlayClose(m, () => m.classList.remove('on')));
