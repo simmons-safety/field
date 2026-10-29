@@ -1222,6 +1222,58 @@ table.cctb,table.svtb,table.svheat{background:#fff}
   .card h2{font-size:18px}
   .libcol .pagetop .pe,.libcol .pagetop .pe[style]{font-size:24px}
 }
+
+/* ── 안전작업허가(긴급) ── */
+.wptypes{display:flex;flex-wrap:wrap;gap:6px}
+.wpchip{flex:none;background:#fff;border:1px solid var(--line);border-radius:var(--pill);padding:9px 16px;
+  font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:.15s;font-family:inherit}
+.wpchip:hover{border-color:var(--ink);color:var(--ink)}
+.wpchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.wpgrp{border:1px solid var(--line);border-radius:var(--r-m);padding:14px 18px;margin-top:12px;background:#fff}
+.wpgrp-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:10px}
+.wpgrp-h b{font-size:14.5px;letter-spacing:-.03em}
+.wpgrp-h .sp{flex:1}
+.wprow{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--line2);font-size:13.5px}
+.wprow .no{flex:none;width:18px;font-weight:700;color:var(--ink3);font-variant-numeric:tabular-nums}
+.wprow .lb{flex:1;min-width:0}
+.wprow.need .lb{color:var(--human)}
+.wpck{flex:none;display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--pill);padding:6px 12px;font-size:12px;font-weight:500;color:var(--ink3);cursor:pointer;font-family:inherit}
+.wpck::before{content:'';width:13px;height:13px;border:1.5px solid currentColor;border-radius:4px;box-sizing:border-box}
+.wpck:hover{border-color:var(--ink);color:var(--ink)}
+.wpck[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.wpck[aria-pressed="true"]::before{content:'✓';display:grid;place-items:center;font-size:10px;line-height:1;border-color:#fff}
+.wpnote{margin-top:12px;padding:13px 15px;background:var(--panel2);border-radius:var(--r-m);font-size:12.5px;color:var(--ink2);line-height:1.7}
+.wptbl-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--r-m);background:#fff}
+table.wptbl{width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap}
+table.wptbl th{background:var(--panel2);font-weight:600;color:var(--ink2);text-align:left;padding:10px 12px}
+table.wptbl td{padding:10px 12px;border-top:1px solid var(--line2)}
+table.wptbl tbody tr[data-wpopen]{cursor:pointer}
+table.wptbl tbody tr[data-wpopen]:hover{background:var(--hover)}
+table.wptbl .ell{max-width:240px;overflow:hidden;text-overflow:ellipsis}
+table.wpgas{white-space:normal}
+table.wpgas th{white-space:nowrap}
+table.wpgas th small{font-weight:400;color:var(--ink3)}
+table.wpgas td{padding:6px;min-width:76px}
+table.wpgas input{padding:8px 6px;text-align:center;font-size:13px}
+table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#FBF3F2}
+.wpflow{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:12px}
+.wpstep{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:4px 11px;border-radius:var(--pill);
+  border:1px solid var(--line);color:var(--ink3);background:#fff}
+.wpstep.ok{border-color:var(--ink);color:var(--ink)}
+.wpstep.now{border-color:var(--human);color:var(--human);font-weight:600}
+.wparr{color:var(--ink3);font-size:12px}
+.b.urg{background:var(--human);border-color:var(--human);color:#fff}
+.b.rej{background:#fff;border-color:var(--human);color:var(--human)}
+.wpsign-pad{position:relative;height:190px;border:1.5px dashed var(--ink3);border-radius:var(--r-m);background:#fff;touch-action:none}
+.wpsign-pad canvas{display:block;width:100%;height:100%;border-radius:var(--r-m);cursor:crosshair;touch-action:none}
+.wpsign-pad .ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink3);font-size:13px;pointer-events:none}
+.wpx{margin-bottom:16px}
+.wpx-ck{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--human);border-radius:var(--r-m);
+  font-size:13px;font-weight:600;color:var(--human);cursor:pointer;margin-bottom:16px}
+.wpx-ck input{width:18px;height:18px;padding:0;flex:none;accent-color:var(--ink)}
+#wpModalDoc{overflow-x:auto}
+#wpModalDoc .wpdoc{min-width:660px}
 </style>
 
 </head>
@@ -1364,6 +1416,13 @@ table.cctb,table.svtb,table.svheat{background:#fff}
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5h6v2.2H9z"/><path d="M15 5.6h2.4a1.4 1.4 0 0 1 1.4 1.4v12.1a1.4 1.4 0 0 1-1.4 1.4H6.6a1.4 1.4 0 0 1-1.4-1.4V7a1.4 1.4 0 0 1 1.4-1.4H9"/><path d="m8.6 12.6 1.9 1.9 4-4"/><path d="M8.6 17.4h6.8"/></svg></span>
         <span class="ttl">관리감독자 월간활동</span>
         <span class="en">Supervisor Activity</span>
+      </button>
+
+      <button class="mbtn" data-go="permit">
+        <span class="arw">↗</span>
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3.5H7a1.5 1.5 0 0 0-1.5 1.5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3.5V8h4.5"/><path d="m8.8 12.4 1.6 1.6 3.2-3.2"/><path d="M8.6 17.6c1-.9 1.7-.9 2.4 0s1.5.9 2.4 0 1.6-.6 2.2.1"/></svg></span>
+        <span class="ttl">안전작업허가(긴급)</span>
+        <span class="en">Emergency Work Permit</span>
       </button>
 
     </div>
@@ -2024,6 +2083,121 @@ table.cctb,table.svtb,table.svheat{background:#fff}
   </div>
 </section>
 
+<!-- ═══════════ 안전작업허가(긴급) ═══════════ -->
+<section class="panel" id="p-permit" hidden>
+  <div class="pagetop">
+    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
+    <span class="pt">안전작업허가(긴급)</span>
+    <span class="pe">Emergency Work Permit</span>
+  </div>
+
+  <div class="subnav">
+    <button data-s="write" aria-pressed="true">허가서 작성</button>
+    <button data-s="flow" aria-pressed="false">결재 · 진행 <span id="wpFlowCnt"></span></button>
+    <button data-s="records" aria-pressed="false">기록 대장</button>
+  </div>
+
+  <div data-sp="write">
+    <div class="card">
+      <header><h2>허가서 구분</h2><span class="note">PERMIT TYPE</span></header>
+      <div class="deptpick" id="wpKind" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <button class="dbtn" data-wpkind="임직원" aria-pressed="true">임직원용</button>
+        <button class="dbtn" data-wpkind="협력사" aria-pressed="false">협력사용</button>
+      </div>
+      <p class="secttl">작업 종류 (여러 개 선택 가능)</p>
+      <div class="wptypes" id="wpTypes"></div>
+    </div>
+
+    <div class="card">
+      <header><h2>작업 정보</h2><span class="note" id="wpKindNote">임직원용</span></header>
+      <div class="grid">
+        <div><label>신청일자 <em>*</em></label>
+          <div class="datefield">
+            <span class="dtext" id="wpDateText">—</span>
+            <input type="date" id="wpDate">
+          </div>
+        </div>
+        <div data-wpfor="임직원"><label>부서명 <em>*</em></label>
+          <input type="text" id="wpDept" list="wpDeptList" placeholder="예) 설비운영파트"></div>
+        <div data-wpfor="협력사" hidden><label>협력사 <em>*</em></label>
+          <input type="text" id="wpCompany" list="wpFirmList" placeholder="예) 티지텍"></div>
+        <div data-wpfor="협력사" hidden><label>작업부서 <em>*</em></label>
+          <input type="text" id="wpWorkDept" list="wpDeptList" placeholder="예) 설비운영파트"></div>
+        <div><label>작업 시작 <em>*</em></label><input type="datetime-local" id="wpStart" step="600"></div>
+        <div><label>작업 종료 <em>*</em></label><input type="datetime-local" id="wpEnd" step="600"></div>
+        <div><label>시간연장 (시간)</label><input type="number" id="wpExt" min="0" step="1" placeholder="0"></div>
+        <div class="wide"><label>작업명 <em>*</em></label>
+          <input type="text" id="wpName" placeholder="예) 2라인 컨베이어 모터 긴급 교체"></div>
+        <div class="wide"><label>작업내용 <em>*</em></label>
+          <textarea id="wpDesc" placeholder="작업 위치 · 방법 · 순서 · 주요 위험요인"></textarea></div>
+        <div><label>작업인원 <em>*</em></label><input type="text" id="wpWorkers" placeholder="예) 3명 (홍길동 외 2)"></div>
+        <div><label>반입장비</label><input type="text" id="wpEquip" placeholder="예) 용접기, 고소작업대"></div>
+      </div>
+      <p class="hint" id="wpExtHint" style="margin:14px 0 0"></p>
+      <datalist id="wpDeptList"></datalist><datalist id="wpFirmList"></datalist>
+    </div>
+
+    <div class="card">
+      <header><h2>안전조치 확인 사항</h2><span class="note" id="wpChkProg">—</span></header>
+      <p class="hint" style="margin:0 0 4px">선택한 작업 종류의 항목만 나옵니다. 해당하는 항목은 <b>해당</b>, 조치를 마쳤으면 <b>확인</b>을 눌러 주세요.
+        해당으로 표시한 항목은 확인까지 마쳐야 제출됩니다.</p>
+      <div id="wpChecks"></div>
+    </div>
+
+    <div class="card" id="wpGasCard" hidden>
+      <header><h2>가스측정 (밀폐 · 화기)</h2><span class="note">GAS</span></header>
+      <div id="wpGas"></div>
+    </div>
+
+    <div class="card">
+      <header><h2>신청 서명 · 제출</h2><span class="note">SIGN</span></header>
+      <p class="hint" id="wpFlowHint" style="margin:0"></p>
+      <div class="foot">
+        <button class="btn" id="btnWpSubmit">서명 후 제출</button>
+        <button class="btn ghost" id="btnWpReset">지우기</button>
+      </div>
+    </div>
+  </div>
+
+  <div data-sp="flow" hidden>
+    <div class="card">
+      <header><h2>결재 · 진행 중인 허가서</h2><span class="note" id="wpFlowNote">—</span></header>
+      <div class="hstabs" id="wpFlowTabs" style="margin-bottom:8px">
+        <button data-wpff="" aria-pressed="true">진행 중 전체</button>
+        <button data-wpff="결재대기" aria-pressed="false">결재대기</button>
+        <button data-wpff="작업중" aria-pressed="false">작업중</button>
+        <button data-wpff="반려" aria-pressed="false">반려</button>
+      </div>
+      <div id="wpFlowList"></div>
+    </div>
+  </div>
+
+  <div data-sp="records" hidden>
+    <div class="card">
+      <header><h2>조회 조건</h2><span class="note" id="wpRecCount">—</span></header>
+      <div class="grid">
+        <div><label>신청일 (부터)</label><input type="date" id="wqFrom"></div>
+        <div><label>신청일 (까지)</label><input type="date" id="wqTo"></div>
+        <div><label>구분</label><select id="wqKind">
+          <option value="">전체</option><option value="임직원">임직원</option><option value="협력사">협력사</option></select></div>
+        <div><label>상태</label><select id="wqStatus">
+          <option value="">전체</option><option>결재대기</option><option>작업중</option><option>완료</option><option>반려</option></select></div>
+        <div><label>작업 종류</label><select id="wqType"></select></div>
+        <div><label>검색어</label><input type="text" id="wqText" placeholder="작업명 · 업체 · 부서 · 이름"></div>
+      </div>
+      <div class="foot">
+        <button class="btn" id="btnWpSearch">조회</button>
+        <button class="btn ghost" id="btnWpCsv">CSV 내려받기</button>
+      </div>
+    </div>
+    <div class="card">
+      <header><h2>안전작업허가 기록대장</h2><span class="note">PERMIT LEDGER</span></header>
+      <div id="wpRecList"></div>
+      <p class="hint" style="margin:14px 0 0">줄을 누르면 허가서 원본(서명 포함)이 열리고, 그 화면에서 인쇄 · PDF 저장을 할 수 있습니다.</p>
+    </div>
+  </div>
+</section>
+
 </main>
 </div>
 
@@ -2241,6 +2415,42 @@ table.cctb,table.svtb,table.svheat{background:#fff}
         <textarea id="ansText" placeholder="확인 결과와 조치 계획을 적어 주세요."></textarea></div>
       <div class="foot">
         <button class="btn" id="btnAnsSave">저장</button>
+        <button class="btn ghost" data-close>취소</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 안전작업허가서 보기 ═══════════ -->
+<div class="modal" id="wpModal">
+  <div class="mbox big">
+    <div class="mhead"><h3 id="wpModalTitle">안전작업허가서</h3><button data-close>&times;</button></div>
+    <div class="mbody">
+      <div id="wpModalDoc"></div>
+      <div id="wpModalGas"></div>
+      <div class="foot" id="wpModalActs"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 안전작업허가 서명 (허가서 보기 위에 뜨도록 뒤에 둡니다) ═══════════ -->
+<div class="modal" id="wpSignModal">
+  <div class="mbox">
+    <div class="mhead"><h3 id="wpSignTitle">서명</h3><button data-close>&times;</button></div>
+    <div class="mbody">
+      <p class="hint" id="wpSignSub" style="margin:0 0 16px"></p>
+      <div style="margin-bottom:16px"><label>이름 <em>*</em></label>
+        <input type="text" id="wpSignName" placeholder="예) 홍길동"></div>
+      <div id="wpSignExtra"></div>
+      <label>서명 <em>*</em></label>
+      <div class="wpsign-pad">
+        <canvas id="wpSignPad"></canvas>
+        <span class="ph" id="wpSignPh">여기에 손가락 · 마우스로 서명하세요</span>
+      </div>
+      <div class="foot">
+        <button class="btn" id="btnWpSignOk">서명 완료</button>
+        <button class="btn ghost" id="btnWpSignClear">다시 쓰기</button>
+        <button class="btn danger" id="btnWpReject" hidden>반려</button>
         <button class="btn ghost" data-close>취소</button>
       </div>
     </div>
@@ -2748,11 +2958,14 @@ async function boot(){
   await loadPpe();
   await loadVoices();
   await loadNotice();
-  await loadCouncil();
-  await loadCcEvents();
-  await loadCcNotice();
-  await loadCcArchive();
+  if(!HIDDEN_MENUS.includes('council')){
+    await loadCouncil();
+    await loadCcEvents();
+    await loadCcNotice();
+    await loadCcArchive();
+  }
   await loadSupers();
+  await loadPermits();
   renderGuide();
 }
 
@@ -2766,7 +2979,11 @@ function fitLib(){
 addEventListener('resize', fitLib);
 
 /* ===================== 화면 이동 ===================== */
+/* 홈에서 숨겨 둔 메뉴입니다. 화면 · 코드 · 저장된 자료는 모두 그대로 남아 있으므로
+   목록에서 빼기만 하면 예전 모습 그대로 다시 나타납니다. */
+const HIDDEN_MENUS = ['council'];
 function go(p){
+  if(HIDDEN_MENUS.includes(p)) p = 'home';
   /* 교육자료 · 소식지 · MSDS 는 한 화면(library)에 나란히 있으므로 해당 칸으로 이동 */
   if(p === 'materials' || p === 'news' || p === 'msds'){
     go('library');
@@ -2779,6 +2996,7 @@ function go(p){
   if(p === 'library') fitLib();
   if(p === 'council') ccEnter();
   if(p === 'super') svEnter();
+  if(p === 'permit') wpEnter();
 }
 
 /* ===================== 부서 ===================== */
@@ -3225,6 +3443,806 @@ function exportFireCsv(){
     return [r.inspection_date, r.department, r.inspection_time, r.inspector||'', r.fail_count ?? 0,
       ...FIRE_ITEMS.map(it => map[it.no] || '')];
   }));
+}
+
+/* ===================== 안전작업허가(긴급) =====================
+   work_permits : 안전작업허가서 (임직원용 · 협력사용). 표는 schema_permit.sql 로 만듭니다.
+   흐름 : 작성 · 신청 서명 → 결재 (작업부서 → 안전관리자) → 작업중 → 작업종료 서명 → 완료
+   서명은 PNG 로 'tbm-materials' 버킷의 permit/ 폴더에 저장하고 주소만 signs 에 남깁니다.
+   항목은 '안전작업허가서 양식(2025).docx' 를 그대로 옮긴 것입니다. */
+const WP_TYPES = ['일반작업','화기작업','고소작업','밀폐공간','전기작업','굴착작업','중장비'];
+const WP_GROUPS = [
+  { key:'fire',     type:'화기작업', label:'화기작업',
+    items:['불티비산방지조치 여부','소화기 및 소화수 비치 여부','가스호스/용기 이상 유무','화기감시자 배치','가스농도 측정'] },
+  { key:'height',   type:'고소작업', label:'고소작업',
+    items:['안전대착용/고리걸이시설 유무','안전난간/작업발판 설치 유무','추락 및 비산방지 조치','사다리 안전준수(2인1조 등)','고소작업대 안전장치 이상유무','작업지휘자 배치'] },
+  { key:'confined', type:'밀폐공간', label:'밀폐공간 작업',
+    items:['산소농도측정여부(18%이상)','환기 및 배기장치 유무','맹판설치 및 표지부착','안전보호구 착용여부','작업지휘자 배치'] },
+  { key:'elec',     type:'전기작업', label:'전기작업',
+    items:['주전원차단여부','접지 및 콘센트 상태','안전표지판 부착여부','잠금장치 여부','전선 피복 상태'] },
+  { key:'dig',      type:'굴착작업', label:'굴착작업',
+    items:['지하매설물 도면확인','매설전선의 전원차단여부','작업장소 안전조치여부','안전지역붕괴방지 조치여부','작업지휘자 배치'] },
+  { key:'heavy',    type:'중장비',   label:'중장비작업',
+    items:['작업구역 차단선 설치 여부','제한구역 출입제한 조치','위험표지 설치 여부','안전장치확인 유자격자 운전 여부','작업지휘자 배치'] }
+];
+const WP_CHEM = ['MSDS 비치 및 근로자 숙지여부','용기·경고표지 상태 확인','국소배기/환기상태 양호 여부(창문·환풍기 등)',
+  '개인보호구 착용 여부','누출·유출 대비 비상조치 준비 여부','화기·점화원 관리 및 정리정돈 여부'];
+/* 기준치는 양식 그대로 : 가연성가스 0% · 산소 20% 이상 · CO 25ppm 이하 · H2S 10ppm 미만 */
+const WP_GASES = [
+  { key:'o2',  label:'산소 (O2)',        unit:'%',   bad: v => v < 20 },
+  { key:'exp', label:'가연성가스 (Exp)', unit:'%',   bad: v => v > 0 },
+  { key:'co',  label:'일산화탄소 (CO)',  unit:'ppm', bad: v => v > 25 },
+  { key:'h2s', label:'황화수소 (H2S)',   unit:'ppm', bad: v => v >= 10 }
+];
+const WP_GAS_STD = '1. 가연성가스: 0%, 2. 산소O2: 20%이상, 3. 일산화탄소CO: 25ppm이하, 4. 황화수소H2S: 10ppm미만';
+/* 서명 순서. note : 결재하면서 적는 점검사항 칸 (safety = 안전관리자, dept = 작업부서장) */
+const WP_FLOW = {
+  '임직원': { apply:{ k:'applicant', label:'담당자' },
+    approve:[ { k:'dept_mgr', label:'작업부서 담당자', note:'dept' },
+              { k:'safety',   label:'안전관리자',     note:'safety' } ] },
+  '협력사': { apply:{ k:'applicant', label:'협력사 담당자' },
+    approve:[ { k:'work_dept', label:'작업부서 담당자' },
+              { k:'dept_mgr',  label:'작업부서 팀장', note:'dept' },
+              { k:'safety',    label:'안전관리자',   note:'safety' } ] }
+};
+const WP_CLOSE = [ { k:'close_dept', label:'작업부서 담당자' }, { k:'close_safety', label:'안전관리자' } ];
+const WP_BUCKET = 'tbm-materials';
+
+let WP_KIND = '임직원', WP_SEL = new Set(), WP_ANS = {}, WP_CHEM_ON = false, WP_CHEM_ANS = [];
+let WP_GAS = null, WP_EDIT_GAS = null, WP_ALL = [], WP_ERR = '', WP_FLOW_F = '', WP_CUR = null;
+const WP_PAD = { ctx:null, dpr:1, drawn:false, box:null, last:null, opts:null };
+
+const wpEmptyGas = () => {
+  const g = { times:Array(5).fill('') };
+  WP_GASES.forEach(x => g[x.key] = Array(5).fill(''));
+  return g;
+};
+const pad2 = n => String(n).padStart(2,'0');
+const wpDT = v => v ? `${+v.slice(5,7)}월 ${+v.slice(8,10)}일 ${v.slice(11,16)}` : '';
+const wpAt = iso => { if(!iso) return ''; const d = new Date(iso);
+  return `${pad2(d.getMonth()+1)}.${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
+const wpBox = on => on ? '☑' : '☐';
+const wpWho = p => p.kind === '협력사' ? `${p.company || ''} · ${p.dept || ''}` : (p.dept || '');
+const wpBadge = st => `<span class="b ${({ '결재대기':'prog', '작업중':'urg', '완료':'done', '반려':'rej' })[st] || 'gray'}">${esc(st)}</span>`;
+const wpGasOn = types => types.includes('화기작업') || types.includes('밀폐공간');
+
+/* 다음에 서명할 사람 (없으면 null) */
+function wpNext(p){
+  if(!p || p.status === '반려' || p.status === '완료') return null;
+  const s = p.signs || {};
+  const a = (WP_FLOW[p.kind] || WP_FLOW['임직원']).approve.find(r => !s[r.k]);
+  if(a) return { stage:'approve', role:a };
+  const c = WP_CLOSE.find(r => !s[r.k]);
+  return c ? { stage:'close', role:c } : null;
+}
+
+/* ── 작성 화면 ── */
+function wpSetKind(k){
+  WP_KIND = k;
+  $$('#wpKind [data-wpkind]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.wpkind === k)));
+  $$('#p-permit [data-wpfor]').forEach(el => el.hidden = el.dataset.wpfor !== k);
+  $('#wpKindNote').textContent = k === '협력사' ? '협력사용' : '임직원용';
+  const f = WP_FLOW[k];
+  $('#wpFlowHint').innerHTML = `제출하면 <b>${esc(f.apply.label)}</b> 서명 창이 열립니다. 이후 결재는
+    ${f.approve.map(r => `<b>${esc(r.label)}</b>`).join(' → ')} 순으로 진행되고,
+    작업이 끝나면 ${WP_CLOSE.map(r => `<b>${esc(r.label)}</b>`).join(' · ')}가 작업종료 서명을 합니다.`;
+}
+function wpRenderForm(){
+  $('#wpTypes').innerHTML = WP_TYPES.map(t =>
+    `<button class="wpchip" data-wptype="${esc(t)}" aria-pressed="${WP_SEL.has(t)}">${esc(t)}</button>`).join('');
+  wpRenderChecks();
+  const gasOn = wpGasOn([...WP_SEL]);
+  $('#wpGasCard').hidden = !gasOn;
+  if(gasOn) $('#wpGas').innerHTML = wpGasHtml(WP_GAS, true);
+}
+function wpRenderChecks(){
+  const groups = WP_GROUPS.filter(g => WP_SEL.has(g.type));
+  let app = 0, ok = 0;
+  const body = groups.map(g => {
+    const ans = WP_ANS[g.key] || (WP_ANS[g.key] = g.items.map(() => ({ app:false, ok:false })));
+    return `<div class="wpgrp">
+      <div class="wpgrp-h"><b>[${esc(g.label)}]</b><span class="sp"></span>
+        <button class="btn sm ghost" data-wpall="${g.key}">전체 해당 · 확인</button></div>
+      ${g.items.map((it, i) => {
+        const a = ans[i];
+        if(a.app) app++;
+        if(a.app && a.ok) ok++;
+        return `<div class="wprow${a.app && !a.ok ? ' need' : ''}">
+          <span class="no">${i+1}</span><span class="lb">${esc(it)}</span>
+          <button class="wpck" data-wpck="${g.key}|${i}|app" aria-pressed="${a.app}">해당</button>
+          <button class="wpck" data-wpck="${g.key}|${i}|ok" aria-pressed="${a.ok}">확인</button>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+  const empty = !WP_SEL.size ? '위에서 작업 종류를 먼저 선택해 주세요.'
+    : !groups.length ? '일반작업은 별도 안전조치 항목이 없습니다. 화학물질을 다루면 아래 항목만 확인해 주세요.' : '';
+  const chem = `<div class="wpgrp">
+    <div class="wpgrp-h"><b>화학물질 취급 시 추가 확인사항</b><span class="sp"></span>
+      <button class="wpchip" data-wpchem aria-pressed="${WP_CHEM_ON}">${WP_CHEM_ON ? '화학물질 취급함' : '취급 안 함'}</button></div>
+    ${WP_CHEM_ON
+      ? `<p class="hint" style="margin:0 0 4px">각 항목이 양호할 경우에만 체크 · 전 항목 충족 시 작업 가능</p>`
+        + WP_CHEM.map((it, i) => `<div class="wprow${WP_CHEM_ANS[i] ? '' : ' need'}">
+            <span class="no">${i+1}</span><span class="lb">${esc(it)}</span>
+            <button class="wpck" data-wpchk="${i}" aria-pressed="${!!WP_CHEM_ANS[i]}">양호</button></div>`).join('')
+      : `<p class="hint" style="margin:0">화학물질을 취급하는 작업이면 오른쪽 버튼을 눌러 6개 항목을 확인해 주세요.</p>`}
+  </div>`;
+  $('#wpChecks').innerHTML = (empty ? `<div class="wpnote">${empty}</div>` : '') + body + chem;
+  $('#wpChkProg').textContent = groups.length ? `해당 ${app} · 확인 ${ok}` : '—';
+}
+function wpOnChecks(e){
+  const c = e.target.closest('[data-wpck]');
+  if(c){
+    const [g, i, f] = c.dataset.wpck.split('|');
+    const a = WP_ANS[g][+i];
+    a[f] = !a[f];
+    if(f === 'ok' && a.ok) a.app = true;        // 확인했으면 당연히 해당
+    if(f === 'app' && !a.app) a.ok = false;
+    wpRenderChecks(); return;
+  }
+  const all = e.target.closest('[data-wpall]');
+  if(all){
+    const arr = WP_ANS[all.dataset.wpall];
+    const on = !arr.every(a => a.app && a.ok);
+    arr.forEach(a => { a.app = on; a.ok = on; });
+    wpRenderChecks(); return;
+  }
+  if(e.target.closest('[data-wpchem]')){ WP_CHEM_ON = !WP_CHEM_ON; wpRenderChecks(); return; }
+  const k = e.target.closest('[data-wpchk]');
+  if(k){ const i = +k.dataset.wpchk; WP_CHEM_ANS[i] = !WP_CHEM_ANS[i]; wpRenderChecks(); }
+}
+
+/* 일과시간(08:30 ~ 17:30) 밖 작업 시간 → 시간연장 시간 (10분 단위로 세어 시간 단위 올림) */
+function wpCalcExt(){
+  const s = new Date($('#wpStart').value), e = new Date($('#wpEnd').value);
+  if(isNaN(s) || isNaN(e) || e <= s || e - s > 14*864e5) return 0;
+  let out = 0;
+  for(let t = s.getTime(); t < e.getTime(); t += 600000){
+    const d = new Date(t), m = d.getHours()*60 + d.getMinutes();
+    if(m < 510 || m >= 1050) out += 10;
+  }
+  return Math.ceil(out / 60);
+}
+function wpExtSync(){
+  const n = wpCalcExt();
+  if(!$('#wpExt').dataset.touched) $('#wpExt').value = n || '';
+  $('#wpExtHint').textContent = n
+    ? `※ 일과시간(08:30 ~ 17:30) 밖 작업이 약 ${n}시간 있습니다. 안전관리자가 결재하면서 시간연장 허가를 함께 확인합니다.`
+    : '※ 작업허용시간 : 일과시간 8시간 내(08:30 ~ 17:30) · 초과 시 시간연장 허가';
+}
+
+/* ── 가스측정 표 (작성 화면 · 허가서 보기에서 함께 씀) ── */
+function wpGasHtml(gas, editable){
+  const cell = (k, i) => {
+    const v = gas[k][i] ?? '';
+    if(k === 'times') return editable ? `<input type="time" data-wpgas="times|${i}" value="${esc(v)}">` : esc(v);
+    const g = WP_GASES.find(x => x.key === k);
+    const bad = v !== '' && g.bad(parseFloat(v));
+    return editable
+      ? `<input type="number" step="0.1" inputmode="decimal" data-wpgas="${k}|${i}" value="${esc(v)}"${bad ? ' class="bad"' : ''}>`
+      : `<span${bad ? ' class="bad"' : ''}>${esc(v)}</span>`;
+  };
+  const idx = [0,1,2,3,4];
+  return `<div class="wptbl-wrap"><table class="wptbl wpgas">
+    <thead><tr><th>가스명</th>${idx.map(i => `<th>${i+1}차</th>`).join('')}</tr></thead>
+    <tbody>
+      <tr><th>측정시간</th>${idx.map(i => `<td>${cell('times', i)}</td>`).join('')}</tr>
+      ${WP_GASES.map(g => `<tr><th>${esc(g.label)} <small>${g.unit}</small></th>${idx.map(i => `<td>${cell(g.key, i)}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div>
+    <p class="hint" style="margin:10px 0 0">가스 기준치 : ${WP_GAS_STD} · 기준을 벗어난 값은 빨갛게 표시됩니다.</p>`;
+}
+function wpGasInput(e, gas){
+  const el = e.target.closest('[data-wpgas]');
+  if(!el || !gas) return;
+  const [k, i] = el.dataset.wpgas.split('|');
+  gas[k][+i] = el.value;
+  const g = WP_GASES.find(x => x.key === k);
+  if(g) el.classList.toggle('bad', el.value !== '' && g.bad(parseFloat(el.value)));
+}
+function wpGasBad(gas){
+  const out = [];
+  if(gas) WP_GASES.forEach(g => (gas[g.key] || []).forEach((v, i) => {
+    if(v !== '' && v != null && g.bad(parseFloat(v))) out.push(`${i+1}차 ${g.label} ${v}${g.unit}`);
+  }));
+  return out;
+}
+
+function wpResetForm(){
+  WP_SEL = new Set(); WP_ANS = {}; WP_CHEM_ON = false; WP_CHEM_ANS = []; WP_GAS = wpEmptyGas();
+  $('#wpDate').value = TODAY; $('#wpDate').dispatchEvent(new Event('change'));
+  ['#wpName','#wpDesc','#wpWorkers','#wpEquip','#wpExt'].forEach(s => $(s).value = '');
+  $('#wpDept').value = STORE.get('wpDept');
+  $('#wpCompany').value = STORE.get('wpCompany');
+  $('#wpWorkDept').value = STORE.get('wpWorkDept');
+  $('#wpStart').value = TODAY + 'T08:30';
+  $('#wpEnd').value = TODAY + 'T17:30';
+  delete $('#wpExt').dataset.touched;
+  wpExtSync(); wpRenderForm();
+}
+
+/* 입력 확인 → 저장할 값 (빠진 게 있으면 null) */
+function wpCollect(){
+  const v = s => $(s).value.trim();
+  const fail = (msg, sel) => {
+    toast(msg, 'err');
+    const el = sel && $(sel);
+    if(el){ if(el.focus) el.focus(); el.scrollIntoView({ behavior:'smooth', block:'center' }); }
+    return null;
+  };
+  const types = WP_TYPES.filter(t => WP_SEL.has(t));
+  if(!types.length) return fail('작업 종류를 선택해 주세요', '#wpTypes');
+  const date = $('#wpDate').value;
+  if(!date) return fail('신청일자를 선택해 주세요');
+  const isCo = WP_KIND === '협력사';
+  if(isCo && !v('#wpCompany')) return fail('협력사를 입력해 주세요', '#wpCompany');
+  const dept = isCo ? v('#wpWorkDept') : v('#wpDept');
+  if(!dept) return fail(isCo ? '작업부서를 입력해 주세요' : '부서명을 입력해 주세요', isCo ? '#wpWorkDept' : '#wpDept');
+  const s = $('#wpStart').value, en = $('#wpEnd').value;
+  if(!s || !en) return fail('작업 시작 · 종료 시간을 입력해 주세요', '#wpStart');
+  if(en <= s) return fail('작업 종료가 시작보다 늦어야 합니다', '#wpEnd');
+  if(!v('#wpName')) return fail('작업명을 입력해 주세요', '#wpName');
+  if(!v('#wpDesc')) return fail('작업내용을 입력해 주세요', '#wpDesc');
+  if(!v('#wpWorkers')) return fail('작업인원을 입력해 주세요', '#wpWorkers');
+
+  const checks = {};
+  for(const g of WP_GROUPS.filter(x => WP_SEL.has(x.type))){
+    const ans = WP_ANS[g.key] || [];
+    if(!ans.some(a => a.app)) return fail(`[${g.label}] 해당하는 안전조치를 하나 이상 체크해 주세요`, '#wpChecks');
+    const i = ans.findIndex(a => a.app && !a.ok);
+    if(i >= 0) return fail(`[${g.label}] ${i+1}. ${g.items[i]} — 해당 항목은 확인해야 제출됩니다`, '#wpChecks');
+    checks[g.key] = g.items.map((item, j) => ({ item, app:!!ans[j].app, ok:!!ans[j].ok }));
+  }
+  let chem = null;
+  if(WP_CHEM_ON){
+    const i = WP_CHEM.findIndex((_, j) => !WP_CHEM_ANS[j]);
+    if(i >= 0) return fail(`화학물질 ${i+1}. ${WP_CHEM[i]} — 전 항목이 양호해야 작업할 수 있습니다`, '#wpChecks');
+    chem = WP_CHEM.map(item => ({ item, ok:true }));
+  }
+  const gasOn = wpGasOn(types);
+  if(WP_SEL.has('밀폐공간') && !WP_GAS.o2[0]) return fail('밀폐공간 작업은 1차 산소(O2) 측정값을 입력해 주세요', '#wpGasCard');
+  const bad = gasOn ? wpGasBad(WP_GAS) : [];
+  if(bad.length && !confirm(`가스 기준치를 벗어난 측정값이 있습니다.\n\n${bad.join('\n')}\n\n그래도 제출할까요?`)) return null;
+
+  return { kind:WP_KIND, work_types:types, apply_date:date, start_at:s, end_at:en,
+    ext_hours: parseInt($('#wpExt').value, 10) || 0,
+    dept, company: isCo ? v('#wpCompany') : null,
+    work_name:v('#wpName'), work_desc:v('#wpDesc'), workers:v('#wpWorkers'), equipment:v('#wpEquip'),
+    checks, chem, gas: gasOn ? WP_GAS : null };
+}
+async function wpNextNo(date){
+  const { count } = await db.from('work_permits').select('id', { count:'exact', head:true }).eq('apply_date', date);
+  return `${date.replace(/-/g,'').slice(2)}-${pad2((count || 0) + 1)}`;
+}
+function wpSubmit(){
+  const f = wpCollect();
+  if(!f) return;
+  const flow = WP_FLOW[f.kind];
+  openWpSign({
+    title: `신청 서명 · ${flow.apply.label}`,
+    sub: `${f.work_name} — 서명하면 ${flow.approve[0].label}에게 결재가 올라갑니다.`,
+    okText: '서명 후 제출',
+    async onOk(sg){
+      const sign = await wpUploadSign(sg);
+      const permit_no = await wpNextNo(f.apply_date);
+      const { error } = await db.from('work_permits').insert({
+        ...f, permit_no, status:'결재대기', signs:{ applicant:sign }, created_by:sg.name });
+      if(error){ db.storage.from(WP_BUCKET).remove([sign.path]); throw new Error('제출 실패: '+error.message); }
+      if(f.kind === '협력사'){ STORE.set('wpCompany', f.company); STORE.set('wpWorkDept', f.dept); }
+      else STORE.set('wpDept', f.dept);
+      toast(`${permit_no} 허가서를 제출했습니다 · 결재 대기`, 'ok');
+      notifyMail(`[안전작업허가] ${permit_no} ${f.work_name} 결재 요청`,
+        [`구분 : ${f.kind}`, `작업 종류 : ${f.work_types.join(', ')}`,
+         `${f.kind === '협력사' ? '협력사 / 작업부서 : '+f.company+' / ' : '부서 : '}${f.dept}`,
+         `작업시간 : ${wpDT(f.start_at)} ~ ${wpDT(f.end_at)}${f.ext_hours ? ` (시간연장 ${f.ext_hours}시간)` : ''}`,
+         `작업내용 : ${f.work_desc}`, `신청자 : ${sg.name}`, '',
+         `안전보건 통합 플랫폼 → 안전작업허가(긴급) → 결재 · 진행 에서 결재해 주세요.`].join('\n'));
+      wpResetForm();
+      await loadPermits();
+      const b = $('#p-permit .subnav [data-s="flow"]');
+      if(b) b.click();
+    }
+  });
+}
+
+/* ── 서명 패드 ── */
+function wpPadSetup(){
+  const c = $('#wpSignPad'), r = c.getBoundingClientRect();
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  c.width = Math.max(1, Math.round(r.width * dpr));
+  c.height = Math.max(1, Math.round(r.height * dpr));
+  const ctx = c.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = ctx.fillStyle = '#111';
+  Object.assign(WP_PAD, { ctx, dpr, drawn:false, box:null, last:null });
+  $('#wpSignPh').hidden = false;
+}
+function wpPadMark(p){
+  WP_PAD.drawn = true; $('#wpSignPh').hidden = true;
+  const b = WP_PAD.box || (WP_PAD.box = { x0:p.x, y0:p.y, x1:p.x, y1:p.y });
+  b.x0 = Math.min(b.x0, p.x); b.y0 = Math.min(b.y0, p.y);
+  b.x1 = Math.max(b.x1, p.x); b.y1 = Math.max(b.y1, p.y);
+}
+function wpPadBind(){
+  const c = $('#wpSignPad');
+  const pt = e => { const r = c.getBoundingClientRect(); return { x:e.clientX - r.left, y:e.clientY - r.top }; };
+  c.addEventListener('pointerdown', e => {
+    if(!WP_PAD.ctx) return;
+    e.preventDefault();
+    try{ c.setPointerCapture(e.pointerId); }catch(err){}
+    const p = WP_PAD.last = pt(e);
+    WP_PAD.ctx.beginPath(); WP_PAD.ctx.arc(p.x, p.y, 1.3, 0, Math.PI*2); WP_PAD.ctx.fill();
+    wpPadMark(p);
+  });
+  c.addEventListener('pointermove', e => {
+    if(!WP_PAD.last) return;
+    e.preventDefault();
+    const p = pt(e), ctx = WP_PAD.ctx;
+    ctx.beginPath(); ctx.moveTo(WP_PAD.last.x, WP_PAD.last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    WP_PAD.last = p; wpPadMark(p);
+  });
+  const end = () => { WP_PAD.last = null; };
+  c.addEventListener('pointerup', end);
+  c.addEventListener('pointercancel', end);
+}
+/* 서명한 부분만 잘라 낸 캔버스 */
+function wpPadTrim(){
+  const c = $('#wpSignPad'), b = WP_PAD.box, d = WP_PAD.dpr, m = 8;
+  const x = Math.max(0, (b.x0 - m) * d), y = Math.max(0, (b.y0 - m) * d);
+  const w = Math.min(c.width - x, (b.x1 - b.x0 + m*2) * d), h = Math.min(c.height - y, (b.y1 - b.y0 + m*2) * d);
+  const o = document.createElement('canvas');
+  o.width = Math.max(1, Math.round(w)); o.height = Math.max(1, Math.round(h));
+  o.getContext('2d').drawImage(c, x, y, w, h, 0, 0, o.width, o.height);
+  return o;
+}
+async function wpUploadSign(sg){
+  const blob = await new Promise(res => sg.canvas.toBlob(res, 'image/png'));
+  if(!blob) throw new Error('서명 이미지를 만들지 못했습니다');
+  const path = `permit/${TODAY.slice(0,7)}/${safeName('sign.png')}`;
+  const { error } = await db.storage.from(WP_BUCKET).upload(path, blob, { cacheControl:'3600', contentType:'image/png' });
+  if(error) throw new Error('서명 저장 실패: '+error.message);
+  return { name:sg.name, url:db.storage.from(WP_BUCKET).getPublicUrl(path).data.publicUrl, path, at:new Date().toISOString() };
+}
+/* opts : title · sub · okText · extra(HTML) · check() → 오류문구 · onOk({name, canvas}) · onReject({name, reason}) */
+function openWpSign(opts){
+  WP_PAD.opts = opts;
+  $('#wpSignTitle').textContent = opts.title;
+  $('#wpSignSub').textContent = opts.sub || '';
+  $('#wpSignName').value = STORE.get('wpName');
+  $('#wpSignExtra').innerHTML = opts.extra || '';
+  $('#btnWpReject').hidden = !opts.onReject;
+  $('#btnWpSignOk').textContent = opts.okText || '서명 완료';
+  $('#wpSignModal').classList.add('on');
+  requestAnimationFrame(wpPadSetup);
+}
+async function wpSignOk(){
+  const o = WP_PAD.opts;
+  if(!o) return;
+  const name = $('#wpSignName').value.trim();
+  if(!name){ toast('이름을 입력해 주세요','err'); $('#wpSignName').focus(); return; }
+  if(!WP_PAD.drawn) return toast('서명란에 서명해 주세요','err');
+  const msg = o.check && o.check();
+  if(msg) return toast(msg,'err');
+  const btn = $('#btnWpSignOk'), label = btn.textContent;
+  btn.disabled = true; btn.textContent = '저장 중…';
+  try{
+    await o.onOk({ name, canvas:wpPadTrim() });
+    STORE.set('wpName', name);
+    WP_PAD.opts = null;
+    $('#wpSignModal').classList.remove('on');
+  }catch(e){ toast(e.message,'err'); }
+  finally{ btn.disabled = false; btn.textContent = label; }
+}
+async function wpRejectClick(){
+  const o = WP_PAD.opts;
+  if(!o || !o.onReject) return;
+  const name = $('#wpSignName').value.trim();
+  if(!name){ toast('반려하는 사람 이름을 입력해 주세요','err'); $('#wpSignName').focus(); return; }
+  const reason = (prompt('반려 사유를 입력하세요') || '').trim();
+  if(!reason) return;
+  try{
+    await o.onReject({ name, reason });
+    STORE.set('wpName', name);
+    WP_PAD.opts = null;
+    $('#wpSignModal').classList.remove('on');
+  }catch(e){ toast(e.message,'err'); }
+}
+
+/* ── 결재 · 작업종료 서명 ── */
+function wpAct(id){
+  const p = WP_ALL.find(x => x.id === id), nx = wpNext(p);
+  if(!nx) return;
+  const r = nx.role, extra = [];
+  if(nx.stage === 'approve' && r.note){
+    const [lbl, val] = r.note === 'safety' ? ['안전관리자 점검사항', p.safety_note] : ['작업부서장 점검사항', p.dept_note];
+    extra.push(`<div class="wpx"><label>${lbl}</label><textarea id="wpxNote" placeholder="점검 결과 · 추가 지시사항 (선택)">${esc(val || '')}</textarea></div>`);
+  }
+  const needExt = nx.stage === 'approve' && r.k === 'safety' && p.ext_hours > 0;
+  if(needExt) extra.push(`<label class="wpx-ck"><input type="checkbox" id="wpxExt"> 시간연장 ${p.ext_hours}시간 허가를 확인합니다</label>`);
+  const needDone = nx.stage === 'close' && !p.done_at;
+  if(needDone){
+    const n = new Date();
+    extra.push(`<div class="wpx"><label>작업 완료일시 <em>*</em></label>
+      <input type="datetime-local" id="wpxDone" step="600" value="${TODAY}T${pad2(n.getHours())}:${pad2(Math.floor(n.getMinutes()/10)*10)}"></div>`);
+  }
+  /* 다른 사람이 먼저 처리했는지 확인하고 최신 서명 목록을 받아 옵니다 */
+  const fresh = async () => {
+    const { data, error } = await db.from('work_permits').select('signs,status').eq('id', p.id).single();
+    if(error) throw new Error(error.message);
+    if((data.signs || {})[r.k] || data.status === '반려' || data.status === '완료'){
+      loadPermits(); throw new Error('이미 다른 사람이 처리한 허가서입니다. 목록을 새로 불러옵니다.');
+    }
+    return data.signs || {};
+  };
+  const afterSave = async () => {
+    await loadPermits();
+    if($('#wpModal').classList.contains('on')) wpOpen(p.id);
+  };
+  openWpSign({
+    title: `${nx.stage === 'approve' ? '결재' : '작업종료 서명'} · ${r.label}`,
+    sub: `${p.permit_no} ${p.work_name} (${wpWho(p)})`,
+    okText: nx.stage === 'approve' ? '서명 후 결재' : '서명 후 완료 확인',
+    extra: extra.join(''),
+    check(){
+      if(needExt && !$('#wpxExt').checked) return '시간연장 허가 확인에 체크해 주세요';
+      if(needDone && !$('#wpxDone').value) return '작업 완료일시를 입력해 주세요';
+      return '';
+    },
+    async onOk(sg){
+      const signs = await fresh();
+      signs[r.k] = await wpUploadSign(sg);
+      const patch = { signs, updated_at:new Date().toISOString() };
+      const note = $('#wpxNote');
+      if(note) patch[r.note === 'safety' ? 'safety_note' : 'dept_note'] = note.value.trim();
+      if(needExt) patch.ext_ok = true;
+      if(needDone) patch.done_at = $('#wpxDone').value;
+      const nn = wpNext({ ...p, ...patch, status:'결재대기' });
+      patch.status = !nn ? '완료' : nn.stage === 'close' ? '작업중' : '결재대기';
+      const { error } = await db.from('work_permits').update(patch).eq('id', p.id);
+      if(error){ db.storage.from(WP_BUCKET).remove([signs[r.k].path]); throw new Error('저장 실패: '+error.message); }
+      toast(patch.status === '작업중' ? '결재가 끝났습니다 · 작업을 시작할 수 있습니다'
+          : patch.status === '완료' ? '작업 완료 처리했습니다' : `결재했습니다 · 다음 ${nn.role.label}`, 'ok');
+      await afterSave();
+    },
+    onReject: nx.stage !== 'approve' ? null : async ({ name, reason }) => {
+      await fresh();
+      const { error } = await db.from('work_permits').update({
+        status:'반려', reject:{ name, reason, at:new Date().toISOString() }, updated_at:new Date().toISOString()
+      }).eq('id', p.id);
+      if(error) throw new Error('반려 실패: '+error.message);
+      toast('반려했습니다','ok');
+      await afterSave();
+    }
+  });
+}
+
+/* ── 허가서 원본 (양식 모양) : 화면 보기 · 인쇄 공용 ── */
+const WP_DOC_CSS = `
+.wpdoc{font-family:'Pretendard Variable',Pretendard,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;color:#111;
+  font-size:12px;line-height:1.5;background:#fff;letter-spacing:-.01em;word-break:keep-all}
+.wpdoc table{width:100%;border-collapse:collapse;table-layout:fixed;margin:0 0 -1px}
+.wpdoc th,.wpdoc td{border:1px solid #111;padding:6px 8px;vertical-align:middle;text-align:left;font-size:12px}
+.wpdoc th{background:#F3F3F3;font-weight:600;text-align:center}
+.wpdoc .c{text-align:center}
+.wpdoc .tt{font-size:21px;font-weight:700;text-align:center;letter-spacing:.12em;padding:14px 8px}
+.wpdoc .types{text-align:center}
+.wpdoc .types span{display:inline-block;margin:0 9px;white-space:nowrap}
+.wpdoc .sm{font-size:10.5px;color:#555;margin-top:3px}
+.wpdoc .lb{text-align:center;background:#FAFAFA}
+.wpdoc .sg{text-align:center;height:54px}
+.wpdoc .sg img{display:block;margin:0 auto;max-height:40px;max-width:100%}
+.wpdoc .ex img{display:inline-block;vertical-align:middle;max-height:28px;margin-left:6px}
+.wpdoc .nm{display:block;font-size:10px;color:#555;margin-top:2px}
+.wpdoc .in{color:#999}
+.wpdoc .lb2{display:block;font-size:10.5px;color:#555;margin-bottom:3px}
+.wpdoc .pre{white-space:pre-wrap}
+.wpdoc .sec{background:#111;color:#fff;text-align:left}
+.wpdoc td.gc{padding:0;vertical-align:top}
+.wpdoc table.gt{margin:0;table-layout:auto}
+.wpdoc table.gt th,.wpdoc table.gt td{border:0;border-bottom:1px solid #DDD;padding:4px 6px;font-size:11px}
+.wpdoc table.gt th{background:#FAFAFA;text-align:left}
+.wpdoc table.gt .c{text-align:center;width:34px}
+.wpdoc table.gt tr:last-child td{border-bottom:0}
+.wpdoc table.gt.off{color:#AAA}
+.wpdoc .chem .ci{display:inline-block;margin:2px 14px 2px 0;font-size:11.5px}
+.wpdoc .bad{color:#C0392B;font-weight:700}
+.wpdoc .ft{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:10.5px;color:#555}
+@media print{.wpdoc th,.wpdoc .sec{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+`;
+function wpSignCell(s, compact){
+  if(!s) return '<span class="in">(인)</span>';
+  return `<img src="${esc(s.url)}" alt="${esc(s.name)} 서명">${compact ? ''
+    : `<span class="nm">${esc(s.name)} · ${wpAt(s.at)}</span>`}`;
+}
+function wpDocHtml(p){
+  const s = p.signs || {}, types = p.work_types || [], f = WP_FLOW[p.kind] || WP_FLOW['임직원'];
+  const d = new Date(p.apply_date + 'T00:00:00');
+  /* 시행(왼쪽) · 확인(오른쪽) 서명칸. 협력사는 왼쪽이 4줄이라 오른쪽 한 칸이 2줄씩 차지합니다 */
+  const left = p.kind === '협력사'
+    ? [['협력사', esc(p.company)], ['협력사 담당자', wpSignCell(s.applicant), 1],
+       ['작업부서', esc(p.dept)], ['작업부서 담당자', wpSignCell(s.work_dept), 1]]
+    : [['부서명', esc(p.dept)], ['담당자', wpSignCell(s.applicant), 1]];
+  const right = f.approve.filter(r => r.k !== 'work_dept');
+  const n = left.length, span = n / right.length;
+  const signRows = left.map((l, i) => `<tr>
+      ${i === 0 ? `<th rowspan="${n}">시행</th>` : ''}
+      <td class="lb">${l[0]}</td><td${l[2] ? ' class="sg"' : ''}>${l[1] || ''}</td>
+      ${i === 0 ? `<th rowspan="${n}">확인</th>` : ''}
+      ${i % span === 0 ? `<td class="lb" rowspan="${span}">${esc(right[i/span].label)}</td>
+        <td class="sg" rowspan="${span}">${wpSignCell(s[right[i/span].k])}</td>` : ''}
+    </tr>`).join('');
+  const ext = p.ext_hours > 0
+    ? `( ${p.ext_hours} ) 시간연장 허가 확인 ${p.ext_ok && s.safety ? wpSignCell(s.safety, true) : '<span class="in">(인)</span>'}`
+    : '( - ) 시간연장 해당없음';
+  const grp = g => {
+    const a = (p.checks || {})[g.key] || [];
+    return `<table class="gt${types.includes(g.type) ? '' : ' off'}">
+      <tr><th>[${esc(g.label)}]</th><th class="c">해당</th><th class="c">확인</th></tr>
+      ${g.items.map((it, i) => `<tr><td>${i+1}. ${esc(it)}</td>
+        <td class="c">${wpBox(a[i] && a[i].app)}</td><td class="c">${wpBox(a[i] && a[i].ok)}</td></tr>`).join('')}
+    </table>`;
+  };
+  const chem = p.chem
+    ? WP_CHEM.map((it, i) => `<span class="ci">${wpBox(p.chem[i] && p.chem[i].ok)} ${i+1}. ${esc(it)}</span>`).join('')
+    : '<span class="ci">해당없음 (화학물질 취급 안 함)</span>';
+  const gas = p.gas || wpEmptyGas();
+  const gv = (g, v) => v === '' || v == null ? '' : `<span${g.bad(parseFloat(v)) ? ' class="bad"' : ''}>${esc(v)}</span>`;
+  return `<div class="wpdoc">
+  <table>
+    <colgroup><col style="width:11%"><col style="width:15%"><col style="width:24%"><col style="width:11%"><col style="width:15%"><col style="width:24%"></colgroup>
+    <tr><td colspan="6" class="tt">안전작업허가서(${esc(p.kind)})</td></tr>
+    <tr><td colspan="6" class="types">${WP_TYPES.map(t => `<span>${wpBox(types.includes(t))} ${esc(t)}</span>`).join('')}</td></tr>
+    <tr><th>허가번호</th><td colspan="2">${esc(p.permit_no || '')}</td>
+      <th>신청일자</th><td colspan="2">${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${DOW[d.getDay()]}요일)</td></tr>
+    <tr><th>작업시간</th><td colspan="3">${wpDT(p.start_at)} 부터 ~ ${wpDT(p.end_at)} 까지
+      <div class="sm">※ 작업허용시간 : 일과시간 8시간 내(08:30 ~ 17:30) 초과 시 시간연장 허가</div></td>
+      <td colspan="2" class="c ex">${ext}</td></tr>
+    ${signRows}
+    <tr><th>작업명</th><td colspan="5">${esc(p.work_name)}</td></tr>
+    <tr><th>작업내용</th><td colspan="5" class="pre">${esc(p.work_desc)}</td></tr>
+    <tr><th>작업인원</th><td colspan="2">${esc(p.workers)}</td><th>반입장비</th><td colspan="2">${esc(p.equipment || '')}</td></tr>
+  </table>
+  <table>
+    <tr><th colspan="3" class="sec">안전조치 확인 사항 (☑ 해당 부분에 V 표시)</th></tr>
+    <tr>${WP_GROUPS.slice(0,3).map(g => `<td class="gc">${grp(g)}</td>`).join('')}</tr>
+    <tr>${WP_GROUPS.slice(3).map(g => `<td class="gc">${grp(g)}</td>`).join('')}</tr>
+    <tr><th colspan="3" class="sec">화학물질 취급 시 추가 확인사항 (☑ 각 항목이 양호할 경우에만 V 표시 / 전 항목 충족 시 작업 가능)</th></tr>
+    <tr><td colspan="3" class="chem">${chem}</td></tr>
+  </table>
+  <table>
+    <colgroup><col style="width:14%"><col style="width:36%"><col style="width:14%"><col style="width:36%"></colgroup>
+    <tr><th>안전관리자 점검사항</th><td class="pre">${esc(p.safety_note || '')}</td>
+      <th>작업부서장 점검사항</th><td class="pre">${esc(p.dept_note || '')}</td></tr>
+  </table>
+  <table>
+    <colgroup><col style="width:11%"><col style="width:17%"><col><col><col><col><col></colgroup>
+    <tr><th rowspan="6">가스측정<br>(밀폐,화기)</th><th>가스명</th>${[1,2,3,4,5].map(i => `<th>${i}차</th>`).join('')}</tr>
+    <tr><th>측정시간</th>${gas.times.map(v => `<td class="c">${esc(v || '')}</td>`).join('')}</tr>
+    ${WP_GASES.map(g => `<tr><th>${esc(g.label)}</th>${(gas[g.key] || []).map(v => `<td class="c">${gv(g, v)}</td>`).join('')}</tr>`).join('')}
+    <tr><th>가스 기준치</th><td colspan="6">${WP_GAS_STD}</td></tr>
+  </table>
+  <table>
+    <colgroup><col style="width:11%"><col style="width:15%"><col><col></colgroup>
+    <tr><th rowspan="2">작업완료<br>확인</th><th>완료일시</th><td colspan="2">${wpDT(p.done_at)}</td></tr>
+    <tr><th>작업종료 서명</th>
+      <td class="sg"><span class="lb2">작업부서 담당자</span>${wpSignCell(s.close_dept)}</td>
+      <td class="sg"><span class="lb2">안전관리자</span>${wpSignCell(s.close_safety)}</td></tr>
+  </table>
+  <div class="ft"><span>상태 : <b>${esc(p.status)}</b>${p.reject ? ` <span class="bad">· 반려 ${esc(p.reject.name)} (${wpAt(p.reject.at)}) — ${esc(p.reject.reason)}</span>` : ''}</span>
+    <span>SIMMONS 안전보건 통합 플랫폼</span></div>
+</div>`;
+}
+
+/* ── 허가서 보기 ── */
+function wpOpen(id){
+  const p = WP_ALL.find(x => x.id === id);
+  if(!p) return;
+  WP_CUR = p.id;
+  $('#wpModalTitle').textContent = `안전작업허가서 (${p.kind}) · ${p.permit_no || ''}`;
+  $('#wpModalDoc').innerHTML = wpDocHtml(p);
+  const live = p.status === '결재대기' || p.status === '작업중';
+  WP_EDIT_GAS = live && wpGasOn(p.work_types || []) ? JSON.parse(JSON.stringify(p.gas || wpEmptyGas())) : null;
+  $('#wpModalGas').innerHTML = WP_EDIT_GAS
+    ? `<p class="secttl">가스측정 추가 입력 (2차 ~ 5차)</p>${wpGasHtml(WP_EDIT_GAS, true)}
+       <div style="margin-top:12px"><button class="btn sm brass" data-wpgsave>가스측정 저장</button></div>` : '';
+  const nx = wpNext(p);
+  $('#wpModalActs').innerHTML = [
+    nx ? `<button class="btn" data-wpact="${p.id}">${nx.stage === 'approve' ? '결재' : '작업종료 서명'} · ${esc(nx.role.label)}</button>` : '',
+    `<button class="btn ghost" data-wpprint="${p.id}">인쇄 · PDF 저장</button>`,
+    `<button class="btn sm danger" data-wpdel="${p.id}" style="margin-left:auto">삭제</button>`
+  ].join('');
+  $('#wpModal').classList.add('on');
+}
+async function wpGasSave(){
+  const p = WP_ALL.find(x => x.id === WP_CUR);
+  if(!p || !WP_EDIT_GAS) return;
+  const { error } = await db.from('work_permits')
+    .update({ gas:WP_EDIT_GAS, updated_at:new Date().toISOString() }).eq('id', p.id);
+  if(error) return toast('저장 실패: '+error.message,'err');
+  const bad = wpGasBad(WP_EDIT_GAS);
+  toast(bad.length ? `저장했습니다 · 기준 초과 ${bad.length}건 — 작업을 멈추고 환기 후 다시 측정하세요` : '가스측정을 저장했습니다',
+    bad.length ? 'err' : 'ok');
+  await loadPermits();
+  wpOpen(p.id);
+}
+function wpPrint(id){
+  const p = WP_ALL.find(x => x.id === id);
+  if(!p) return;
+  const w = window.open('', '_blank');
+  if(!w) return toast('팝업이 막혀 있습니다. 팝업을 허용해 주세요','err');
+  w.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8">
+    <title>안전작업허가서_${esc(p.permit_no || '')}_${esc(p.work_name || '')}</title>
+    <style>${WP_DOC_CSS} @page{size:A4;margin:10mm} body{margin:0;padding:16px} @media print{body{padding:0}}</style>
+    </head><body>${wpDocHtml(p)}</body></html>`);
+  w.document.close();
+  /* 서명 이미지가 다 뜬 뒤에 인쇄 창을 엽니다 */
+  const run = () => setTimeout(() => { w.focus(); w.print(); }, 300);
+  if(w.document.readyState === 'complete') run(); else w.addEventListener('load', run);
+}
+async function wpDel(id){
+  const p = WP_ALL.find(x => x.id === id);
+  if(!p || !confirm(`${p.permit_no} ${p.work_name} 허가서를 삭제할까요? 되돌릴 수 없습니다.`)) return;
+  if(!checkDeletePw()) return;
+  const paths = Object.values(p.signs || {}).map(x => x && x.path).filter(Boolean);
+  if(paths.length) await db.storage.from(WP_BUCKET).remove(paths);
+  const { error } = await db.from('work_permits').delete().eq('id', id);
+  if(error) return toast('삭제 실패: '+error.message,'err');
+  $('#wpModal').classList.remove('on');
+  toast('삭제했습니다','ok');
+  loadPermits();
+}
+
+/* ── 결재 · 진행 목록 ── */
+async function loadPermits(){
+  if(!db) return;
+  try{
+    const { data, error } = await db.from('work_permits').select('*')
+      .order('created_at', { ascending:false }).limit(1000);
+    if(error) throw error;
+    WP_ALL = data || []; WP_ERR = '';
+  }catch(e){
+    WP_ALL = []; WP_ERR = '안전작업허가 표가 아직 없습니다. schema_permit.sql 을 먼저 실행해 주세요.';
+    console.warn('[안전작업허가] 조회 실패', e);
+  }
+  renderWpFlow(); renderWpRecords();
+}
+function wpEnter(){ loadPermits(); }
+function wpSteps(p){
+  const s = p.signs || {}, f = WP_FLOW[p.kind] || WP_FLOW['임직원'], nx = wpNext(p);
+  const steps = [f.apply, ...f.approve].map(r => [r, '']).concat(WP_CLOSE.map(r => [r, '종료 ']));
+  return steps.map(([r, pre]) => {
+    const g = s[r.k], now = nx && nx.role.k === r.k;
+    return `<span class="wpstep${g ? ' ok' : now ? ' now' : ''}">${g ? '✓' : now ? '●' : '○'} ${pre}${esc(r.label)}${
+      g ? ' · '+esc(g.name) : now ? ' 대기' : ''}</span>`;
+  }).join('<span class="wparr">›</span>');
+}
+function wpEmptyBox(big, s){ return `<div class="empty"><div class="big">${big}</div><div class="s">${s}</div></div>`; }
+function renderWpFlow(){
+  const wait = WP_ALL.filter(p => p.status === '결재대기').length;
+  const work = WP_ALL.filter(p => p.status === '작업중').length;
+  $('#wpFlowCnt').textContent = wait ? `(${wait})` : '';
+  $('#wpFlowNote').textContent = `결재대기 ${wait} · 작업중 ${work}`;
+  $$('#wpFlowTabs [data-wpff]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.wpff === WP_FLOW_F)));
+  if(WP_ERR){ $('#wpFlowList').innerHTML = wpEmptyBox('준비가 필요합니다', esc(WP_ERR)); return; }
+  const list = WP_ALL.filter(p => WP_FLOW_F ? p.status === WP_FLOW_F : (p.status === '결재대기' || p.status === '작업중'));
+  if(!list.length){
+    $('#wpFlowList').innerHTML = wpEmptyBox('진행 중인 허가서가 없습니다', '허가서 작성에서 제출하면 이곳에 결재 순서대로 표시됩니다.');
+    return;
+  }
+  $('#wpFlowList').innerHTML = list.map(p => {
+    const nx = wpNext(p);
+    return `<div class="rec">
+      <div class="rec-top">
+        <span class="rec-d">${esc(p.permit_no || '-')}</span>
+        <span class="b gray">${esc(p.kind)}</span>${wpBadge(p.status)}
+        ${(p.work_types || []).map(t => `<span class="b gray">${esc(t)}</span>`).join('')}
+        <span class="meta">${esc(wpWho(p))} · ${esc(p.apply_date)}</span>
+      </div>
+      <p><b style="color:var(--ink)">${esc(p.work_name)}</b>
+${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}${p.ext_hours ? ` · 시간연장 ${p.ext_hours}시간` : ''} · ${esc(p.workers || '')}</p>
+      ${p.status === '반려' && p.reject ? `<div class="fr-fail"><p>반려 · ${esc(p.reject.name)} — ${esc(p.reject.reason)}</p></div>` : ''}
+      <div class="wpflow">${wpSteps(p)}</div>
+      <div class="rec-acts">
+        ${nx ? `<button class="btn sm" data-wpopen="${p.id}">${nx.stage === 'approve' ? '결재하기' : '작업종료 서명'} · ${esc(nx.role.label)}</button>` : ''}
+        <button class="btn sm ghost" data-wpopen="${p.id}">허가서 보기</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── 기록 대장 ── */
+function wpFiltered(){
+  const from = $('#wqFrom').value, to = $('#wqTo').value, kind = $('#wqKind').value,
+        st = $('#wqStatus').value, ty = $('#wqType').value, q = $('#wqText').value.trim().toLowerCase();
+  return WP_ALL.filter(p =>
+    (!from || p.apply_date >= from) && (!to || p.apply_date <= to) &&
+    (!kind || p.kind === kind) && (!st || p.status === st) && (!ty || (p.work_types || []).includes(ty)) &&
+    (!q || [p.permit_no, p.work_name, p.work_desc, p.dept, p.company, p.workers, p.equipment,
+            ...Object.values(p.signs || {}).map(x => x && x.name)].join(' ').toLowerCase().includes(q)));
+}
+function renderWpRecords(){
+  if(WP_ERR){ $('#wpRecCount').textContent = '—'; $('#wpRecList').innerHTML = wpEmptyBox('준비가 필요합니다', esc(WP_ERR)); return; }
+  const list = wpFiltered();
+  $('#wpRecCount').textContent = list.length + '건';
+  if(!list.length){
+    $('#wpRecList').innerHTML = wpEmptyBox('기록이 없습니다', '조회 조건을 바꿔 보세요.');
+    return;
+  }
+  $('#wpRecList').innerHTML = `<div class="wptbl-wrap"><table class="wptbl"><thead><tr>
+    <th>허가번호</th><th>신청일</th><th>구분</th><th>상태</th><th>협력사 · 부서</th><th>작업명</th><th>작업 종류</th>
+    <th>작업시간</th><th>신청자</th><th>안전관리자 결재</th><th>완료일시</th></tr></thead><tbody>
+    ${list.map(p => { const s = p.signs || {}; return `<tr data-wpopen="${p.id}">
+      <td><b>${esc(p.permit_no || '')}</b></td><td>${esc(p.apply_date)}</td><td>${esc(p.kind)}</td><td>${wpBadge(p.status)}</td>
+      <td>${esc(wpWho(p))}</td><td class="ell">${esc(p.work_name)}</td><td>${esc((p.work_types || []).join(', '))}</td>
+      <td>${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}</td><td>${esc(s.applicant ? s.applicant.name : '')}</td>
+      <td>${s.safety ? esc(s.safety.name)+' · '+wpAt(s.safety.at) : ''}</td><td>${wpDT(p.done_at)}</td></tr>`; }).join('')}
+  </tbody></table></div>`;
+}
+function wpExportCsv(){
+  const list = wpFiltered();
+  if(!list.length) return toast('내려받을 기록이 없습니다','err');
+  const nm = x => x ? `${x.name} (${wpAt(x.at)})` : '';
+  const head = ['허가번호','신청일자','구분','상태','협력사','부서','작업명','작업내용','작업종류','작업시작','작업종료','시간연장(시간)',
+    '작업인원','반입장비','신청자','작업부서 담당자','작업부서 팀장','안전관리자','안전관리자 점검사항','작업부서장 점검사항',
+    '안전조치(해당/확인)','화학물질','가스기준 초과','완료일시','종료서명-작업부서','종료서명-안전관리자','반려'];
+  csvDown(`안전작업허가_기록대장_${TODAY}.csv`, head, list.map(p => {
+    const s = p.signs || {};
+    const chk = WP_GROUPS.filter(g => (p.checks || {})[g.key]).map(g => {
+      const a = p.checks[g.key];
+      return `${g.label} ${a.filter(x => x.app).length}/${a.filter(x => x.ok).length}`;
+    }).join(' · ');
+    return [p.permit_no, p.apply_date, p.kind, p.status, p.company || '', p.dept || '', p.work_name, p.work_desc,
+      (p.work_types || []).join(', '), wpDT(p.start_at), wpDT(p.end_at), p.ext_hours || 0, p.workers, p.equipment || '',
+      nm(s.applicant), nm(p.kind === '협력사' ? s.work_dept : s.dept_mgr), p.kind === '협력사' ? nm(s.dept_mgr) : '', nm(s.safety),
+      p.safety_note || '', p.dept_note || '', chk, p.chem ? '전 항목 양호' : '해당없음', wpGasBad(p.gas).join(' / '),
+      wpDT(p.done_at), nm(s.close_dept), nm(s.close_safety), p.reject ? `${p.reject.name}: ${p.reject.reason}` : ''];
+  }));
+}
+
+function wpInit(){
+  document.head.insertAdjacentHTML('beforeend', `<style>${WP_DOC_CSS}</style>`);
+  bindDate('#wpDate', '#wpDateText');
+  $('#wpDeptList').innerHTML = FIRE_DEPTS.map(d => `<option value="${esc(d)}">`).join('');
+  $('#wpFirmList').innerHTML = CC_ALL_FIRMS.map(d => `<option value="${esc(d)}">`).join('');
+  $('#wqType').innerHTML = '<option value="">전체</option>' + WP_TYPES.map(t => `<option>${esc(t)}</option>`).join('');
+  $('#wqFrom').value = TODAY.slice(0,8) + '01';
+  wpSetKind('임직원');
+  wpResetForm();
+
+  $('#wpKind').onclick = e => { const b = e.target.closest('[data-wpkind]'); if(b) wpSetKind(b.dataset.wpkind); };
+  $('#wpTypes').onclick = e => {
+    const b = e.target.closest('[data-wptype]'); if(!b) return;
+    const t = b.dataset.wptype;
+    if(WP_SEL.has(t)) WP_SEL.delete(t); else WP_SEL.add(t);
+    wpRenderForm();
+  };
+  $('#wpChecks').onclick = wpOnChecks;
+  $('#wpGas').addEventListener('input', e => wpGasInput(e, WP_GAS));
+  $('#wpModalGas').addEventListener('input', e => wpGasInput(e, WP_EDIT_GAS));
+  ['#wpStart','#wpEnd'].forEach(s => $(s).addEventListener('change', wpExtSync));
+  $('#wpExt').addEventListener('input', () => { $('#wpExt').dataset.touched = '1'; });
+  $('#btnWpSubmit').onclick = wpSubmit;
+  $('#btnWpReset').onclick = () => { if(confirm('작성 중인 내용을 모두 지울까요?')) wpResetForm(); };
+
+  $('#wpFlowTabs').onclick = e => { const b = e.target.closest('[data-wpff]'); if(b){ WP_FLOW_F = b.dataset.wpff; renderWpFlow(); } };
+  const openRow = e => { const o = e.target.closest('[data-wpopen]'); if(o) wpOpen(o.dataset.wpopen); };
+  $('#wpFlowList').onclick = openRow;
+  $('#wpRecList').onclick = openRow;
+  $('#wpModal').addEventListener('click', e => {
+    const a = e.target.closest('[data-wpact]');   if(a) return wpAct(a.dataset.wpact);
+    const pr = e.target.closest('[data-wpprint]'); if(pr) return wpPrint(pr.dataset.wpprint);
+    const d = e.target.closest('[data-wpdel]');   if(d) return wpDel(d.dataset.wpdel);
+    if(e.target.closest('[data-wpgsave]')) wpGasSave();
+  });
+  $('#btnWpSearch').onclick = renderWpRecords;
+  ['#wqFrom','#wqTo','#wqKind','#wqStatus','#wqType'].forEach(s => $(s).addEventListener('change', renderWpRecords));
+  $('#wqText').addEventListener('keydown', e => { if(e.key === 'Enter') renderWpRecords(); });
+  $('#btnWpCsv').onclick = wpExportCsv;
+
+  wpPadBind();
+  $('#btnWpSignOk').onclick = wpSignOk;
+  $('#btnWpSignClear').onclick = wpPadSetup;
+  $('#btnWpReject').onclick = wpRejectClick;
 }
 
 /* ===================== PDF 미리보기 ===================== */
@@ -6910,6 +7928,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /* 상단 탭 · 대시보드 */
+  $$('#menuGrid [data-go]').forEach(b => b.hidden = HIDDEN_MENUS.includes(b.dataset.go));
   document.addEventListener('click', e => {
     const g = e.target.closest('[data-go]');
     if(g) go(g.dataset.go);
@@ -6989,6 +8008,9 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#btnFrSearch').onclick = () => { SHOW_FR_REC = true; loadFireRecords(); };
   $('#btnFrCsv').onclick = exportFireCsv;
   $('#frList').onclick = e => { const d = e.target.dataset.frdel; if(d) delFire(d); };
+
+  /* 안전작업허가(긴급) */
+  wpInit();
 
   /* 보호구 */
   renderPpeQuick(); renderCart();
