@@ -1513,6 +1513,7 @@ table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#F
         <button class="btn" id="btnSearch">조회</button>
         <button class="btn ghost" id="btnXlsx">엑셀 내려받기 (사진 포함)</button>
         <button class="btn ghost" id="btnCsv">CSV</button>
+        <button class="btn ghost" id="btnMonthPdf" title="시작일이 속한 달 · 선택한 부서(전체면 부서별 1장씩)">월간 요약 PDF</button>
       </div>
     </div>
     <div id="recList" hidden></div>
@@ -3279,6 +3280,87 @@ async function exportXlsx(){
   finally{ btn.disabled = false; btn.textContent = '엑셀 내려받기 (사진 포함)'; }
 }
 
+/* 부서별 1개월 TBM 기록을 A4 1장으로 요약 → 인쇄 창에서 'PDF로 저장' */
+const TBM_MONTH_CSS = `
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Malgun Gothic',sans-serif;color:#111;background:#fff}
+@page{size:A4;margin:10mm}
+.pg{width:190mm;height:276mm;display:flex;flex-direction:column;page-break-after:always;overflow:hidden}
+.pg:last-child{page-break-after:auto}
+.hd{display:flex;align-items:flex-end;gap:6mm;padding-bottom:3mm;border-bottom:.6mm solid #111}
+.hd h1{font-size:17pt;font-weight:800;letter-spacing:-.02em}
+.hd .sub{font-size:10pt;color:#555;margin-top:1mm}
+.stats{display:flex;gap:3mm;margin:3mm 0}
+.stats div{flex:1;background:#f4f4f4;border-radius:2mm;padding:2mm 3mm}
+.stats span{display:block;font-size:7.5pt;color:#666}
+.stats b{font-size:13pt;font-weight:800}
+.grid{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:2.2mm;min-height:0}
+.c{display:flex;flex-direction:column;border:.25mm solid #ddd;border-radius:1.5mm;overflow:hidden;min-height:0}
+.c .ph{flex:1;min-height:0;background:#eee;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:7pt}
+.c .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.c .tx{padding:1.2mm 1.6mm 1.4mm}
+.c .d{font-size:8pt;font-weight:700;display:flex;justify-content:space-between}
+.c .d em{font-style:normal;font-weight:400;color:#777}
+.c p{font-size:7pt;line-height:1.35;color:#333;margin-top:.5mm;height:2.7em;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ft{display:flex;justify-content:space-between;font-size:7pt;color:#888;padding-top:2mm}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}`;
+function tbmMonthPage(dept, ym, list){
+  const [y, m] = ym.split('-');
+  const DOW = ['일','월','화','수','목','금','토'];
+  const people = list.reduce((s, r) => s + (+r.attendee_count || 0), 0);
+  const days = new Set(list.map(r => r.meeting_date)).size;
+  const rows = Math.max(4, Math.ceil(list.length / 5));
+  const cards = list.map(r => {
+    const ph = (r.photos || [])[0];
+    const dd = new Date(r.meeting_date + 'T00:00:00');
+    return `<div class="c">
+      <div class="ph">${ph ? `<img src="${esc(ph.url)}" alt="">` : '사진 없음'}</div>
+      <div class="tx">
+        <div class="d">${dd.getMonth()+1}/${dd.getDate()} (${DOW[dd.getDay()]})<em>${r.attendee_count != null ? r.attendee_count+'명' : ''}</em></div>
+        <p>${esc(r.notes || '진행사항 없음')}</p>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="pg">
+    <div class="hd">
+      <div><h1>TBM 월간 활동 요약</h1><div class="sub">${esc(dept)} · ${y}년 ${+m}월</div></div>
+    </div>
+    <div class="stats">
+      <div><span>실시 일수</span><b>${days}일</b></div>
+      <div><span>기록 건수</span><b>${list.length}건</b></div>
+      <div><span>누적 참석 인원</span><b>${people}명</b></div>
+      <div><span>활동 사진</span><b>${list.reduce((s, r) => s + (r.photos || []).length, 0)}장</b></div>
+    </div>
+    <div class="grid" style="grid-template-rows:repeat(${rows},1fr)">${cards}</div>
+    <div class="ft"><span>안전보건 통합관리 · TBM 기록대장</span><span>출력일 ${TODAY}</span></div>
+  </div>`;
+}
+async function exportMonthPdf(){
+  const ym = ($('#qFrom').value || TODAY).slice(0, 7);
+  const [y, m] = ym.split('-').map(Number);
+  const last = ymd(new Date(y, m, 0));
+  const w = window.open('', '_blank');
+  if(!w) return toast('팝업이 막혀 있습니다. 팝업을 허용해 주세요','err');
+  let q = db.from('tbm_records').select('*').gte('meeting_date', ym + '-01').lte('meeting_date', last)
+    .order('meeting_date', {ascending:true}).order('created_at', {ascending:true});
+  if($('#qDept').value) q = q.eq('department', $('#qDept').value);
+  const { data, error } = await q;
+  if(error){ w.close(); return toast('기록 조회 실패: '+error.message,'err'); }
+  if(!data || !data.length){ w.close(); return toast(`${y}년 ${m}월 기록이 없습니다`,'err'); }
+  const byDept = {};
+  data.forEach(r => (byDept[r.department] = byDept[r.department] || []).push(r));
+  const pages = Object.keys(byDept).sort().map(d => tbmMonthPage(d, ym, byDept[d])).join('');
+  const dept = $('#qDept').value || '전체부서';
+  w.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8">
+    <title>TBM_월간요약_${esc(dept)}_${ym}</title><style>${TBM_MONTH_CSS}</style></head><body>${pages}</body></html>`);
+  w.document.close();
+  /* 사진이 다 뜬 뒤에 인쇄 창을 엽니다 (PDF로 저장 선택) */
+  const imgs = Array.from(w.document.images);
+  await Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+  setTimeout(() => { w.focus(); w.print(); }, 300);
+}
+
 /* ===================== 화재예방점검 등록 ===================== */
 function resetFireAns(){
   FIRE_ANS = {};
@@ -3473,15 +3555,14 @@ const WP_GASES = [
 ];
 const WP_GAS_STD = '1. 가연성가스: 0%, 2. 산소O2: 18%이상 23.5%미만, 3. 일산화탄소CO: 25ppm이하, 4. 황화수소H2S: 10ppm미만';
 /* 서명 순서. note : 결재하면서 적는 점검사항 칸 (safety = 안전관리자, dept = 작업부서장)
-   임직원은 시행 담당자가 곧 작업부서 담당자이므로 신청 서명 때 작업부서장 점검사항을 함께 적습니다 */
+   시행 담당자가 신청 서명 때 작업부서장 점검사항을 함께 적습니다 (임직원 · 협력사 같은 결재라인) */
 const WP_FLOW = {
   '임직원': { apply:{ k:'applicant', label:'담당자', note:'dept' },
     approve:[ { k:'safety',   label:'안전관리자',     note:'safety' } ] },
-  '협력사': { apply:{ k:'applicant', label:'협력사 담당자' },
-    approve:[ { k:'dept_mgr',  label:'작업부서 팀장', note:'dept' },
-              { k:'safety',    label:'안전관리자',   note:'safety' } ] }
+  '협력사': { apply:{ k:'applicant', label:'협력사 담당자', note:'dept' },
+    approve:[ { k:'safety',   label:'안전관리자',     note:'safety' } ] }
 };
-const WP_CLOSE = [ { k:'close_dept', label:'작업부서 담당자' }, { k:'close_safety', label:'안전관리자' } ];
+const WP_CLOSE = [ { k:'close_dept', label:'작업부서 담당자', note:'dept' }, { k:'close_safety', label:'안전관리자', note:'safety' } ];
 const WP_BUCKET = 'tbm-materials';
 
 let WP_KIND = '임직원', WP_SEL = new Set(), WP_ANS = {}, WP_CHEM_ON = false, WP_CHEM_ANS = [];
@@ -3699,19 +3780,18 @@ async function wpNextNo(date){
 function wpSubmit(){
   const f = wpCollect();
   if(!f) return;
-  const flow = WP_FLOW[f.kind];
+  const flow = WP_FLOW[f.kind], notes = wpNotes(flow.apply.note);
   openWpSign({
     title: `신청 서명 · ${flow.apply.label}`,
     sub: `${f.work_name} — 서명하면 ${flow.approve[0].label}에게 결재가 올라갑니다.`,
     okText: '서명 후 제출',
-    extra: flow.apply.note === 'dept' ? `<div class="wpx"><label>작업부서장 점검사항</label>
-      <textarea id="wpxNote" placeholder="점검 결과 · 추가 지시사항 (선택)"></textarea></div>` : '',
+    extra: notes.map(k => `<div class="wpx"><label>${WP_NOTE[k][0]}</label>
+      <textarea data-wpxnote="${k}" placeholder="점검 결과 · 추가 지시사항 (선택)"></textarea></div>`).join(''),
     after: wpConfirmHtml(flow.apply.note),
     check: () => wpConfirmMsg(flow.apply.note),
     async onOk(sg){
-      const note = $('#wpxNote');
-      if(note) f.dept_note = note.value.trim();
-      const sign = await wpUploadSign(sg, WP_CONFIRM[flow.apply.note]);
+      notes.forEach(k => f[WP_NOTE[k][1]] = $(`[data-wpxnote="${k}"]`).value.trim());
+      const sign = await wpUploadSign(sg, wpConfirmText(flow.apply.note));
       const permit_no = await wpNextNo(f.apply_date);
       const { error } = await db.from('work_permits').insert({
         ...f, permit_no, status:'결재대기', signs:{ applicant:sign }, created_by:sg.name });
@@ -3789,11 +3869,17 @@ async function wpUploadSign(sg, confirm){
   if(confirm) s.confirm = confirm;
   return s;
 }
-/* 서명란 아래 부서장 확인 체크 (note : dept | safety) */
+/* 서명란 아래 부서장 확인 체크 (note : dept | safety | 둘의 배열) */
 const WP_CONFIRM = { dept:'작업부서장 확인', safety:'안전부서장 확인' };
-const wpConfirmHtml = note => WP_CONFIRM[note]
-  ? `<label class="wpx-ck"><input type="checkbox" id="wpxConfirm"> ${WP_CONFIRM[note]}</label>` : '';
-const wpConfirmMsg = note => WP_CONFIRM[note] && !$('#wpxConfirm').checked ? `${WP_CONFIRM[note]}에 체크해 주세요` : '';
+const WP_NOTE = { dept:['작업부서장 점검사항','dept_note'], safety:['안전관리자 점검사항','safety_note'] };
+const wpNotes = note => [].concat(note || []).filter(k => WP_CONFIRM[k]);
+const wpConfirmHtml = note => wpNotes(note).map(k =>
+  `<label class="wpx-ck"><input type="checkbox" data-wpxck="${k}"> ${WP_CONFIRM[k]}</label>`).join('');
+const wpConfirmMsg = note => {
+  const k = wpNotes(note).find(k => !$(`[data-wpxck="${k}"]`).checked);
+  return k ? `${WP_CONFIRM[k]}에 체크해 주세요` : '';
+};
+const wpConfirmText = note => wpNotes(note).map(k => WP_CONFIRM[k]).join(' · ');
 
 /* opts : title · sub · okText · extra(HTML) · after(서명란 아래 HTML) · check() → 오류문구 · onOk({name, canvas}) · onReject({name, reason}) */
 function openWpSign(opts){
@@ -3874,14 +3960,14 @@ function wpAct(id){
     sub: `${p.permit_no} ${p.work_name} (${wpWho(p)})`,
     okText: nx.stage === 'approve' ? '서명 후 결재' : '서명 후 완료 확인',
     extra: extra.join(''),
-    after: nx.stage === 'approve' ? wpConfirmHtml(r.note) : '',
+    after: wpConfirmHtml(r.note),
     check(){
       if(needDone && !$('#wpxDone').value) return '작업 완료일시를 입력해 주세요';
-      return nx.stage === 'approve' ? wpConfirmMsg(r.note) : '';
+      return wpConfirmMsg(r.note);
     },
     async onOk(sg){
       const signs = await fresh();
-      signs[r.k] = await wpUploadSign(sg, nx.stage === 'approve' ? WP_CONFIRM[r.note] : '');
+      signs[r.k] = await wpUploadSign(sg, WP_CONFIRM[r.note]);
       const patch = { signs, updated_at:new Date().toISOString() };
       const note = $('#wpxNote');
       if(note) patch[r.note === 'safety' ? 'safety_note' : 'dept_note'] = note.value.trim();
@@ -7957,6 +8043,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#qText').addEventListener('keydown', e => { if(e.key === 'Enter') runSearch(); });
   $('#btnCsv').onclick = exportCsv;
   $('#btnXlsx').onclick = exportXlsx;
+  $('#btnMonthPdf').onclick = exportMonthPdf;
   $('#recList').onclick = e => {
     const z = e.target.dataset.zoom, d = e.target.dataset.del, ed = e.target.dataset.edit;
     if(z){ $('#lightboxImg').src = z; $('#lightbox').classList.add('on'); }
