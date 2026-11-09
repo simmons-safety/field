@@ -3978,6 +3978,7 @@ const wpKindLbl = p => (wpIsUrg(p) ? '긴급 · ' : '') + (p.kind === '협력사
 /* 일과시간(08:30~17:30)을 넘거나 날짜가 바뀌는 작업 */
 const wpOverTime = (s, e) => !!(s && e) && (s.slice(0,10) !== e.slice(0,10) || s.slice(11,16) < '08:30' || e.slice(11,16) > '17:30');
 const WP_BUCKET = 'tbm-materials';
+const WP_DEL_PW = '8587';   // 허가서 삭제 비밀번호
 
 let WP_URGENT = false;
 let WP_KIND = '임직원', WP_SEL = new Set(), WP_ANS = {}, WP_CHEM_ON = false, WP_CHEM_ANS = [];
@@ -4575,7 +4576,10 @@ function wpPrint(id){
 async function wpDel(id){
   const p = WP_ALL.find(x => x.id === id);
   if(!p || !confirm(`${p.permit_no} ${p.work_name} 허가서를 삭제할까요? 되돌릴 수 없습니다.`)) return;
-  if(!checkDeletePw()) return;
+  /* 허가서 삭제 비밀번호 (기록대장 · 허가서 보기 공통) */
+  const pw = prompt('삭제 비밀번호를 입력하세요');
+  if(pw === null) return;
+  if(pw !== WP_DEL_PW) return toast('비밀번호가 올바르지 않습니다','err');
   const paths = Object.values(p.signs || {}).map(x => x && x.path).filter(Boolean);
   if(paths.length) await db.storage.from(WP_BUCKET).remove(paths);
   const { error } = await db.from('work_permits').delete().eq('id', id);
@@ -4663,12 +4667,13 @@ function renderWpRecords(){
   }
   $('#wpRecList').innerHTML = `<div class="wptbl-wrap"><table class="wptbl"><thead><tr>
     <th>허가번호</th><th>신청일</th><th>구분</th><th>상태</th><th>협력사 · 부서</th><th>작업명</th><th>작업 종류</th>
-    <th>작업시간</th><th>신청자</th><th>안전관리자 결재</th><th>완료일시</th></tr></thead><tbody>
+    <th>작업시간</th><th>신청자</th><th>안전관리자 결재</th><th>완료일시</th><th>삭제</th></tr></thead><tbody>
     ${list.map(p => { const s = p.signs || {}; return `<tr data-wpopen="${p.id}">
       <td><b>${esc(p.permit_no || '')}</b></td><td>${esc(p.apply_date)}</td><td>${esc(wpKindLbl(p))}</td><td>${wpBadge(p.status)}</td>
       <td>${esc(wpWho(p))}</td><td class="ell">${esc(p.work_name)}</td><td>${esc((p.work_types || []).join(', '))}</td>
       <td>${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}</td><td>${esc(s.applicant ? s.applicant.name : '')}</td>
-      <td>${s.safety ? esc(s.safety.name)+' · '+wpAt(s.safety.at) : ''}</td><td>${wpDT(p.done_at)}</td></tr>`; }).join('')}
+      <td>${s.safety ? esc(s.safety.name)+' · '+wpAt(s.safety.at) : ''}</td><td>${wpDT(p.done_at)}</td>
+      <td><button class="btn sm danger" data-wprecdel="${p.id}">삭제</button></td></tr>`; }).join('')}
   </tbody></table></div>`;
 }
 function wpExportCsv(){
@@ -4730,7 +4735,11 @@ function wpInit(){
   $('#wpFlowTabs').onclick = e => { const b = e.target.closest('[data-wpff]'); if(b){ WP_FLOW_F = b.dataset.wpff; renderWpFlow(); } };
   const openRow = e => { const o = e.target.closest('[data-wpopen]'); if(o) wpOpen(o.dataset.wpopen); };
   $('#wpFlowList').onclick = openRow;
-  $('#wpRecList').onclick = openRow;
+  $('#wpRecList').onclick = e => {
+    const d = e.target.closest('[data-wprecdel]');
+    if(d){ e.stopPropagation(); return wpDel(d.dataset.wprecdel); }
+    openRow(e);
+  };
   $('#wpModal').addEventListener('click', e => {
     const a = e.target.closest('[data-wpact]');   if(a) return wpAct(a.dataset.wpact);
     const pr = e.target.closest('[data-wpprint]'); if(pr) return wpPrint(pr.dataset.wpprint);
