@@ -37,6 +37,9 @@
 <!-- 알림 메일 : 여기에 넣어 두면 파일을 새로 받아도 설정이 유지됩니다 -->
 <meta name="tbm-mail-to"       content="hk7149@simmons.co.kr">
 <meta name="tbm-mail-endpoint" content="https://hook.us2.make.com/9frcxsboo2gs042apvsmip2wx76oj4i7">
+
+<!-- 배포 주소 : 카톡으로 받은 파일 등 웹 주소가 아닌 곳에서 열었을 때 갤럭시 앱(simmons-walk.apk)을 이 주소에서 받습니다 -->
+<meta name="tbm-site-url"      content="https://misty-hat-76c7.hk7149.workers.dev/">
 <!-- ══════════════════════════════════════════════════════════ -->
 
 <script>
@@ -1395,6 +1398,108 @@ table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#F
 .scoref th{font-size:11px;color:var(--ink3);font-weight:600}
 .scoref td.c{color:var(--ink3);font-size:11.5px}
 .isom-fb{all:unset;cursor:pointer;padding:4px 12px;border:1px solid var(--line);border-radius:999px;font-size:11px;font-weight:600;background:#fff}
+
+/* ── 보건활동 (걷기프로그램 · 오운완) ── */
+.hb-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 20px}
+.hb-tabs button{all:unset;box-sizing:border-box;cursor:pointer;border:1px solid var(--line);border-radius:var(--pill);padding:11px 20px;font-size:13.5px;color:var(--ink2);background:#fff}
+.hb-tabs button:hover{border-color:#000;color:#000}
+.hb-tabs button[aria-pressed="true"]{background:#000;border-color:#000;color:#fff;font-weight:600}
+.hb-tabs .sp{flex:1}
+.wk-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center}
+.wk-goal{font-family:var(--fd);font-size:54px;font-weight:600;letter-spacing:-.05em;line-height:1}
+.wk-goal small{font-size:16px;font-weight:500;color:var(--ink3);margin-left:6px;letter-spacing:0}
+.wk-rules{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:13.5px;line-height:1.6}
+.wk-rules li{padding-left:16px;position:relative}
+.wk-rules li::before{content:'';position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:#000}
+.wk-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wk-kpi{background:#fff;border-radius:var(--r-m);padding:16px 18px}
+.wk-kpi .k{font-size:12px;color:var(--ink2);font-weight:600}
+.wk-kpi .v{font-family:var(--fd);font-size:30px;font-weight:500;letter-spacing:-.04em;margin-top:6px;line-height:1.1}
+.wk-kpi .v small{font-size:13px;color:var(--ink3);margin-left:3px;font-weight:500}
+.wk-kpi .s{font-size:11.5px;color:var(--ink3);margin-top:3px}
+.wk-asof{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;background:#fff;border-radius:var(--pill);padding:6px 13px}
+.wk-asof i{width:7px;height:7px;border-radius:50%;background:#16A085;display:inline-block}
+.wk-tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.wk-tbl th{font-size:11.5px;color:var(--ink3);font-weight:600;text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+.wk-tbl td{padding:12px 8px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.wk-tbl tr:last-child td{border-bottom:none}
+.wk-tbl .r{text-align:right;font-family:var(--fd);font-variant-numeric:tabular-nums;white-space:nowrap}
+.wk-tbl .rk{font-family:var(--fd);font-weight:700;color:var(--ink3);width:36px}
+.wk-tbl tr.me td{background:#FFFBE6}
+.wk-bar{display:block;height:6px;background:var(--panel3);border-radius:3px;overflow:hidden;min-width:70px}
+.wk-bar i{display:block;height:100%;background:#000;border-radius:3px}
+.wk-bar.done i{background:#16A085}
+.wk-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:var(--pill);background:#16A085;color:#fff;white-space:nowrap}
+.wk-badge.off{background:var(--panel3);color:var(--ink2)}
+.wk-badge.ink{background:#000}
+.wk-tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.wk-note{background:#fff;border-radius:var(--r-l);padding:18px 20px;margin-bottom:10px}
+.wk-note .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wk-note .t{font-size:15px;font-weight:700;letter-spacing:-.03em}
+.wk-note .d{font-size:11.5px;color:var(--ink3);margin-left:auto}
+.wk-note .c{font-size:13.5px;line-height:1.75;white-space:pre-wrap;margin-top:10px;color:var(--ink2)}
+.wk-note .acts{display:flex;gap:6px;margin-top:12px}
+.wk-win{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.wk-win span{background:var(--panel2);border-radius:var(--pill);padding:6px 12px;font-size:12.5px}
+.wk-win span b{font-weight:700;margin-left:4px}
+.wk-ring{position:relative;width:170px;height:170px;margin:0 auto}
+.wk-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.wk-ring .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.wk-ring .in .p{font-family:var(--fd);font-size:34px;font-weight:600;letter-spacing:-.04em;line-height:1}
+.wk-ring .in .s{font-size:11.5px;color:var(--ink3);margin-top:6px}
+.wk-me{display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:center}
+.wk-cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.wk-cal .dw{font-size:11px;color:var(--ink3);text-align:center;font-weight:600;padding-bottom:2px}
+.wk-cal .c{background:#fff;border-radius:10px;padding:7px 6px 8px;min-height:58px;display:flex;flex-direction:column;gap:4px;font-size:11px}
+.wk-cal .c.empty{background:transparent}
+.wk-cal .c .n{color:var(--ink3);font-weight:600}
+.wk-cal .c .v{font-family:var(--fd);font-weight:600;font-size:12.5px;letter-spacing:-.02em}
+.wk-cal .c.pend{opacity:.45}
+.wk-cal .c.hi{background:#000;color:#fff}
+.wk-cal .c.hi .n{color:rgba(255,255,255,.6)}
+.wk-cal .c button{all:unset;cursor:pointer}
+.wk-cal .c .src{font-size:9.5px;color:var(--ink3)}
+.wk-sync{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff;border-radius:var(--r-m);padding:14px 16px;font-size:13px}
+.wk-sync .dot{width:9px;height:9px;border-radius:50%;background:#16A085}
+.wk-sync .dot.off{background:#E0A800}
+.wk-steps{counter-reset:st;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.wk-steps li{counter-increment:st;background:var(--panel2);border-radius:var(--r-m);padding:14px 16px 14px 52px;position:relative;font-size:13.5px;line-height:1.7}
+.wk-steps li::before{content:counter(st);position:absolute;left:16px;top:13px;width:24px;height:24px;border-radius:50%;background:#000;color:#fff;font-family:var(--fd);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.wk-steps li b{font-weight:700}
+.wk-copy{display:flex;gap:6px;align-items:center;margin-top:6px}
+.wk-copy code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:#fff;border-radius:8px;padding:7px 10px;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.wk-agree{background:var(--panel2);border-radius:var(--r-m);padding:14px 16px;font-size:12.5px;line-height:1.75;color:var(--ink2);max-height:180px;overflow:auto}
+.wk-chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;font-weight:600;margin-top:12px;cursor:pointer;color:var(--ink);letter-spacing:0}
+.wk-chk input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:#000}
+.wk-bstep{display:flex;gap:14px;align-items:flex-start;background:var(--panel2);border-radius:var(--r-l);padding:16px 18px;margin-bottom:10px}
+.wk-bstep .no{flex:none;width:30px;height:30px;border-radius:50%;background:#000;color:#fff;font-family:var(--fd);font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center}
+.wk-bstep .bd{flex:1;min-width:0}
+.wk-bstep .bd > b{font-size:16px;letter-spacing:-.03em}
+.wk-bstep .bd p{margin:5px 0 0;font-size:13.5px;line-height:1.7;color:var(--ink2)}
+.wk-bstep .bd .btn{margin-top:12px;width:100%;text-align:center;display:block;box-sizing:border-box;text-decoration:none}
+.wk-trouble{margin-top:12px;font-size:13px}
+.wk-trouble summary{cursor:pointer;font-weight:600;color:var(--ink2);padding:6px 0}
+.wk-trouble p{margin:8px 0 0;line-height:1.75;color:var(--ink2)}
+.hb-feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.hb-post{background:#fff;border-radius:var(--r-l);overflow:hidden;display:flex;flex-direction:column}
+.hb-post img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;cursor:zoom-in;background:var(--panel2)}
+.hb-post .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.hb-post .who{font-size:13.5px;font-weight:700}
+.hb-post .who small{font-weight:500;color:var(--ink3);margin-left:6px}
+.hb-post .tag{font-size:12px;color:var(--ink2)}
+.hb-post .c{font-size:13px;line-height:1.65;white-space:pre-wrap}
+.hb-post .f{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink3);margin-top:4px}
+.hb-post .f button{margin-left:auto}
+@media (max-width:760px){
+  .wk-hero,.wk-me{grid-template-columns:1fr}
+  .wk-goal{font-size:42px}
+  .wk-cal{gap:4px}
+  .wk-cal .c{min-height:50px;padding:5px 4px;border-radius:8px}
+  .wk-cal .c .v{font-size:11px}
+  .wk-cal .c .src{display:none}
+  .wk-tbl{font-size:12.5px}
+  .wk-tbl .hide-m{display:none}
+}
 </style>
 
 </head>
@@ -1523,6 +1628,13 @@ table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#F
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="1.5"/><path d="M3 9h18"/><path d="M8 3v3"/><path d="M16 3v3"/><path d="m12 11.6 1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z"/></svg></span>
         <span class="ttl">안전보건의 날</span>
         <span class="en">Safety Day</span>
+      </button>
+
+      <button class="mbtn" data-go="health">
+        <span class="arw">↗</span>
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="4.2" r="1.8"/><path d="M8.5 9.5 11.6 7.6l3.1 1.3 1.6 3.1 2.7.9"/><path d="M11.6 7.6 10.3 13l3.2 2.6.9 5"/><path d="m10.3 13-2.2 3.4-3.6 1.1"/></svg></span>
+        <span class="ttl">보건활동</span>
+        <span class="en">Health Activity</span>
       </button>
 
       <button class="mbtn" data-go="guide">
@@ -1902,6 +2014,23 @@ table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#F
   </div>
 
   <div id="sdBody"></div>
+</section>
+
+<!-- ═══════════ 보건활동 (걷기프로그램 · 오운완) ═══════════
+     (schema_health.sql 실행 필요) -->
+<section class="panel" id="p-health" hidden>
+  <div class="pagetop">
+    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
+    <span class="pt">보건활동</span>
+    <span class="pe">Health Activity</span>
+  </div>
+
+  <div class="card">
+    <header><h2>게시판 선택</h2><span class="note" id="hbNote">HEALTH</span></header>
+    <div class="sitebar" id="hbBoardBar"></div>
+  </div>
+
+  <div id="hbBody"></div>
 </section>
 
 <!-- ═══════════ 근로자의견청취 ═══════════ -->
@@ -3234,6 +3363,7 @@ function go(p){
   if(p === 'super') svEnter();
   if(p === 'permit') wpEnter();
   if(p === 'safeday') sdEnter();
+  if(p === 'health') hbEnter();
 }
 
 /* ===================== 부서 ===================== */
@@ -6091,6 +6221,992 @@ function sdPickOpen(list){
     const p = e.target.closest('[data-sdpick]');
     if(p){ const r = list.find(x => String(x.id) === p.dataset.sdpick); bg.remove(); if(r) sdOpen(r); }
   });
+}
+
+/* ===================== 보건활동 (걷기프로그램 · 오운완) =====================
+   schema_health.sql 의 표를 씁니다.
+   · 걷기프로그램 : 공지사항(규칙 · 달성자 발표 · 상금 내역 · 안내) / 실적 현황(순위) / 내 실적 / 참여신청 / 관리(비밀번호)
+     - 누적 걸음 수는 '아침 8시 기준'으로 보여 줍니다. 8시가 지나면 어제까지, 8시 전이면 그제까지의 기록만 집계합니다.
+       (휴대폰에서 걸음 수가 수시로 들어와도 화면 숫자는 하루 한 번, 아침 8시에만 바뀝니다)
+     - 아이폰 : 단축어(Shortcuts)가 건강 앱 걸음 수를 walk_push 로 보내 자동 기록
+     - 갤럭시 : 전용 앱 '시몬스 걷기'(걷기연동앱_안드로이드 → simmons-walk.apk)가 헬스 커넥트로 읽어 walk_push 로 1시간마다 전송
+                (앱을 못 쓰면 캡처 사진 + 직접 입력)
+     - 이 기기에서 신청(또는 불러오기)한 참여자는 STORE 'walk_token' 으로 기억합니다
+   · 오운완 : 운동 종류 · 시간 · 사진으로 '오늘 운동 완료' 인증 피드 */
+const WALK_GOAL = 250000;
+const WALK_APK = 'simmons-walk.apk';   // 갤럭시 자동 연동 앱 (index.html 과 같은 폴더에 올립니다)
+/** 웹 주소(https)로 열었는지 · 카카오톡 안 브라우저인지 */
+const wkIsWeb = () => /^https?:$/.test(location.protocol);
+const wkInKakao = () => /KAKAOTALK/i.test(navigator.userAgent || '');
+/** 앱 설치 파일 주소 : 웹으로 열었으면 같은 폴더, 파일로 열었으면 배포 주소 */
+const wkApkUrl = () => new URL(WALK_APK, wkIsWeb() ? location.href : (meta('tbm-site-url') || location.href)).href;
+/** 지금 화면을 크롬(외부 브라우저)에서 다시 여는 주소 */
+function wkExternalUrl(){
+  const page = wkIsWeb() ? location.href.split('#')[0] : (meta('tbm-site-url') || '');
+  const u = page + (page.includes('?') ? '&' : '?') + 'go=health';
+  return wkInKakao() ? 'kakaotalk://web/openExternal?url=' + encodeURIComponent(u) : u;
+}
+const HB_BOARDS = [ { k:'walk', t:'걷기프로그램' }, { k:'ohunwan', t:'오운완 (오늘 운동 완료)' } ];
+const WK_TABS = [ { k:'notice', t:'공지사항' }, { k:'rank', t:'실적 현황' }, { k:'me', t:'내 실적' },
+                  { k:'apply', t:'참여신청' }, { k:'admin', t:'관리 🔒' } ];
+const WK_DEV = { iphone:'아이폰', galaxy:'갤럭시', etc:'기타' };
+const WK_SRC = { ios:'아이폰 자동', android:'갤럭시 자동', manual:'직접 입력' };
+const HB = { board:'walk', tab:'notice', bound:false, key:'', dept:'' };
+const WK = { parts:[], steps:[], stepsYm:'', notices:[], me:null, admin:{}, cfg:{}, err:'',loading:false, ym:'', lastCut:'', applyDev:'iphone' };
+const OH = { posts:[], err:'', files:[], ex:'', loaded:false };
+const OH_EX = ['걷기','러닝','헬스','홈트','요가 · 스트레칭','자전거','등산','수영','구기 운동','기타'];
+
+const wkNum = n => Math.round(Number(n || 0)).toLocaleString('ko-KR');
+const wkYm = d => String(d || '').slice(0,7);
+const wkArr = v => { if(typeof v === 'string'){ try{ v = JSON.parse(v); }catch(e){ v = []; } } return Array.isArray(v) ? v : []; };
+const wkYmLabel = ym => `${ym.slice(0,4)}년 ${+ym.slice(5,7)}월`;
+const wkMonthEnd = ym => { const [y,m] = ym.split('-').map(Number); return ymd(new Date(y, m, 0)); };
+const wkDaysIn = ym => { const [y,m] = ym.split('-').map(Number); return new Date(y, m, 0).getDate(); };
+/** 집계 마지막 날 : 8시가 지났으면 어제, 아니면 그제 */
+function wkCut(){ const n = new Date(); return ymd(new Date(n.getFullYear(), n.getMonth(), n.getDate() - (n.getHours() >= 8 ? 1 : 2))); }
+function wkAsOf(){
+  const n = new Date(), b = n.getHours() >= 8 ? n : new Date(n.getFullYear(), n.getMonth(), n.getDate() - 1);
+  const c = wkCut();
+  return `${b.getMonth()+1}월 ${b.getDate()}일 08:00 기준 · ${+c.slice(5,7)}월 ${+c.slice(8,10)}일까지 집계`;
+}
+/** 그 달에서 집계에 들어간 날 수 */
+function wkElapsed(ym){
+  const cut = wkCut();
+  if(cut >= wkMonthEnd(ym)) return wkDaysIn(ym);
+  if(cut < ym + '-01') return 0;
+  return +cut.slice(8,10);
+}
+function wkMonths(){
+  const cutYm = wkYm(wkCut());
+  const start = WK.parts.reduce((a,p) => { const m = wkYm(ymd(new Date(p.created_at))); return m < a ? m : a; }, cutYm);
+  const out = []; let [y,m] = cutYm.split('-').map(Number);
+  while(out.length < 12){
+    const k = `${y}-${String(m).padStart(2,'0')}`; out.push(k);
+    if(k <= start) break;
+    if(--m === 0){ m = 12; y--; }
+  }
+  return out;
+}
+const wkPrevYm = () => { const c = wkCut(); const d = new Date(+c.slice(0,4), +c.slice(5,7) - 2, 1); return wkYm(ymd(d)); };
+
+async function wkFetchSteps(ym){
+  const out = [];
+  for(let i = 0; ; i += 1000){
+    const { data, error } = await db.from('walk_steps')
+      .select('participant_id,step_date,steps,source,proof_url,updated_at')
+      .gte('step_date', ym + '-01').lte('step_date', wkMonthEnd(ym))
+      .order('step_date').order('participant_id').range(i, i + 999);
+    if(error) throw error;
+    out.push(...(data || []));
+    if(!data || data.length < 1000) break;
+  }
+  return out;
+}
+async function wkLoad(){
+  WK.loading = true; renderHealth();
+  const [p, n, g] = await Promise.all([
+    db.from('walk_participants').select('id,dept,name,device,goal,active,last_sync_at,last_sync_src,created_at').order('created_at'),
+    db.from('walk_notices').select('*').order('created_at', { ascending:false }).limit(300),
+    db.from('walk_config').select('key,value')
+  ]);
+  WK.err = (p.error || n.error) ? (p.error || n.error).message : '';
+  WK.parts = p.data || []; WK.notices = n.data || [];
+  WK.cfg = Object.fromEntries((g.data || []).map(r => [r.key, r.value || '']));   // 표가 없어도 나머지는 동작
+  WK.lastCut = wkCut();
+  if(!WK.ym || WK.ym > wkYm(WK.lastCut)) WK.ym = wkYm(WK.lastCut);
+  if(!WK.err){
+    try{ WK.steps = await wkFetchSteps(WK.ym); WK.stepsYm = WK.ym; }catch(e){ WK.err = e.message; }
+    await wkLoadMe();
+    if(UNLOCKED.walkadmin) await wkAdminLoad();
+  }
+  WK.loading = false; renderHealth();
+}
+async function wkSetYm(ym){
+  WK.ym = ym;
+  try{ WK.steps = await wkFetchSteps(ym); WK.stepsYm = ym; }catch(e){ toast('실적 조회 실패: ' + e.message, 'err'); }
+  HB.key = ''; renderHealth();
+}
+async function wkLoadMe(){
+  const t = STORE.get('walk_token');
+  if(!t){ WK.me = null; return; }
+  const { data, error } = await db.from('walk_participants').select('*').eq('token', t).maybeSingle();
+  if(error) return;
+  WK.me = data || null;
+  if(!data) STORE.set('walk_token', '');
+}
+async function wkAdminLoad(){
+  const { data } = await db.from('walk_participants').select('id,phone4,memo,agreed_at');
+  WK.admin = Object.fromEntries((data || []).map(r => [r.id, r]));
+}
+
+/** 그 달 참여자별 누적 (아침 8시 집계일까지만) */
+function wkBoard(ym, steps){
+  const cut = wkCut();
+  const map = new Map(WK.parts.map(p => [p.id, { p, total:0, days:0 }]));
+  (steps || WK.steps).forEach(s => {
+    if(wkYm(s.step_date) !== ym || s.step_date > cut) return;
+    const r = map.get(s.participant_id); if(!r) return;
+    r.total += s.steps || 0; if(s.steps > 0) r.days++;
+  });
+  const rows = [...map.values()]
+    .filter(r => r.total > 0 || (r.p.active && wkYm(ymd(new Date(r.p.created_at))) <= ym))
+    .sort((a,b) => b.total - a.total || a.p.name.localeCompare(b.p.name, 'ko'));
+  let rk = 0, prev = -1;
+  rows.forEach((r,i) => { if(r.total !== prev){ rk = i + 1; prev = r.total; } r.rank = rk; r.done = r.total >= WALK_GOAL; });
+  return rows;
+}
+
+/* ── 화면 ── */
+function hbEnter(){
+  if(!HB.bound){
+    HB.bound = true;
+    $('#hbBoardBar').onclick = e => {
+      const b = e.target.closest('[data-hbb]'); if(!b) return;
+      HB.board = b.dataset.hbb; HB.key = '';
+      if(HB.board === 'ohunwan' && !OH.loaded) ohLoad();
+      renderHealth();
+    };
+    $('#hbBody').addEventListener('click', hbClick);
+    $('#hbBody').addEventListener('change', hbChange);
+    /* 화면을 켜 둔 채 아침 8시가 지나면 새 집계로 바꿉니다 */
+    setInterval(() => { if(!$('#p-health').hidden && HB.board === 'walk' && WK.lastCut && wkCut() !== WK.lastCut) wkLoad(); }, 60000);
+  }
+  wkLoad(); ohLoad();
+}
+function renderHealth(){
+  $('#hbBoardBar').innerHTML = HB_BOARDS.map(b =>
+    `<button class="bd-btn" data-hbb="${b.k}" aria-pressed="${HB.board === b.k}">
+       <span class="bl">${esc(b.t)}</span>
+       <span class="bn num">${b.k === 'walk' ? WK.parts.filter(p => p.active).length + '명' : OH.posts.length + '건'}</span></button>`).join('');
+  $('#hbNote').textContent = HB.board === 'walk' ? 'WALKING CHALLENGE' : 'OHUNWAN';
+  if(HB.board === 'walk') wkRender(); else ohRender();
+}
+function wkRender(){
+  const box = $('#hbBody');
+  const key = 'walk:' + HB.tab;
+  if(HB.tab === 'apply' && HB.key === key && $('#wkApplyForm')) return;   // 작성 중인 신청서는 그대로 둡니다
+  HB.key = key;
+  const tabs = `<div class="hb-tabs">${WK_TABS.map(t =>
+    `<button type="button" data-wkt="${t.k}" aria-pressed="${HB.tab === t.k}">${t.k === 'apply' && WK.me ? '참여신청 ✓' : esc(t.t)}</button>`).join('')}</div>`;
+  if(WK.loading && !WK.parts.length && !WK.err){ box.innerHTML = tabs + '<div class="empty"><div class="big">불러오는 중…</div></div>'; return; }
+  if(WK.err){
+    box.innerHTML = tabs + `<div class="empty"><div class="big">걷기프로그램을 불러오지 못했습니다</div>
+      <div class="s">${esc(WK.err)}<br>관리자는 Supabase SQL Editor 에서 <b>schema_health.sql</b> 을 먼저 실행해 주세요.</div></div>`;
+    return;
+  }
+  const fn = { notice:wkNoticeHtml, rank:wkRankHtml, me:wkMeHtml, apply:wkApplyHtml, admin:wkAdminHtml }[HB.tab] || wkNoticeHtml;
+  box.innerHTML = tabs + fn();
+}
+const wkMonthBar = () => `<div class="quick">${wkMonths().map(m =>
+  `<button type="button" class="qb" data-wkym="${m}" aria-pressed="${WK.ym === m}">${wkYmLabel(m)}</button>`).join('')}</div>`;
+const wkAsOfChip = () => `<span class="wk-asof"><i></i>${esc(wkAsOf())}</span>`;
+
+/* ── 공지사항 ── */
+function wkGuideLines(){
+  const g = WK.notices.find(n => n.kind === 'guide');
+  if(g && String(g.content || '').trim())
+    return String(g.content).split('\n').map(s => s.replace(/^[-•·*\s]+/, '').trim()).filter(Boolean);
+  return [
+    '매월 1일부터 말일까지 걸은 걸음 수를 모두 더합니다.',
+    '누적 걸음 수는 매일 아침 8시에 전날 기록까지 반영해 업데이트됩니다.',
+    `한 달 ${wkNum(WALK_GOAL)}보(하루 평균 약 8,300보) 이상 걸으면 달성자로 선정되어 상금을 드립니다.`,
+    '참여신청 후 휴대폰(아이폰 · 갤럭시)을 연동하면 걸음 수가 자동으로 기록됩니다.',
+    '달성자 명단과 상금 지급 내역은 매월 초 이 게시판에 발표합니다.'
+  ];
+}
+function wkWinners(){
+  return WK.notices.filter(n => n.kind === 'winner')
+    .sort((a,b) => String(b.ym || '').localeCompare(String(a.ym || '')) || String(b.created_at).localeCompare(String(a.created_at)));
+}
+function wkNoticeCard(n){
+  const w = wkArr(n.winners);
+  const d = ymd(new Date(n.created_at)).replace(/-/g, '.');
+  return `<div class="wk-note">
+    <div class="h">${n.pinned ? '<span class="wk-badge ink">고정</span>' : ''}
+      ${n.kind === 'winner' ? `<span class="wk-badge">${esc(n.ym ? wkYmLabel(n.ym) : '')} 달성자</span>` : ''}
+      <span class="t">${esc(n.title)}</span><span class="d">${d}</span></div>
+    ${n.kind === 'winner' ? `<div class="hint" style="margin-top:6px">달성자 ${w.length}명${n.prize_per ? ` · 1인 ${wkNum(n.prize_per)}원 · 총 ${wkNum(n.prize_per * w.length)}원` : ''}${n.paid ? ` · ${esc(n.paid)}` : ''}</div>` : ''}
+    ${n.content ? `<div class="c">${esc(n.content)}</div>` : ''}
+    ${w.length ? `<div class="wk-win">${w.map(x => `<span>${esc(x.dept || '')} ${esc(x.name)}<b>${wkNum(x.steps)}보</b></span>`).join('')}</div>` : ''}
+    ${UNLOCKED.walkadmin ? `<div class="acts"><button type="button" class="btn sm ghost" data-wkne="${esc(n.id)}">수정</button>
+      <button type="button" class="btn sm danger" data-wknd="${esc(n.id)}">삭제</button></div>` : ''}
+  </div>`;
+}
+function wkNoticeHtml(){
+  const rows = wkBoard(WK.ym);
+  const done = rows.filter(r => r.done).length;
+  const avg = rows.length ? rows.reduce((a,r) => a + r.total, 0) / rows.length : 0;
+  const wins = wkWinners(), latest = wins[0];
+  const prize = latest && latest.prize_per;
+  const notices = WK.notices.filter(n => n.kind === 'notice')
+    .sort((a,b) => (b.pinned - a.pinned) || String(b.created_at).localeCompare(String(a.created_at)));
+  const paidSum = wins.reduce((a,n) => a + (n.prize_per || 0) * wkArr(n.winners).length, 0);
+
+  return `<div class="card">
+    <header><h2>매월 걷기 챌린지</h2><span class="note">${esc(wkYmLabel(WK.ym))}</span></header>
+    <div class="wk-hero">
+      <div>
+        <div class="wk-goal">${wkNum(WALK_GOAL)}<small>보 / 월</small></div>
+        <ul class="wk-rules">${wkGuideLines().map(l => `<li>${esc(l)}</li>`).join('')}</ul>
+        <div class="foot" style="border-top:none;padding-top:0;margin-top:20px">
+          ${WK.me ? `<button type="button" class="btn" data-wkt="me">내 실적 보기</button>`
+                  : `<button type="button" class="btn" data-wkt="apply">참여신청 하기</button>`}
+          <button type="button" class="btn ghost" data-wkt="rank">실적 현황</button>
+        </div>
+      </div>
+      <div>
+        <div class="wk-kpis">
+          <div class="wk-kpi"><div class="k">참여자</div><div class="v">${rows.length}<small>명</small></div><div class="s">${esc(wkYmLabel(WK.ym))}</div></div>
+          <div class="wk-kpi"><div class="k">현재 달성자</div><div class="v">${done}<small>명</small></div><div class="s">${wkNum(WALK_GOAL)}보 이상</div></div>
+          <div class="wk-kpi"><div class="k">평균 누적</div><div class="v">${wkNum(avg)}<small>보</small></div><div class="s">${wkElapsed(WK.ym)}일 집계</div></div>
+          <div class="wk-kpi"><div class="k">1인 상금</div><div class="v">${prize ? wkNum(prize) + '<small>원</small>' : '<small style="margin:0">발표 예정</small>'}</div><div class="s">${latest && latest.ym ? esc(wkYmLabel(latest.ym)) + ' 발표 기준' : '달성자 발표 시 안내'}</div></div>
+        </div>
+        <div style="margin-top:12px">${wkAsOfChip()}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <header><h2>달성자 발표</h2>
+      <button type="button" class="btn sm ghost" data-wknew>공지 · 발표 작성 🔒</button></header>
+    ${latest ? wkNoticeCard(latest) : `<div class="empty"><div class="big">아직 발표된 달성자가 없습니다</div>
+      <div class="s">매월 초, 지난달 ${wkNum(WALK_GOAL)}보 달성자와 상금을 이곳에 발표합니다.</div></div>`}
+    ${wins.length > 1 ? `<details class="scoref"><summary>지난 발표 ${wins.length - 1}건 보기</summary>
+      <div style="margin-top:10px">${wins.slice(1).map(wkNoticeCard).join('')}</div></details>` : ''}
+  </div>
+
+  <div class="card">
+    <header><h2>상금 지급 내역</h2><span class="note">누적 ${wkNum(paidSum)}원</span></header>
+    ${wins.length ? `<div class="wk-tblwrap"><table class="wk-tbl">
+      <thead><tr><th>대상 월</th><th class="r">달성자</th><th class="r">1인 상금</th><th class="r">총 지급액</th><th>지급 상태</th></tr></thead>
+      <tbody>${wins.map(n => { const c = wkArr(n.winners).length; return `<tr>
+        <td>${esc(n.ym ? wkYmLabel(n.ym) : '-')}</td><td class="r">${c}명</td>
+        <td class="r">${n.prize_per ? wkNum(n.prize_per) + '원' : '-'}</td>
+        <td class="r"><b>${n.prize_per ? wkNum(n.prize_per * c) + '원' : '-'}</b></td>
+        <td>${esc(n.paid || '-')}</td></tr>`; }).join('')}</tbody></table></div>`
+      : '<p class="hint" style="margin:0">달성자 발표를 올리면 월별 상금 내역이 자동으로 정리됩니다.</p>'}
+  </div>
+
+  <div class="card">
+    <header><h2>안내사항</h2><span class="note">${notices.length}건</span></header>
+    ${notices.length ? notices.map(wkNoticeCard).join('') : '<p class="hint" style="margin:0">등록된 안내사항이 없습니다.</p>'}
+  </div>`;
+}
+
+/* ── 실적 현황 ── */
+function wkRankHtml(){
+  const all = wkBoard(WK.ym);
+  const depts = [...new Set(all.map(r => r.p.dept))].sort((a,b) => a.localeCompare(b, 'ko'));
+  if(HB.dept && !depts.includes(HB.dept)) HB.dept = '';
+  const rows = HB.dept ? all.filter(r => r.p.dept === HB.dept) : all;
+  const el = wkElapsed(WK.ym), dim = wkDaysIn(WK.ym), pace = WALK_GOAL * el / dim;
+  const done = all.filter(r => r.done).length;
+  const avg = all.length ? all.reduce((a,r) => a + r.total, 0) / all.length : 0;
+  const meId = WK.me && WK.me.id;
+  return `<div class="card">
+    <header><h2>${esc(wkYmLabel(WK.ym))} 실적 현황</h2>${wkAsOfChip()}</header>
+    ${wkMonthBar()}
+    <div class="wk-kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:16px">
+      <div class="wk-kpi"><div class="k">참여자</div><div class="v">${all.length}<small>명</small></div></div>
+      <div class="wk-kpi"><div class="k">달성자</div><div class="v">${done}<small>명</small></div><div class="s">${wkNum(WALK_GOAL)}보 이상</div></div>
+      <div class="wk-kpi"><div class="k">평균 누적</div><div class="v">${wkNum(avg)}<small>보</small></div></div>
+      <div class="wk-kpi"><div class="k">지금 목표 페이스</div><div class="v">${wkNum(pace)}<small>보</small></div><div class="s">${el} / ${dim}일 경과 기준</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <header><h2>개인별 순위</h2>
+      <select class="bmv" data-wkdept><option value="">전체 부서</option>${depts.map(d => `<option ${HB.dept === d ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></header>
+    ${rows.length ? `<div class="wk-tblwrap"><table class="wk-tbl">
+      <thead><tr><th>순위</th><th>부서</th><th>이름</th><th class="r">누적 걸음</th><th style="width:22%">진행률</th><th class="r hide-m">일평균</th><th>상태</th></tr></thead>
+      <tbody>${rows.map(r => {
+        const pct = Math.min(100, r.total / WALK_GOAL * 100);
+        const st = r.done ? '<span class="wk-badge">달성</span>'
+          : r.total >= pace ? '<span class="wk-badge ink">순항</span>' : '<span class="wk-badge off">분발</span>';
+        return `<tr class="${r.p.id === meId ? 'me' : ''}">
+          <td class="rk">${r.rank}</td><td>${esc(r.p.dept)}</td><td><b>${esc(r.p.name)}</b>${r.p.id === meId ? ' <small class="hint">(나)</small>' : ''}</td>
+          <td class="r"><b>${wkNum(r.total)}</b></td>
+          <td><span class="wk-bar ${r.done ? 'done' : ''}"><i style="width:${pct.toFixed(1)}%"></i></span>
+              <small class="hint">${pct.toFixed(0)}%</small></td>
+          <td class="r hide-m">${el ? wkNum(r.total / el) : 0}</td><td>${st}</td></tr>`;
+      }).join('')}</tbody></table></div>`
+      : `<div class="empty"><div class="big">참여자가 없습니다</div><div class="s">참여신청을 하면 이곳에 순위가 나옵니다.</div></div>`}
+    <p class="hint" style="margin:14px 0 0">오늘 걸은 걸음은 내일 아침 8시에 반영됩니다. ‘순항’은 지금까지의 날짜 기준 목표 페이스(${wkNum(pace)}보) 이상인 경우입니다.</p>
+  </div>`;
+}
+
+/* ── 내 실적 ── */
+function wkMeHtml(){
+  if(!WK.me){
+    return `<div class="card">
+      <header><h2>내 정보 불러오기</h2><span class="note">MY RECORD</span></header>
+      <p class="hint" style="margin:0 0 16px">참여신청 때 적은 이름과 휴대폰 뒷 4자리를 넣으면 이 기기에서 내 실적을 볼 수 있습니다.</p>
+      <div class="grid">
+        <div><label>이름</label><input type="text" id="wkLkName" autocomplete="name"></div>
+        <div><label>휴대폰 뒷 4자리</label><input type="password" id="wkLkPin" inputmode="numeric" maxlength="4"></div>
+      </div>
+      <div class="foot"><button type="button" class="btn" data-wklookup>불러오기</button>
+        <button type="button" class="btn ghost" data-wkt="apply">아직 신청 안 했어요 → 참여신청</button></div>
+    </div>`;
+  }
+  const me = WK.me, ym = WK.ym, cut = wkCut();
+  const mine = WK.steps.filter(s => s.participant_id === me.id);
+  const byDate = Object.fromEntries(mine.map(s => [s.step_date, s]));
+  const total = mine.filter(s => s.step_date <= cut).reduce((a,s) => a + (s.steps || 0), 0);
+  const el = wkElapsed(ym), dim = wkDaysIn(ym), left = Math.max(0, WALK_GOAL - total), rest = dim - el;
+  const need = rest > 0 ? Math.ceil(left / rest) : 0;
+  const pct = Math.min(100, total / WALK_GOAL * 100);
+  const C = 2 * Math.PI * 74;
+  const rank = (wkBoard(ym).find(r => r.p.id === me.id) || {}).rank;
+  const daily = WALK_GOAL / dim;
+
+  /* 달력 */
+  const first = new Date(+ym.slice(0,4), +ym.slice(5,7) - 1, 1).getDay();
+  let cal = DOW.map(d => `<div class="dw">${d}</div>`).join('') + '<div class="c empty"></div>'.repeat(first);
+  for(let i = 1; i <= dim; i++){
+    const d = `${ym}-${String(i).padStart(2,'0')}`, s = byDate[d];
+    const future = d > TODAY, pend = d > cut;
+    const v = s ? wkNum(s.steps) : (pend ? '' : '—');
+    cal += `<div class="c ${s && !pend && s.steps >= daily ? 'hi' : ''} ${pend && s ? 'pend' : ''}">
+      ${future ? `<span class="n">${i}</span>`
+        : `<button type="button" data-wkman="${d}" title="${d} 걸음 수 입력 · 수정"><span class="n">${i}</span></button>`}
+      <span class="v">${esc(v)}</span>
+      ${s ? `<span class="src">${pend ? '반영 대기' : esc(WK_SRC[s.source] || s.source)}</span>` : ''}</div>`;
+  }
+
+  const last = me.last_sync_at ? new Date(me.last_sync_at) : null;
+  const fresh = last && (Date.now() - last.getTime()) < 36 * 3600e3;
+  const sync = last
+    ? `<span class="dot ${fresh ? '' : 'off'}"></span><span><b>${fresh ? '자동 연동 중' : '최근 자동 수신 없음'}</b> · 마지막 수신 ${ymd(last).slice(5).replace('-','.')} ${String(last.getHours()).padStart(2,'0')}:${String(last.getMinutes()).padStart(2,'0')} (${esc(WK_SRC[me.last_sync_src] || me.last_sync_src || '')})</span>`
+    : `<span class="dot off"></span><span><b>아직 휴대폰 자동 연동 기록이 없습니다.</b> 연동 설정을 마치면 걸음 수가 자동으로 들어옵니다.</span>`;
+
+  return `<div class="card">
+    <header><h2>${esc(me.name)} 님의 걷기 실적</h2><span class="note">${esc(me.dept)} · ${esc(WK_DEV[me.device] || '')}</span></header>
+    ${wkMonthBar()}
+    <div style="margin:14px 0 18px">${wkAsOfChip()}</div>
+    <div class="wk-me">
+      <div class="wk-ring">
+        <svg viewBox="0 0 170 170"><circle cx="85" cy="85" r="74" fill="none" stroke="#E9E9E9" stroke-width="12"/>
+          <circle cx="85" cy="85" r="74" fill="none" stroke="${pct >= 100 ? '#16A085' : '#000'}" stroke-width="12" stroke-linecap="round"
+            stroke-dasharray="${(C * pct / 100).toFixed(1)} ${C.toFixed(1)}"/></svg>
+        <div class="in"><span class="p">${pct.toFixed(0)}%</span><span class="s">${pct >= 100 ? '달성 완료 🎉' : '챌린지 달성률'}</span></div>
+      </div>
+      <div class="wk-kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+        <div class="wk-kpi"><div class="k">이번 달 누적</div><div class="v">${wkNum(total)}<small>보</small></div><div class="s">${rank ? `전체 ${rank}위` : ''}</div></div>
+        <div class="wk-kpi"><div class="k">달성까지 남은 걸음</div><div class="v">${wkNum(left)}<small>보</small></div><div class="s">${left ? (rest > 0 ? `남은 ${rest}일 · 하루 ${wkNum(need)}보` : '집계 마감') : '목표 달성!'}</div></div>
+        <div class="wk-kpi"><div class="k">일평균</div><div class="v">${el ? wkNum(total / el) : 0}<small>보</small></div><div class="s">${el}일 집계</div></div>
+        <div class="wk-kpi"><div class="k">내 목표</div><div class="v">${wkNum(me.goal)}<small>보</small></div><div class="s">${Math.min(999, total / (me.goal || WALK_GOAL) * 100).toFixed(0)}% 진행</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <header><h2>휴대폰 연동</h2><span class="note">SYNC</span></header>
+    <div class="wk-sync">${sync}</div>
+    <div class="foot" style="border-top:none;padding-top:0;margin-top:14px">
+      <button type="button" class="btn" data-wklink>휴대폰 연동 설정</button>
+      <button type="button" class="btn ghost" data-wkman="">걸음 수 직접 입력</button>
+      <button type="button" class="btn ghost" data-wkreload>새로고침</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn sm ghost" data-wklogout>이 기기에서 내 정보 지우기</button>
+    </div>
+  </div>
+  <div class="card">
+    <header><h2>${esc(wkYmLabel(ym))} 날짜별 걸음</h2><span class="note">검정 칸 = 하루 ${wkNum(daily)}보 이상</span></header>
+    <div class="wk-cal">${cal}</div>
+    <p class="hint" style="margin:14px 0 0">날짜를 누르면 그날 걸음 수를 직접 입력 · 수정할 수 있습니다. ‘반영 대기’는 다음 아침 8시 집계에 들어갑니다.</p>
+  </div>`;
+}
+
+/* ── 참여신청 ── */
+function wkApplyHtml(){
+  if(WK.me){
+    const me = WK.me;
+    return `<div class="card">
+      <header><h2>참여신청이 완료되었습니다</h2><span class="note">${esc(ymd(new Date(me.created_at)).replace(/-/g,'.'))} 신청</span></header>
+      <div class="wk-kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+        <div class="wk-kpi"><div class="k">부서</div><div class="v" style="font-size:20px">${esc(me.dept)}</div></div>
+        <div class="wk-kpi"><div class="k">이름</div><div class="v" style="font-size:20px">${esc(me.name)}</div></div>
+        <div class="wk-kpi"><div class="k">휴대폰</div><div class="v" style="font-size:20px">${esc(WK_DEV[me.device] || '')}</div></div>
+        <div class="wk-kpi"><div class="k">월 목표</div><div class="v" style="font-size:20px">${wkNum(me.goal)}<small>보</small></div></div>
+      </div>
+      <div class="foot"><button type="button" class="btn" data-wklink>휴대폰 연동 설정</button>
+        <button type="button" class="btn ghost" data-wkt="me">내 실적 보기</button></div>
+    </div>`;
+  }
+  const deptOpts = [...new Set([...(DEPTS || []).map(d => d.name), ...FIRE_DEPTS])];
+  const dv = WK.applyDev;
+  return `<div class="card" id="wkApplyForm">
+    <header><h2>걷기 챌린지 참여신청</h2><span class="note">APPLY</span></header>
+    <p class="hint" style="margin:0 0 18px">신청서를 제출하면 바로 휴대폰 연동 안내가 나옵니다. 연동 후에는 걸음 수가 자동으로 기록되고, 매일 아침 8시에 누적 실적이 업데이트됩니다.</p>
+    <div class="grid">
+      <div><label>부서 <em>*</em></label><input type="text" id="waDept" list="waDeptList" placeholder="예) 생산팀">
+        <datalist id="waDeptList">${deptOpts.map(d => `<option value="${esc(d)}">`).join('')}</datalist></div>
+      <div><label>이름 <em>*</em></label><input type="text" id="waName" autocomplete="name" placeholder="예) 김시몬"></div>
+      <div><label>휴대폰 뒷 4자리 <em>*</em></label><input type="text" id="waPin" inputmode="numeric" maxlength="4" placeholder="본인 확인용 (예: 1234)"></div>
+      <div><label>월 목표 걸음 <em>*</em></label><select id="waGoal">
+        <option value="250000">250,000보 (챌린지 기준)</option><option value="300000">300,000보</option>
+        <option value="350000">350,000보</option><option value="400000">400,000보</option><option value="500000">500,000보</option></select></div>
+      <div class="wide"><label>사용하는 휴대폰 <em>*</em></label>
+        <div class="quick">${Object.entries(WK_DEV).map(([k,t]) => `<button type="button" class="qb" data-wadev="${k}" aria-pressed="${dv === k}">${t}</button>`).join('')}</div>
+        <p class="hint" style="margin:8px 0 0">아이폰은 ‘단축어’, 갤럭시는 전용 앱 ‘시몬스 걷기’로 걸음 수가 자동 기록됩니다.</p></div>
+      <div class="wide"><label>기타</label><textarea id="waMemo" style="min-height:80px" placeholder="건강상 유의사항, 문의사항 등 (선택)"></textarea></div>
+      <div class="wide"><label>개인정보 수집 · 이용 동의 <em>*</em></label>
+        <div class="wk-agree">
+          <b>1. 수집 항목</b> : 부서, 이름, 휴대폰 번호 뒷 4자리, 사용 휴대폰 종류, 일별 걸음 수, (직접 입력 시) 걸음 수 캡처 사진<br>
+          <b>2. 수집 · 이용 목적</b> : 사내 걷기 챌린지 운영, 개인별 실적 집계, 달성자 선정 및 상금 지급<br>
+          <b>3. 보유 · 이용 기간</b> : 챌린지 종료 후 1년 (상금 지급 증빙 기간) 경과 시 지체 없이 파기<br>
+          <b>4. 동의 거부 권리</b> : 동의를 거부할 수 있으며, 이 경우 걷기 챌린지 참여와 상금 지급이 제한됩니다.<br>
+          ※ 걸음 수 외의 건강 정보(심박, 위치 등)는 수집하지 않습니다.
+        </div>
+        <label class="wk-chk"><input type="checkbox" id="waAg1"> [필수] 위 개인정보 수집 · 이용에 동의합니다</label>
+        <label class="wk-chk"><input type="checkbox" id="waAg2"> [필수] 부서 · 이름 · 누적 걸음 수가 실적 현황 순위와 달성자 발표에 공개되는 것에 동의합니다</label>
+      </div>
+    </div>
+    <div class="foot"><button type="button" class="btn" data-wkapply>신청서 제출</button>
+      <button type="button" class="btn ghost" data-wkt="me">이미 신청했어요 → 내 정보 불러오기</button></div>
+  </div>`;
+}
+async function wkApply(btn){
+  const v = id => ($('#' + id).value || '').trim();
+  const dept = v('waDept'), name = v('waName'), pin = v('waPin'), goal = +v('waGoal') || WALK_GOAL, memo = v('waMemo');
+  if(!dept) return toast('부서를 입력해 주세요', 'err');
+  if(!name) return toast('이름을 입력해 주세요', 'err');
+  if(!/^\d{4}$/.test(pin)) return toast('휴대폰 뒷 4자리를 숫자 4개로 입력해 주세요', 'err');
+  if(!$('#waAg1').checked || !$('#waAg2').checked) return toast('필수 동의 항목에 모두 체크해 주세요', 'err');
+  btn.disabled = true;
+  const { data, error } = await db.from('walk_participants').insert({
+    dept, name, phone4:pin, device:WK.applyDev, goal, memo:memo || null,
+    agree_privacy:true, agree_public:true, agreed_at:new Date().toISOString()
+  }).select('*').single();
+  btn.disabled = false;
+  if(error){
+    if(error.code === '23505') toast('이미 신청된 이름 · 번호입니다. [내 실적]에서 불러와 주세요', 'err');
+    else toast('신청 실패: ' + error.message, 'err');
+    return;
+  }
+  STORE.set('walk_token', data.token);
+  WK.me = data;
+  toast('참여신청이 완료되었습니다');
+  HB.tab = 'me';
+  await wkLoad();
+  wkLinkOpen(data.device);
+}
+async function wkLookup(){
+  const name = ($('#wkLkName').value || '').trim(), pin = ($('#wkLkPin').value || '').trim();
+  if(!name || !/^\d{4}$/.test(pin)) return toast('이름과 휴대폰 뒷 4자리를 넣어 주세요', 'err');
+  const { data, error } = await db.from('walk_participants').select('*').eq('name', name).eq('phone4', pin).maybeSingle();
+  if(error) return toast('조회 실패: ' + error.message, 'err');
+  if(!data) return toast('일치하는 참여자가 없습니다', 'err');
+  STORE.set('walk_token', data.token); WK.me = data;
+  toast(data.name + ' 님 정보를 불러왔습니다');
+  HB.key = ''; renderHealth();
+}
+
+/* ── 휴대폰 연동 안내 ── */
+function wkCopy(text){
+  const done = () => toast('복사했습니다');
+  if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).then(done, () => wkCopyOld(text, done));
+  wkCopyOld(text, done);
+}
+function wkCopyOld(text, done){
+  const t = document.createElement('textarea'); t.value = text; t.style.cssText = 'position:fixed;opacity:0';
+  document.body.appendChild(t); t.select();
+  try{ document.execCommand('copy'); done(); }catch(e){ prompt('아래 내용을 길게 눌러 복사하세요', text); }
+  t.remove();
+}
+/** 지금 이 화면을 연 기기 : 'iphone' · 'galaxy' · '' (PC 등) */
+function wkThisPhone(){
+  const ua = navigator.userAgent || '';
+  if(/iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'iphone';
+  if(/Android/i.test(ua)) return 'galaxy';
+  return '';
+}
+const wkStep = (no, title, body) => `<div class="wk-bstep"><span class="no">${no}</span><div class="bd"><b>${title}</b>${body}</div></div>`;
+
+/** 휴대폰 연동 : 접속한 폰을 알아서 골라 그 폰 안내만 3단계로 보여 줍니다 */
+function wkLinkOpen(dev){
+  const me = WK.me; if(!me) return toast('먼저 참여신청 또는 내 정보 불러오기를 해 주세요', 'err');
+  const here = wkThisPhone();
+  dev = here || dev || (me.device === 'galaxy' ? 'galaxy' : 'iphone');
+  const cp = (label, val) => `<div class="wk-copy"><code title="${esc(val)}">${esc(val)}</code>
+    <button type="button" class="btn sm ghost" data-wlcopy="${esc(val)}">${esc(label)} 복사</button></div>`;
+
+  /* 아이폰 : 담당자가 공유한 단축어(iCloud 링크)를 받아 '추가'할 때 개인 열쇠만 붙여넣습니다 */
+  const sc = WK.cfg.ios_shortcut || '';
+  const ios = sc ? `
+    ${wkStep(1, '단축어 받기', `<p>버튼을 누르면 <b>내 열쇠가 복사</b>되고 단축어 앱이 열립니다.<br>
+        ‘단축어 추가’ 화면의 빈칸을 길게 눌러 <b>붙여넣기</b> → <b>단축어 추가</b>.</p>
+        <button type="button" class="btn" data-wlios>열쇠 복사하고 단축어 받기</button>`)}
+    ${wkStep(2, '한 번 실행해서 허용', `<p>단축어 앱에서 <b>시몬스 걷기</b>를 한 번 누르고, 묻는 창마다 <b>허용</b>을 누릅니다.</p>`)}
+    ${wkStep(3, '자동 실행 켜기', `<p>단축어 앱 아래 <b>자동화</b> → <b>＋</b> → <b>앱</b> → <b>카카오톡</b> 선택 · <b>닫힘</b> 체크
+        → <b>즉시 실행</b> → <b>시몬스 걷기</b>. 이제 카톡을 닫을 때마다 걸음 수가 저절로 올라갑니다.</p>`)}
+    <details class="wk-trouble"><summary>잘 안 될 때</summary>
+      <p>· 아이폰은 잠겨 있을 때 건강 데이터를 읽지 못해 ‘휴대폰을 쓰는 순간(카톡 닫을 때)’에 보냅니다. 하루 여러 번 보내도 가장 큰 값만 남습니다.<br>
+         · 단축어를 다시 받아야 하면 먼저 단축어 앱에서 기존 ‘시몬스 걷기’를 지운 뒤 1번부터 다시 하세요.<br>
+         · 열쇠가 붙여넣어지지 않으면 아래 열쇠를 복사해 쓰세요.</p>${cp('열쇠', me.token)}</details>`
+    : `<div class="wk-sync" style="margin-bottom:14px"><span class="dot off"></span><span>아이폰 자동 연동은 <b>담당자가 단축어 링크를 등록하면</b> 버튼 하나로 켤 수 있습니다. 그 전까지는 아래 <b>걸음 수 직접 입력</b>으로 기록해 주세요.</span></div>
+       <div class="foot" style="border-top:none;padding-top:0;margin-top:0"><button type="button" class="btn" data-wlman>걸음 수 직접 입력</button></div>`;
+
+  /* 갤럭시 : 전용 앱 '시몬스 걷기'(simmons-walk.apk, index.html 과 같은 폴더) — 연결 버튼을 누르면 앱이 열리고 권한 창까지 바로 뜹니다 */
+  const apkUrl = wkApkUrl();
+  const appLink = `intent://link?t=${encodeURIComponent(me.token)}#Intent;scheme=simmonswalk;package=com.simmons.walk;`
+    + `S.browser_fallback_url=${encodeURIComponent(apkUrl)};end`;
+  const galaxy = `
+    ${wkStep(1, '앱 설치', `<p>받은 파일을 열어 설치합니다. ‘출처를 알 수 없는 앱’을 물으면 <b>허용</b>.</p>
+        <a class="btn" href="${esc(apkUrl)}" download="simmons-walk.apk">앱 설치 파일 받기</a>`)}
+    ${wkStep(2, '앱 연결', `<p>누르면 앱이 열리면서 내 정보로 자동 연결됩니다.</p>
+        <a class="btn" href="${esc(appLink)}">앱 연결하기</a>`)}
+    ${wkStep(3, '허용', `<p>곧바로 뜨는 헬스 커넥트 창에서 <b>모두 허용</b>. 앱에 <b>‘자동 연동 중’</b>이 보이면 끝입니다.</p>`)}
+    <details class="wk-trouble"><summary>잘 안 될 때</summary>
+      <p>· 걸음 수가 안 올라오면 : 앱 아래 ‘문제가 있을 때’ → <b>배터리 제한 없음</b>, <b>삼성 헬스 공유 켜기</b>를 눌러 확인하세요.<br>
+         · 앱이 안 열리면 : 앱의 ‘개인 열쇠 직접 입력’에 아래 열쇠를 붙여넣으세요.<br>
+         · 앱 설치가 어려우면 삼성 헬스 캡처와 함께 <a href="#" data-wlman>걸음 수 직접 입력</a>으로 기록할 수 있습니다.</p>${cp('열쇠', me.token)}</details>`;
+
+  const other = d => d === 'iphone' ? 'galaxy' : 'iphone';
+  const bg = sdModal(`<div class="sd-k"><b>휴대폰 연동</b><span>${esc(me.name)} 님 · ${esc(me.dept)}</span></div>
+    <h3 data-wltitle></h3>
+    ${(wkInKakao() || !wkIsWeb()) ? `<div class="wk-sync" style="margin-bottom:12px;background:#FFF6D6"><span class="dot off"></span>
+      <span style="flex:1;min-width:0">${wkInKakao() ? '카카오톡 안에서는 앱 설치 · 연결이 막힐 수 있습니다.' : '카톡으로 받은 파일로 열면 버튼이 동작하지 않습니다.'}
+      <b>${here === 'iphone' ? '사파리' : '크롬'}에서 플랫폼을 열어</b> 진행해 주세요.</span>
+      <a class="btn sm" href="${esc(wkExternalUrl())}" ${wkInKakao() ? '' : 'target="_blank" rel="noopener"'}>${here === 'iphone' ? '사파리' : '크롬'}에서 열기</a></div>` : ''}
+    ${here ? '' : `<p class="hint" style="margin:-6px 0 12px">휴대폰에서 이 화면을 열어야 버튼이 바로 동작합니다.</p>
+      <div class="hb-tabs"><button type="button" data-wl="iphone">아이폰</button><button type="button" data-wl="galaxy">갤럭시</button></div>`}
+    <div data-wlbody></div>
+    <div class="sd-ft" style="gap:8px;justify-content:space-between">
+      ${here ? '<a href="#" class="hint" data-wlother></a>' : '<span></span>'}
+      <span style="display:flex;gap:8px"><button type="button" class="btn sm ghost" data-wlcheck>연동 확인</button>
+      <button type="button" class="btn sm" data-sdclose>닫기</button></span></div>`);
+  let cur = dev;
+  const paint = d => {
+    cur = d;
+    bg.querySelectorAll('[data-wl]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.wl === d)));
+    bg.querySelector('[data-wltitle]').textContent = (d === 'iphone' ? '아이폰' : '갤럭시') + ' 걸음 수 자동 연동 · 3단계';
+    bg.querySelector('[data-wlbody]').innerHTML = d === 'iphone' ? ios : galaxy;
+    const o = bg.querySelector('[data-wlother]');
+    if(o) o.textContent = (other(d) === 'iphone' ? '아이폰' : '갤럭시') + ' 안내 보기';
+  };
+  bg.addEventListener('click', async e => {
+    const t = e.target.closest('[data-wl]'); if(t) return paint(t.dataset.wl);
+    if(e.target.closest('[data-wlother]')){ e.preventDefault(); return paint(other(cur)); }
+    const c = e.target.closest('[data-wlcopy]'); if(c) return wkCopy(c.dataset.wlcopy);
+    if(e.target.closest('[data-wlios]')){
+      await wkCopy(me.token);
+      setTimeout(() => { location.href = sc; }, 400);
+      return;
+    }
+    if(e.target.closest('[data-wlman]')){ e.preventDefault(); bg.remove(); return wkManualOpen(); }
+    if(e.target.closest('[data-wlcheck]')){
+      await wkLoadMe();
+      const m = WK.me;
+      if(m && m.last_sync_at){
+        const d = new Date(m.last_sync_at);
+        toast(`연동 확인 · 마지막 수신 ${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`);
+      } else toast('아직 휴대폰에서 받은 기록이 없습니다', 'err');
+      HB.key = ''; renderHealth();
+    }
+  });
+  paint(dev);
+}
+
+/* ── 걸음 수 직접 입력 ── */
+function wkManualOpen(date){
+  const me = WK.me; if(!me) return toast('먼저 참여신청 또는 내 정보 불러오기를 해 주세요', 'err');
+  const d0 = date || ymd(new Date(Date.now() - 864e5));
+  let file = null;
+  const bg = sdModal(`<div class="sd-k"><b>걸음 수 직접 입력</b><span>${esc(me.name)} 님</span></div>
+    <h3>하루 걸음 수 입력</h3>
+    <div class="grid">
+      <div><label>날짜 <em>*</em></label><input type="date" id="wmDate" value="${d0}" max="${TODAY}"></div>
+      <div><label>걸음 수 <em>*</em></label><input type="number" id="wmSteps" inputmode="numeric" min="0" max="200000" placeholder="예) 9500"></div>
+      <div class="wide"><label>캡처 사진 (삼성 헬스 · 건강 앱 걸음 화면)</label>
+        <div class="drop" id="wmDrop"><div class="big">사진 선택</div><div class="hint">걸음 수가 보이는 화면을 캡처해 올려 주세요</div>
+          <input type="file" id="wmFile" accept="image/*" hidden></div>
+        <div class="thumbs" id="wmThumb"></div></div>
+    </div>
+    <p class="hint" style="margin:14px 0 0">같은 날짜를 다시 입력하면 새 값으로 바뀝니다. 집계 화면은 매일 아침 8시 기준으로 표시됩니다.</p>
+    <div class="sd-ft" style="gap:8px"><button type="button" class="btn sm ghost" data-sdclose>취소</button>
+      <button type="button" class="btn sm" id="wmSave">저장</button></div>`);
+  const fill = () => {
+    const s = WK.steps.find(x => x.participant_id === me.id && x.step_date === bg.querySelector('#wmDate').value);
+    bg.querySelector('#wmSteps').value = s ? s.steps : '';
+  };
+  fill();
+  bg.querySelector('#wmDate').onchange = fill;
+  bg.querySelector('#wmDrop').onclick = () => bg.querySelector('#wmFile').click();
+  bg.querySelector('#wmFile').onchange = e => {
+    file = e.target.files[0] || null;
+    bg.querySelector('#wmThumb').innerHTML = file ? `<div class="thumb"><img src="${URL.createObjectURL(file)}" alt=""></div>` : '';
+  };
+  bg.querySelector('#wmSave').onclick = async e => {
+    const d = bg.querySelector('#wmDate').value, n = Math.round(+bg.querySelector('#wmSteps').value);
+    if(!d || d > TODAY) return toast('날짜를 확인해 주세요', 'err');
+    if(!Number.isFinite(n) || n < 0 || n > 200000 || bg.querySelector('#wmSteps').value === '') return toast('걸음 수를 0 ~ 200,000 사이로 넣어 주세요', 'err');
+    e.target.disabled = true;
+    try{
+      let proof = null;
+      if(file){ const up = await upload([await shrink(file)], d, 'health', 'walk'); proof = up[0].url; }
+      const { data, error } = await db.rpc('walk_push', { p_token:me.token, p_steps:n, p_date:d, p_src:'manual', p_proof:proof });
+      if(error) throw error;
+      if(data && data.ok === false) throw new Error(data.error);
+      toast(`${+d.slice(5,7)}/${+d.slice(8,10)} ${wkNum(n)}보 저장`);
+      bg.remove();
+      if(wkYm(d) !== WK.ym) await wkSetYm(wkYm(d));
+      else { WK.steps = await wkFetchSteps(WK.ym); HB.key = ''; renderHealth(); }
+    }catch(err){ toast('저장 실패: ' + err.message, 'err'); e.target.disabled = false; }
+  };
+}
+
+/* ── 공지 · 달성자 발표 작성 (비밀번호) ── */
+function wkNoticeEdit(n){
+  const isNew = !n;
+  n = n || { kind:'notice', title:'', content:'', pinned:false, ym:wkPrevYm(), prize_per:null, paid:'', winners:[] };
+  let winners = wkArr(n.winners);
+  const months = wkMonths(); if(n.ym && !months.includes(n.ym)) months.push(n.ym);
+  const bg = sdModal(`<h3>${isNew ? '공지 · 발표 작성' : '글 수정'}</h3>
+    <div class="grid">
+      <div><label>구분</label><select id="wnKind">
+        <option value="notice">안내사항</option><option value="winner">달성자 발표 · 상금</option><option value="guide">챌린지 규칙 (맨 위 안내 문구)</option></select></div>
+      <div data-wnw><label>대상 월</label><select id="wnYm">${months.map(m => `<option value="${m}">${wkYmLabel(m)}</option>`).join('')}</select></div>
+      <div class="wide"><label>제목 <em>*</em></label><input type="text" id="wnTitle"></div>
+      <div data-wnw><label>1인 상금 (원)</label><input type="number" id="wnPrize" min="0" step="1000" placeholder="예) 30000"></div>
+      <div data-wnw><label>지급 상태 · 지급일</label><input type="text" id="wnPaid" placeholder="예) 12월 급여 시 지급 완료"></div>
+      <div class="wide" data-wnw><label>달성자 명단 <span id="wnWinN"></span></label>
+        <div class="wk-win" id="wnWin"></div>
+        <div style="margin-top:10px"><button type="button" class="btn sm ghost" id="wnAuto">선택한 달 달성자 자동 불러오기</button></div></div>
+      <div class="wide"><label>내용</label><textarea id="wnContent"></textarea>
+        <p class="hint" data-wng style="margin:6px 0 0">챌린지 규칙은 한 줄에 하나씩 적으면 공지사항 맨 위 안내 목록으로 나옵니다.</p></div>
+      <div class="wide"><label class="wk-chk"><input type="checkbox" id="wnPin"> 맨 위에 고정</label></div>
+    </div>
+    <div class="sd-ft" style="gap:8px"><button type="button" class="btn sm ghost" data-sdclose>취소</button>
+      <button type="button" class="btn sm" id="wnSave">저장</button></div>`);
+  const q = s => bg.querySelector(s);
+  q('#wnKind').value = n.kind; q('#wnYm').value = n.ym || months[0]; q('#wnTitle').value = n.title || '';
+  q('#wnPrize').value = n.prize_per || ''; q('#wnPaid').value = n.paid || ''; q('#wnContent').value = n.content || '';
+  q('#wnPin').checked = !!n.pinned;
+  const paintWin = () => {
+    q('#wnWinN').textContent = `(${winners.length}명)`;
+    q('#wnWin').innerHTML = winners.length ? winners.map((w,i) =>
+      `<span>${esc(w.dept || '')} ${esc(w.name)}<b>${wkNum(w.steps)}보</b> <a href="#" data-wnrm="${i}" style="color:var(--human);margin-left:4px">✕</a></span>`).join('')
+      : '<span class="hint" style="background:none;padding:0">아래 버튼으로 불러오세요</span>';
+  };
+  const paintKind = () => {
+    const k = q('#wnKind').value;
+    bg.querySelectorAll('[data-wnw]').forEach(x => x.hidden = k !== 'winner');
+    q('[data-wng]').hidden = k !== 'guide';
+    if(k === 'guide' && !q('#wnTitle').value) q('#wnTitle').value = '걷기 챌린지 규칙';
+    if(k === 'guide' && !q('#wnContent').value) q('#wnContent').value = wkGuideLines().join('\n');
+  };
+  q('#wnKind').onchange = paintKind;
+  paintKind(); paintWin();
+  bg.addEventListener('click', async e => {
+    const rm = e.target.closest('[data-wnrm]');
+    if(rm){ e.preventDefault(); winners.splice(+rm.dataset.wnrm, 1); paintWin(); return; }
+    if(e.target.id === 'wnAuto'){
+      const ym = q('#wnYm').value;
+      e.target.disabled = true;
+      try{
+        const rows = wkBoard(ym, await wkFetchSteps(ym)).filter(r => r.done);
+        winners = rows.map(r => ({ dept:r.p.dept, name:r.p.name, steps:r.total }));
+        paintWin();
+        if(!q('#wnTitle').value) q('#wnTitle').value = `${wkYmLabel(ym)} 걷기 챌린지 달성자 발표`;
+        if(wkCut() < wkMonthEnd(ym)) toast('아직 집계 중인 달입니다. 월말 기록이 다 들어온 뒤 다시 불러오세요', 'err');
+        else toast(`달성자 ${winners.length}명을 불러왔습니다`);
+      }catch(err){ toast('불러오기 실패: ' + err.message, 'err'); }
+      e.target.disabled = false;
+      return;
+    }
+    if(e.target.id === 'wnSave'){
+      const kind = q('#wnKind').value, title = q('#wnTitle').value.trim();
+      if(!title) return toast('제목을 입력해 주세요', 'err');
+      const row = { kind, title, content:q('#wnContent').value.trim() || null, pinned:q('#wnPin').checked,
+        ym: kind === 'winner' ? q('#wnYm').value : null,
+        prize_per: kind === 'winner' && q('#wnPrize').value ? Math.round(+q('#wnPrize').value) : null,
+        paid: kind === 'winner' ? (q('#wnPaid').value.trim() || null) : null,
+        winners: kind === 'winner' ? winners : [] };
+      e.target.disabled = true;
+      const { error } = isNew
+        ? await db.from('walk_notices').insert({ ...row, created_by: STORE.get('leader') || null })
+        : await db.from('walk_notices').update(row).eq('id', n.id);
+      if(error){ e.target.disabled = false; return toast('저장 실패: ' + error.message, 'err'); }
+      toast('저장했습니다'); bg.remove(); wkLoad();
+    }
+  });
+}
+function wkUnlock(){
+  if(UNLOCKED.walkadmin) return true;
+  if(!checkPw('걷기프로그램 관리 비밀번호를 입력하세요')) return false;
+  UNLOCKED.walkadmin = true; return true;
+}
+
+/* ── 관리 (참여자 · 직접 입력 기록 · CSV) ── */
+function wkAdminHtml(){
+  const rows = wkBoard(WK.ym), byId = Object.fromEntries(rows.map(r => [r.p.id, r]));
+  const name = id => (WK.parts.find(p => p.id === id) || {}).name || '-';
+  const manual = WK.steps.filter(s => s.source === 'manual').sort((a,b) => String(b.updated_at).localeCompare(String(a.updated_at)));
+  const parts = WK.parts.slice().sort((a,b) => a.dept.localeCompare(b.dept, 'ko') || a.name.localeCompare(b.name, 'ko'));
+  return `<div class="card">
+    <header><h2>참여자 관리</h2><span class="note">${parts.length}명 · ${esc(wkYmLabel(WK.ym))} 기준</span></header>
+    ${wkMonthBar()}
+    <div class="foot" style="border-top:none;padding-top:0;margin:14px 0 16px">
+      <button type="button" class="btn sm" data-wkcsv>${esc(wkYmLabel(WK.ym))} 실적 CSV (일별 포함)</button>
+      <button type="button" class="btn sm ghost" data-wknew>공지 · 발표 작성</button></div>
+    <div class="wk-tblwrap"><table class="wk-tbl">
+      <thead><tr><th>부서</th><th>이름</th><th>휴대폰</th><th>기기</th><th>신청일</th><th>자동 연동</th><th class="r">누적</th><th></th></tr></thead>
+      <tbody>${parts.map(p => {
+        const a = WK.admin[p.id] || {}, r = byId[p.id];
+        const ls = p.last_sync_at ? ymd(new Date(p.last_sync_at)).slice(5).replace('-','.') : '-';
+        return `<tr style="${p.active ? '' : 'opacity:.45'}">
+          <td>${esc(p.dept)}</td><td><b>${esc(p.name)}</b>${a.memo ? `<br><small class="hint">${esc(a.memo)}</small>` : ''}</td>
+          <td class="r">${esc(a.phone4 || '')}</td><td>${esc(WK_DEV[p.device] || '')}</td>
+          <td>${ymd(new Date(p.created_at)).slice(5).replace('-','.')}</td><td>${ls}</td>
+          <td class="r">${r ? wkNum(r.total) : 0}</td>
+          <td style="white-space:nowrap"><button type="button" class="btn sm ghost" data-wkatog="${p.id}">${p.active ? '중지' : '재개'}</button>
+            <button type="button" class="btn sm danger" data-wkadel="${p.id}">삭제</button></td></tr>`;
+      }).join('')}</tbody></table></div>
+    <p class="hint" style="margin:12px 0 0">‘중지’하면 순위에서 빠지고 자동 연동도 받지 않습니다. ‘삭제’하면 걸음 기록까지 모두 지워집니다.</p>
+  </div>
+  <div class="card">
+    <header><h2>직접 입력 기록</h2><span class="note">${manual.length}건 · 캡처 확인용</span></header>
+    ${manual.length ? `<div class="wk-tblwrap"><table class="wk-tbl">
+      <thead><tr><th>날짜</th><th>이름</th><th class="r">걸음</th><th>입력 시각</th><th>캡처</th></tr></thead>
+      <tbody>${manual.map(s => `<tr><td>${s.step_date.slice(5).replace('-','.')}</td><td>${esc(name(s.participant_id))}</td>
+        <td class="r">${wkNum(s.steps)}</td><td>${s.updated_at ? ymd(new Date(s.updated_at)).slice(5).replace('-','.') : ''}</td>
+        <td>${s.proof_url ? `<a href="#" data-hbzoom="${esc(s.proof_url)}">사진 보기</a>` : '<span class="hint">없음</span>'}</td></tr>`).join('')}</tbody></table></div>`
+      : '<p class="hint" style="margin:0">이 달에 직접 입력한 기록이 없습니다.</p>'}
+  </div>
+  ${wkShortcutAdminHtml()}`;
+}
+
+/** 담당자용 : 아이폰 '시몬스 걷기' 단축어를 한 번 만들어 iCloud 링크로 공유하는 방법 + 링크 등록 칸 */
+function wkShortcutAdminHtml(){
+  const url = String(CONFIG.url || '').trim().replace(/\/$/, '') + '/rest/v1/rpc/walk_push';
+  const key = String(CONFIG.key || '').trim();
+  const cp = (label, val) => `<div class="wk-copy"><code title="${esc(val)}">${esc(val)}</code>
+    <button type="button" class="btn sm ghost" data-wkcp="${esc(val)}">${esc(label)} 복사</button></div>`;
+  const sc = WK.cfg.ios_shortcut || '';
+  return `<div class="card">
+    <header><h2>아이폰 단축어 링크</h2><span class="note">${sc ? '등록됨 · 직원은 버튼 하나로 연동' : '미등록 · 아이폰은 직접 입력만 가능'}</span></header>
+    <div class="grid">
+      <div class="wide"><label>‘시몬스 걷기’ 단축어 iCloud 링크</label>
+        <input type="url" id="wkScUrl" value="${esc(sc)}" placeholder="https://www.icloud.com/shortcuts/..."></div>
+    </div>
+    <div class="foot" style="border-top:none;padding-top:0;margin-top:12px">
+      <button type="button" class="btn sm" data-wkscsave>링크 저장</button>
+      ${sc ? `<a class="btn sm ghost" href="${esc(sc)}" target="_blank" rel="noopener">링크 열어 보기</a>` : ''}</div>
+    <details class="wk-trouble" ${sc ? '' : 'open'}><summary>담당자 아이폰으로 단축어 한 번 만들기 (약 10분 · 최초 1회)</summary>
+      <ol class="wk-steps" style="margin-top:12px">
+        <li><b>단축어</b> 앱 → <b>＋</b> → 이름 <b>시몬스 걷기</b>.</li>
+        <li><b>‘텍스트’</b> 동작 추가 → 칸에 <b>본인 개인 열쇠</b>를 넣습니다 (테스트용 · 참여신청 후 ‘내 실적 → 휴대폰 연동 설정 → 잘 안 될 때’에서 복사).
+          이 칸이 나중에 직원마다 자기 열쇠를 붙여넣는 자리가 됩니다.</li>
+        <li><b>‘건강 샘플 찾기’</b> 추가 → 유형 <b>걸음</b> · 필터 <b>시작 날짜 · 최근 2일</b>(is in the last 2 days) · 그룹화 기준 <b>일</b>.</li>
+        <li><b>‘각 항목을 반복’</b>(Repeat with Each) 추가 → 대상 <b>건강 샘플</b>.</li>
+        <li>반복 안에 <b>‘날짜 형식 지정’</b> 추가 → 날짜는 <b>반복 항목</b>의 <b>시작 날짜</b> · 형식 <b>사용자 지정</b> → <code>yyyy-MM-dd</code></li>
+        <li>반복 안에 <b>‘URL 콘텐츠 가져오기’</b> 추가 → URL ↓${cp('주소', url)}
+          ▸ 펼치기 → 방법 <b>POST</b> → 헤더 <b>apikey</b> = ↓${cp('키', key)}
+          요청 본문 <b>JSON</b> · 필드 4개<br>
+          ① 텍스트 <b>p_token</b> = ‘텍스트’ 변수 &nbsp;② 숫자 <b>p_steps</b> = ‘반복 항목’(값)<br>
+          ③ 텍스트 <b>p_date</b> = ‘형식 지정된 날짜’ &nbsp;④ 텍스트 <b>p_src</b> = <code>ios</code></li>
+        <li>▶ 실행 → 허용 → 결과에 <b>"ok": true</b> 가 2번 나오면 성공. 플랫폼 ‘내 실적’ 달력에 어제 · 오늘 값이 ‘반영 대기’로 보이는지 확인합니다.</li>
+        <li><b>가져오기 질문</b> : 편집 화면 위 이름 옆 <b>⌄</b> → <b>세부사항</b>(또는 ⓘ) → <b>설정</b> → <b>질문 추가</b> → 2번 ‘텍스트’ 칸 선택 → 질문 <b>“개인 열쇠를 붙여넣어 주세요”</b>.
+          (iOS 버전에 따라 메뉴 위치가 조금 다를 수 있습니다)</li>
+        <li>단축어를 길게 눌러 <b>공유</b> → <b>iCloud 링크 복사</b> → 위 칸에 붙여넣고 <b>링크 저장</b>. 끝!</li>
+      </ol>
+      <p class="hint" style="margin:10px 0 0">어제 · 오늘 값을 함께 보내므로 밤늦게 걸은 걸음도 다음 날 아침 8시 집계 전에 채워집니다. 단축어를 고치면 새 iCloud 링크로 다시 저장해 주세요.
+        저장 후 직원 아이폰 한 대로 ‘휴대폰 연동 설정’을 따라 해 보며 확인하는 것을 권장합니다.</p>
+    </details>
+  </div>`;
+}
+async function wkSaveShortcut(btn){
+  const v = ($('#wkScUrl').value || '').trim();
+  if(v && !/^https:\/\/(www\.)?icloud\.com\/shortcuts\//i.test(v)) return toast('iCloud 단축어 링크(https://www.icloud.com/shortcuts/...)를 넣어 주세요', 'err');
+  btn.disabled = true;
+  const { error } = await db.from('walk_config').upsert({ key:'ios_shortcut', value:v || null, updated_at:new Date().toISOString() });
+  btn.disabled = false;
+  if(error) return toast('저장 실패: ' + error.message + ' (schema_health.sql 을 다시 실행해 주세요)', 'err');
+  WK.cfg.ios_shortcut = v; toast(v ? '단축어 링크를 저장했습니다' : '단축어 링크를 지웠습니다');
+  HB.key = ''; renderHealth();
+}
+function wkCsv(){
+  const ym = WK.ym, dim = wkDaysIn(ym), cut = wkCut();
+  const rows = wkBoard(ym);
+  const by = {}; WK.steps.forEach(s => { if(s.step_date <= cut) (by[s.participant_id] = by[s.participant_id] || {})[+s.step_date.slice(8,10)] = s.steps; });
+  const days = Array.from({ length:dim }, (_,i) => i + 1);
+  csvDown(`걷기챌린지_${ym}.csv`,
+    ['순위','부서','이름','휴대폰 뒷4자리','기기','누적 걸음','기록 일수','달성 여부', ...days.map(d => d + '일')],
+    rows.map(r => [r.rank, r.p.dept, r.p.name, (WK.admin[r.p.id] || {}).phone4 || '', WK_DEV[r.p.device] || '', r.total, r.days,
+      r.done ? '달성' : '', ...days.map(d => (by[r.p.id] || {})[d] ?? '')]));
+}
+
+/* ── 이벤트 ── */
+async function hbClick(e){
+  const z = e.target.closest('[data-hbzoom]');
+  if(z){ e.preventDefault(); $('#lightboxImg').src = z.dataset.hbzoom; $('#lightbox').classList.add('on'); return; }
+  if(HB.board === 'ohunwan') return ohClick(e);
+
+  const t = e.target.closest('[data-wkt]');
+  if(t){
+    if(t.dataset.wkt === 'admin' && !wkUnlock()) return;
+    HB.tab = t.dataset.wkt; HB.key = '';
+    if(HB.tab === 'admin') await wkAdminLoad();
+    renderHealth(); window.scrollTo({ top:$('#hbBody').getBoundingClientRect().top + scrollY - 90, behavior:'smooth' });
+    return;
+  }
+  const ym = e.target.closest('[data-wkym]'); if(ym) return wkSetYm(ym.dataset.wkym);
+  const dv = e.target.closest('[data-wadev]');
+  if(dv){ WK.applyDev = dv.dataset.wadev; $$('#hbBody [data-wadev]').forEach(b => b.setAttribute('aria-pressed', String(b === dv))); return; }
+  const ap = e.target.closest('[data-wkapply]'); if(ap) return wkApply(ap);
+  if(e.target.closest('[data-wklookup]')) return wkLookup();
+  if(e.target.closest('[data-wklink]')) return wkLinkOpen();
+  const wcp = e.target.closest('[data-wkcp]'); if(wcp) return wkCopy(wcp.dataset.wkcp);
+  const scs = e.target.closest('[data-wkscsave]'); if(scs) return wkSaveShortcut(scs);
+  const man = e.target.closest('[data-wkman]'); if(man) return wkManualOpen(man.dataset.wkman || '');
+  if(e.target.closest('[data-wkreload]')) return wkLoad();
+  if(e.target.closest('[data-wklogout]')){
+    if(!confirm('이 기기에서 내 정보를 지울까요? (기록은 그대로 남습니다)')) return;
+    STORE.set('walk_token', ''); WK.me = null; HB.key = ''; renderHealth(); return;
+  }
+  if(e.target.closest('[data-wknew]')){ if(wkUnlock()){ HB.key = ''; renderHealth(); wkNoticeEdit(null); } return; }
+  const ne = e.target.closest('[data-wkne]');
+  if(ne){ if(!wkUnlock()) return; const n = WK.notices.find(x => String(x.id) === ne.dataset.wkne); if(n) wkNoticeEdit(n); return; }
+  const nd = e.target.closest('[data-wknd]');
+  if(nd){
+    if(!wkUnlock() || !confirm('이 글을 삭제할까요?')) return;
+    const { error } = await db.from('walk_notices').delete().eq('id', nd.dataset.wknd);
+    if(error) return toast('삭제 실패: ' + error.message, 'err');
+    toast('삭제했습니다'); return wkLoad();
+  }
+  if(e.target.closest('[data-wkcsv]')) return wkCsv();
+  const tg = e.target.closest('[data-wkatog]');
+  if(tg){
+    const p = WK.parts.find(x => x.id === tg.dataset.wkatog); if(!p) return;
+    const { error } = await db.from('walk_participants').update({ active:!p.active }).eq('id', p.id);
+    if(error) return toast('변경 실패: ' + error.message, 'err');
+    return wkLoad();
+  }
+  const dl = e.target.closest('[data-wkadel]');
+  if(dl){
+    const p = WK.parts.find(x => x.id === dl.dataset.wkadel); if(!p) return;
+    if(!confirm(`${p.dept} ${p.name} 님을 삭제할까요?\n걸음 기록도 모두 지워지며 되돌릴 수 없습니다.`)) return;
+    const { error } = await db.from('walk_participants').delete().eq('id', p.id);
+    if(error) return toast('삭제 실패: ' + error.message, 'err');
+    if(WK.me && WK.me.id === p.id){ STORE.set('walk_token', ''); WK.me = null; }
+    toast('삭제했습니다'); return wkLoad();
+  }
+}
+function hbChange(e){
+  if(e.target.matches('[data-wkdept]')){ HB.dept = e.target.value; HB.key = ''; renderHealth(); }
+  if(e.target.id === 'ohFile') ohPick(e.target.files);
+}
+
+/* ===================== 오운완 ===================== */
+async function ohLoad(){
+  const { data, error } = await db.from('health_posts').select('*').eq('board', 'ohunwan')
+    .order('created_at', { ascending:false }).limit(300);
+  OH.err = error ? error.message : ''; OH.posts = data || []; OH.loaded = true;
+  renderHealth();
+}
+function ohRender(){
+  const box = $('#hbBody');
+  if(HB.key !== 'oh' || !$('#ohForm')){
+    HB.key = 'oh';
+    const nm = (WK.me && WK.me.name) || STORE.get('oh_name');
+    const dp = (WK.me && WK.me.dept) || STORE.get('oh_dept');
+    box.innerHTML = `<div class="card" id="ohForm">
+      <header><h2>오늘 운동 완료 인증</h2><span class="note">OHUNWAN</span></header>
+      <div class="grid">
+        <div><label>이름 <em>*</em></label><input type="text" id="ohName" value="${esc(nm)}"></div>
+        <div><label>부서</label><input type="text" id="ohDept" value="${esc(dp)}"></div>
+        <div><label>운동 시간 (분)</label><input type="number" id="ohMin" inputmode="numeric" min="1" max="600" placeholder="예) 40"></div>
+        <div class="wide"><label>운동 종류 <em>*</em></label>
+          <div class="quick">${OH_EX.map(x => `<button type="button" class="qb" data-ohex="${esc(x)}" aria-pressed="${OH.ex === x}">${esc(x)}</button>`).join('')}</div></div>
+        <div class="wide"><label>한마디</label><textarea id="ohText" style="min-height:80px" placeholder="오늘 운동 어땠나요? (선택)"></textarea></div>
+        <div class="wide"><label>인증 사진 (최대 4장)</label>
+          <div class="drop" data-ohdrop><div class="big">사진 선택</div><div class="hint">운동 기록 화면이나 인증샷을 올려 주세요</div>
+            <input type="file" id="ohFile" accept="image/*" multiple hidden></div>
+          <div class="thumbs" id="ohThumbs"></div></div>
+      </div>
+      <div class="foot"><button type="button" class="btn" data-ohsubmit>오운완 인증하기</button></div>
+    </div>
+    <div id="ohStats"></div><div id="ohFeed"></div>`;
+    ohThumbs();
+  }
+  ohPaintFeed();
+}
+function ohPaintFeed(){
+  if(OH.err){
+    $('#ohFeed').innerHTML = `<div class="empty"><div class="big">오운완 게시판을 불러오지 못했습니다</div>
+      <div class="s">${esc(OH.err)}<br>관리자는 Supabase SQL Editor 에서 <b>schema_health.sql</b> 을 먼저 실행해 주세요.</div></div>`;
+    $('#ohStats').innerHTML = ''; return;
+  }
+  const ym = TODAY.slice(0,7);
+  const mon = OH.posts.filter(p => wkYm(ymd(new Date(p.created_at))) === ym);
+  const cnt = {}; mon.forEach(p => { const k = (p.dept ? p.dept + ' ' : '') + p.name; cnt[k] = (cnt[k] || 0) + 1; });
+  const top = Object.entries(cnt).sort((a,b) => b[1] - a[1]).slice(0, 5);
+  $('#ohStats').innerHTML = `<div class="card">
+    <header><h2>${+ym.slice(5)}월 오운완</h2><span class="note">인증 ${mon.length}건 · ${Object.keys(cnt).length}명 참여</span></header>
+    ${top.length ? `<div class="wk-win" style="margin:0">${top.map(([k,n],i) => `<span>${i === 0 ? '🏆 ' : ''}${esc(k)}<b>${n}회</b></span>`).join('')}</div>`
+      : '<p class="hint" style="margin:0">이번 달 첫 오운완 인증의 주인공이 되어 보세요!</p>'}
+  </div>`;
+  $('#ohFeed').innerHTML = OH.posts.length ? `<div class="hb-feed">${OH.posts.map(p => {
+    const f = wkArr(p.files), d = new Date(p.created_at);
+    return `<div class="hb-post">
+      ${f[0] ? `<img src="${esc(f[0].url)}" data-hbzoom="${esc(f[0].url)}" alt="" loading="lazy">` : ''}
+      <div class="b">
+        <div class="who">${esc(p.name)}${p.dept ? `<small>${esc(p.dept)}</small>` : ''}</div>
+        <div class="tag">💪 ${esc(p.exercise || '운동')}${p.minutes ? ` · ${p.minutes}분` : ''}${f.length > 1 ? ` · 사진 ${f.length}장` : ''}</div>
+        ${p.content ? `<div class="c">${esc(p.content)}</div>` : ''}
+        ${f.length > 1 ? `<div class="thumbs" style="margin-top:2px">${f.slice(1).map(x => `<div class="thumb" style="width:56px;height:56px"><img src="${esc(x.url)}" data-hbzoom="${esc(x.url)}" alt="" style="aspect-ratio:auto;height:100%"></div>`).join('')}</div>` : ''}
+        <div class="f">${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}
+          <button type="button" class="btn sm danger" data-ohdel="${esc(p.id)}" style="padding:5px 10px">삭제</button></div>
+      </div></div>`;
+  }).join('')}</div>` : `<div class="empty"><div class="big">아직 오운완 인증이 없습니다</div><div class="s">오늘 운동을 마쳤다면 위에서 인증해 주세요.</div></div>`;
+}
+function ohPick(list){
+  for(const f of Array.from(list || [])){
+    if(!f.type.startsWith('image/')) continue;
+    if(OH.files.length >= 4){ toast('사진은 4장까지 올릴 수 있습니다', 'err'); break; }
+    OH.files.push({ file:f, preview:URL.createObjectURL(f) });
+  }
+  $('#ohFile').value = '';
+  ohThumbs();
+}
+function ohThumbs(){
+  const el = $('#ohThumbs'); if(!el) return;
+  el.innerHTML = OH.files.map((f,i) => `<div class="thumb"><img src="${f.preview}" alt=""><button type="button" class="x" data-ohrm="${i}">&times;</button></div>`).join('');
+}
+async function ohClick(e){
+  const ex = e.target.closest('[data-ohex]');
+  if(ex){ OH.ex = ex.dataset.ohex; $$('#hbBody [data-ohex]').forEach(b => b.setAttribute('aria-pressed', String(b === ex))); return; }
+  if(e.target.closest('[data-ohdrop]')){ if(e.target.id !== 'ohFile') $('#ohFile').click(); return; }
+  const rm = e.target.closest('[data-ohrm]');
+  if(rm){ const i = +rm.dataset.ohrm; URL.revokeObjectURL(OH.files[i].preview); OH.files.splice(i, 1); ohThumbs(); return; }
+  const sb = e.target.closest('[data-ohsubmit]');
+  if(sb){
+    const name = $('#ohName').value.trim(), dept = $('#ohDept').value.trim(), min = Math.round(+$('#ohMin').value) || null;
+    if(!name) return toast('이름을 입력해 주세요', 'err');
+    if(!OH.ex) return toast('운동 종류를 골라 주세요', 'err');
+    sb.disabled = true;
+    try{
+      const files = OH.files.length ? await upload(await Promise.all(OH.files.map(f => shrink(f.file))), TODAY, 'health', 'ohunwan') : [];
+      const { error } = await db.from('health_posts').insert({ board:'ohunwan', name, dept:dept || null, exercise:OH.ex,
+        minutes:min, content:$('#ohText').value.trim() || null, files });
+      if(error) throw error;
+      STORE.set('oh_name', name); STORE.set('oh_dept', dept);
+      OH.files.forEach(f => URL.revokeObjectURL(f.preview)); OH.files = []; OH.ex = '';
+      HB.key = ''; toast('오운완! 오늘도 수고하셨습니다 💪');
+      await ohLoad();
+    }catch(err){ toast('등록 실패: ' + err.message, 'err'); sb.disabled = false; }
+    return;
+  }
+  const dl = e.target.closest('[data-ohdel]');
+  if(dl){
+    if(!checkDeletePw()) return;
+    const p = OH.posts.find(x => String(x.id) === dl.dataset.ohdel);
+    const { error } = await db.from('health_posts').delete().eq('id', dl.dataset.ohdel);
+    if(error) return toast('삭제 실패: ' + error.message, 'err');
+    const paths = wkArr(p && p.files).map(f => f.path).filter(Boolean);
+    if(paths.length) db.storage.from('health').remove(paths);
+    toast('삭제했습니다'); ohLoad();
+  }
 }
 
 /* ===================== 사업장 안내도 ===================== */
