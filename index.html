@@ -67,6 +67,164 @@ if(/[?&]wx(=|&|$)/.test(location.search)){
   href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- ══ 업로드 자동 용량 줄이기 (모든 업로드 칸 공통) ══════════════════════
+     Supabase 저장소 upload() 를 감싸서, 용량 초과로 올라가지 않으면
+     사진은 해상도 · 화질을, PDF 는 페이지를 이미지로 바꿔 줄인 뒤 자동으로 다시 올립니다.
+     · 50MB 가 넘는 사진 · PDF 는 처음부터 줄여서 올립니다 (서버 한도)
+     · 한글 · 워드 · 엑셀 · 압축파일은 줄일 수 없어 안내만 띄웁니다
+     · PDF 를 줄이면 글자 선택 · 검색은 안 되는 이미지 PDF 가 됩니다
+     끄려면 아래 AUTO_SHRINK_ON 을 false 로 바꾸세요. -->
+<script>
+(function(){
+  var AUTO_SHRINK_ON = true;
+  var HARD = 50 * 1048576;                       // 이 크기를 넘으면 올리기 전에 먼저 줄임
+  if(!AUTO_SHRINK_ON || !window.supabase || !window.supabase.createClient) return;
+  var mb = function(n){ return (n / 1048576).toFixed(n >= 10485760 ? 0 : 1) + 'MB'; };
+
+  function note(msg, bad){
+    try{
+      var el = document.getElementById('autoShrinkNote');
+      if(!el){
+        el = document.createElement('div'); el.id = 'autoShrinkNote';
+        el.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:99999;max-width:min(92vw,560px);'
+          + 'padding:12px 18px;border-radius:14px;font:600 13px/1.5 "Malgun Gothic",sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:opacity .3s';
+        document.body.appendChild(el);
+      }
+      el.style.background = bad ? '#c0392b' : '#111'; el.style.color = '#fff';
+      el.textContent = msg; el.style.opacity = '1';
+      clearTimeout(el._t); el._t = setTimeout(function(){ el.style.opacity = '0'; }, bad ? 6000 : 3500);
+    }catch(e){}
+  }
+  function kindOf(b){
+    var t = (b.type || '').toLowerCase(), n = (b.name || '').toLowerCase();
+    if(/^image\/(jpe?g|png|webp|bmp)$/.test(t) || /\.(jpe?g|png|webp|bmp)$/.test(n)) return 'img';
+    if(t === 'application/pdf' || /\.pdf$/.test(n)) return 'pdf';
+    return '';
+  }
+  function isSizeErr(err){
+    if(!err) return false;
+    var s = String(err.statusCode || err.status || '') + ' ' + String(err.message || err.error || '');
+    return /413|exceed|too large|maximum allowed size|payload/i.test(s);
+  }
+  function loadScript(src){
+    return new Promise(function(ok, no){
+      var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = function(){ no(new Error('라이브러리를 불러오지 못했습니다')); };
+      document.head.appendChild(s);
+    });
+  }
+  function toBlob(c, q){ return new Promise(function(ok){ c.toBlob(ok, 'image/jpeg', q); }); }
+  function asFile(blob, name){ try{ return new File([blob], name || 'file', { type: blob.type }); }catch(e){ return blob; } }
+
+  /* 사진 : 긴 변 · 화질을 단계적으로 낮춰 target 이하가 되는 첫 결과 */
+  async function shrinkImg(file, target){
+    var bmp;
+    try{ bmp = await createImageBitmap(file); }catch(e){ return null; }
+    var steps = [[4000,.85],[3000,.8],[2400,.78],[1920,.72],[1600,.68],[1280,.62],[1024,.55],[800,.5]];
+    var best = null;
+    for(var i = 0; i < steps.length; i++){
+      var r = Math.min(1, steps[i][0] / Math.max(bmp.width, bmp.height));
+      var c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * r); c.height = Math.round(bmp.height * r);
+      var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);  // 투명 PNG → 흰 바탕
+      g.drawImage(bmp, 0, 0, c.width, c.height);
+      var b = await toBlob(c, steps[i][1]);
+      if(b && (!best || b.size < best.size)) best = b;
+      if(b && b.size <= target) break;
+    }
+    return best;
+  }
+  /* PDF : 페이지마다 이미지로 그린 뒤 다시 PDF 로 묶습니다 (pdf.js + jsPDF, 필요할 때만 불러옴) */
+  async function shrinkPdf(file, target){
+    if(typeof pdfjsLib === 'undefined') await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    if(!pdfjsLib.GlobalWorkerOptions.workerSrc)
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + (pdfjsLib.version || '3.11.174') + '/pdf.worker.min.js';
+    if(!window.jspdf) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    var pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+    var tiers = [[1.6,.72],[1.3,.62],[1.05,.52],[0.85,.45],[0.7,.38]];
+    var best = null;
+    for(var t = 0; t < tiers.length; t++){
+      var doc = null;
+      for(var p = 1; p <= pdf.numPages; p++){
+        var page = await pdf.getPage(p);
+        var v1 = page.getViewport({ scale: 1 }), v = page.getViewport({ scale: tiers[t][0] });
+        var c = document.createElement('canvas'); c.width = Math.ceil(v.width); c.height = Math.ceil(v.height);
+        var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+        await page.render({ canvasContext: g, viewport: v }).promise;
+        var img = c.toDataURL('image/jpeg', tiers[t][1]);
+        var o = v1.width > v1.height ? 'l' : 'p';
+        if(!doc) doc = new window.jspdf.jsPDF({ unit: 'pt', format: [v1.width, v1.height], orientation: o, compress: true });
+        else doc.addPage([v1.width, v1.height], o);
+        doc.addImage(img, 'JPEG', 0, 0, v1.width, v1.height);
+        c.width = c.height = 0;
+      }
+      var b = doc.output('blob');
+      if(!best || b.size < best.size) best = b;
+      if(b.size <= target) break;
+    }
+    return best;
+  }
+  async function reduce(file, kind, target){
+    try{
+      var out = kind === 'img' ? await shrinkImg(file, target) : await shrinkPdf(file, target);
+      return out && out.size < file.size ? out : null;
+    }catch(e){ console.warn('자동 용량 줄이기 실패', e); return null; }
+  }
+
+  async function smartUpload(up, path, body, opts){
+    if(!(body instanceof Blob)) return up(path, body, opts);
+    var kind = kindOf(body), name = body.name, orig = body.size, cur = body;
+    var send = function(b){
+      var o = Object.assign({}, opts || {});
+      if(b !== body) o.contentType = b.type;
+      return up(path, b === body ? body : asFile(b, name), o);
+    };
+    if(kind && orig > HARD){
+      note('용량이 커서 줄이는 중입니다… (' + mb(orig) + ')');
+      var r0 = await reduce(body, kind, HARD * 0.8);
+      if(r0) cur = r0;
+    }
+    var res = await send(cur);
+    if(!res || !res.error || !isSizeErr(res.error)){
+      if(cur !== body && res && !res.error) note('용량이 커서 자동으로 줄여 올렸습니다 · ' + mb(orig) + ' → ' + mb(cur.size));
+      return res;
+    }
+    if(!kind){
+      res.error.message = '파일 용량이 너무 커서 올릴 수 없습니다 (' + (name || '') + ' · ' + mb(orig) + '). '
+        + '사진 · PDF 만 자동으로 줄일 수 있으니, 이 파일은 용량을 줄여(또는 PDF 로 바꿔) 다시 올려 주세요.';
+      note(res.error.message, true);
+      return res;
+    }
+    for(var i = 0; i < 6; i++){                    // 올라갈 때까지 절반씩 줄여 다시 시도 (최대 6번)
+      note('용량이 커서 줄여서 다시 올리는 중입니다… (' + mb(orig) + ')');
+      var r = await reduce(body, kind, cur.size * 0.5);
+      if(!r || r.size >= cur.size * 0.95) break;   // 더 줄어들지 않으면 멈춤
+      cur = r;
+      res = await send(cur);
+      if(!res.error){ note('용량이 커서 자동으로 줄여 올렸습니다 · ' + mb(orig) + ' → ' + mb(cur.size)); return res; }
+      if(!isSizeErr(res.error)) return res;
+    }
+    res.error.message = '용량을 줄여도 올릴 수 없습니다 (' + (name || '') + ' · ' + mb(orig) + '). 파일을 나눠서 올려 주세요.';
+    note(res.error.message, true);
+    return res;
+  }
+
+  /* createClient 로 만든 모든 연결의 저장소 upload() 를 한 번만 감쌉니다 */
+  function patch(client){
+    try{
+      var api = client.storage.from('__probe__');
+      var proto = Object.getPrototypeOf(api);
+      if(!proto || proto.__autoShrink || typeof proto.upload !== 'function') return;
+      var up0 = proto.upload;
+      proto.upload = function(path, body, opts){ return smartUpload(up0.bind(this), path, body, opts); };
+      proto.__autoShrink = true;
+    }catch(e){ console.warn('자동 용량 줄이기 연결 실패', e); }
+  }
+  var lib = window.supabase, cc = lib.createClient;
+  window.supabase = Object.assign({}, lib, {
+    createClient: function(){ var c = cc.apply(lib, arguments); patch(c); return c; }
+  });
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
 
@@ -1314,6 +1472,8 @@ button.b.wpbb.done:hover{opacity:.85}
 .wpsc input{width:17px;height:17px;padding:0;flex:none;accent-color:var(--ink)}
 /* 첨부파일 목록 */
 .wpfiles{list-style:none;margin:10px 0 0;padding:0}
+.wpfinal{margin-top:16px;padding:16px 18px;border:1.5px dashed var(--line);border-radius:14px;background:var(--panel2)}
+.wpfinal .secttl{margin-top:0}
 .wpfiles li{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line2);font-size:13px}
 .wpfiles li .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .wpfiles li .sz{color:var(--ink3);font-size:12px}
@@ -1428,6 +1588,10 @@ button.b.wpbb.done:hover{opacity:.85}
 .scobox .bt{display:flex;gap:8px;margin-top:14px;align-items:center}
 .scot .tot{font-family:var(--fd);font-size:15px;font-weight:800}
 /* 적격수급인 평가 */
+.ctform{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:2px 0 14px}
+.ctform .btn{text-decoration:none}
+.ctform-n{font-size:12px;color:var(--ink3)}
+.ctform-tip{flex-basis:100%;margin:2px 0 0;font-size:11.5px;color:#5B7FA6;letter-spacing:-.1px}
 .ctmailin{display:flex;align-items:center;gap:6px;margin-top:8px}
 .ctmailin input{flex:1;min-width:0}
 .ctmailin span{font-size:13px;color:var(--ink3);white-space:nowrap}
@@ -2559,7 +2723,7 @@ button.b.wpbb.done:hover{opacity:.85}
 
     <div class="card">
       <header><h2>관련 파일 첨부</h2><span class="note" id="wpFileNote">선택</span></header>
-      <p class="hint" style="margin:0 0 8px">작업계획서 · 도면 · 현장사진 · 장비 서류 등 (여러 개 가능 · 파일당 20MB 이하)</p>
+      <p class="hint" style="margin:0 0 8px">작업계획서 · 도면 · 현장사진 · 장비 서류 등 (여러 개 가능 · 큰 사진 · PDF 는 자동으로 용량을 줄여 올립니다)</p>
       <input type="file" id="wpFileIn" multiple hidden>
       <button class="btn ghost sm" id="btnWpFile" type="button">파일 선택</button>
       <ul class="wpfiles" id="wpFileList"></ul>
@@ -2652,9 +2816,12 @@ button.b.wpbb.done:hover{opacity:.85}
 
     <div class="card">
       <header><h2>증빙서류 첨부</h2><span class="note" id="ctFileNote">0개</span></header>
-      <p class="hint" style="margin:0 0 6px">아래 평가 필요자료를 한 번에 올려 주세요. (여러 개 가능 · 파일당 20MB 이하 · 사진 · PDF · 한글 · 워드 · 엑셀 · 압축파일)
-        빠진 자료가 있는 항목은 <b>미흡</b>으로 평가될 수 있습니다.</p>
-      <div class="ctneed" id="ctNeed"></div>
+      <div class="ctform">
+        <a class="btn ghost sm" href="공사%20도급%20적격수급인%20선정%20평가(협력사%20작성%20양식).zip"
+           download="공사 도급 적격수급인 선정 평가(협력사 작성 양식).zip">⬇ 양식 다운로드</a>
+        <span class="ctform-n">협력사 작성 양식 10종 (방침 · 조직도 · 위험성평가 · 점검 · 교육 · 비상연락망 등) · ZIP</span>
+        <p class="ctform-tip">*타사 작성한 샘플자료가 필요한 경우 담당자에게 연락주시기 바랍니다.</p>
+      </div>
       <div class="drop" id="ctDrop">
         <div class="big">증빙서류 선택 또는 끌어다 놓기</div>
         <div class="hint">여러 파일을 한꺼번에 선택할 수 있습니다</div>
@@ -2985,6 +3152,8 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const ymd = d => { const t = new Date(d); t.setMinutes(t.getMinutes() - t.getTimezoneOffset()); return t.toISOString().slice(0,10); };
 const TODAY = ymd(new Date());
 const DOW = ['일','월','화','수','목','금','토'];
+/* 자동으로 용량을 줄일 수 있는 파일 (사진 · PDF) — 실제 줄이기는 맨 위 '업로드 자동 용량 줄이기' 가 합니다 */
+const canShrink = f => /^image\/(jpe?g|png|webp|bmp)$|^application\/pdf$/i.test(f.type || '') || /\.(jpe?g|png|webp|bmp|pdf)$/i.test(f.name || '');
 const kb = n => n >= 1048576 ? (n/1048576).toFixed(1)+'MB' : Math.round(n/1024)+'KB';
 
 function meta(name, dflt){
@@ -4424,10 +4593,10 @@ function wpRenderFiles(){
 function wpAddFiles(list){
   const big = [];
   [...list].forEach(f => {
-    if(f.size > WP_FILE_MAX) big.push(f.name);
+    if(f.size > WP_FILE_MAX && !canShrink(f)) big.push(f.name);   // 사진 · PDF 는 올릴 때 자동으로 줄입니다
     else if(!WP_FILES.some(x => x.name === f.name && x.size === f.size)) WP_FILES.push(f);
   });
-  if(big.length) toast(`20MB 를 넘는 파일은 뺐습니다: ${big.join(', ')}`, 'err');
+  if(big.length) toast(`20MB 를 넘는 한글 · 워드 · 엑셀 · 압축파일은 뺐습니다 (용량을 줄이거나 PDF 로 바꿔 올려 주세요): ${big.join(', ')}`, 'err');
   wpRenderFiles();
 }
 async function wpUploadFiles(no){
@@ -4696,6 +4865,7 @@ function wpAct(id){
       if(needDone) patch.done_at = $('#wpxDone').value;
       const nn = wpNext({ ...p, ...patch, status:'결재대기' });
       patch.status = !nn ? '완료' : nn.stage === 'close' ? '작업중' : '결재대기';
+      if(patch.status === '완료'){ await wpSnapshot({ ...p, ...patch }); WP_SNAP_DONE.add(p.id); }   // 서버 폴더용 허가서 원본
       const { error } = await db.from('work_permits').update(patch).eq('id', p.id);
       if(error){ if(signs[r.k].path) db.storage.from(WP_BUCKET).remove([signs[r.k].path]); throw new Error('저장 실패: '+error.message); }
       /* 결재 알림 : 다음 결재자에게 차례 알림 · 최종 결재가 끝나면 세 사람 모두에게 결재 완료 알림 */
@@ -4743,8 +4913,8 @@ const wpExtBadge = p => {
   if(st === '반려') return `<span class="b rej">연장 반려</span>`;
   return '';
 };
-const wpPlanBadge = p => (p.files || []).length
-  ? `<span class="b prog">제출</span>` : `<span class="b gray">없음</span>`;
+const wpPlanBadge = p => (p.files || []).length   // 신청 첨부 · 완료 후 최종자료 어느 쪽이든 올리면 '제출'
+  ? `<span class="b done">제출</span>` : `<span class="b gray">없음</span>`;   // '제출' 은 상태 '완료' 와 같은 모양
 /* 목록 · 허가서 보기에 붙는 연장 버튼 (cls : 버튼 크기) */
 /* cls 'sm' = 목록용 (상태 배지와 같은 크기) · '' = 허가서 보기 창 버튼 */
 function wpExtBtn(p, cls){
@@ -4974,10 +5144,14 @@ function wpDocHtml(p){
     <tr><th>작업종료 서명</th>
       ${C.map(r => `<td class="sg"><span class="lb2">${esc(r.label)}</span>${wpSignCell(s[r.k], p.end_at || p.start_at)}</td>`).join('')}</tr>
   </table>
-  ${(p.files || []).length ? `<table>
+  ${(p.files || []).length ? (() => {
+    const link = x => `<a href="${esc(x.url)}" target="_blank" rel="noopener" style="color:#111;margin-right:14px;white-space:nowrap">📎 ${esc(x.name)}</a>`;
+    const a = p.files.filter(x => !x.final), z = p.files.filter(x => x.final);
+    return `<table>
     <colgroup><col style="width:11%"><col></colgroup>
-    <tr><th>첨부파일</th><td>${p.files.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener" style="color:#111;margin-right:14px;white-space:nowrap">📎 ${esc(x.name)}</a>`).join(' ')}</td></tr>
-  </table>` : ''}
+    ${a.length ? `<tr><th>첨부파일</th><td>${a.map(link).join(' ')}</td></tr>` : ''}
+    ${z.length ? `<tr><th>최종자료</th><td>${z.map(link).join(' ')}</td></tr>` : ''}
+  </table>`; })() : ''}
   <div class="ft"><span>상태 : <b>${esc(p.status)}</b>${p.reject ? ` <span class="bad">· 반려 ${esc(p.reject.name)} (${wpAt(p.reject.at)}) — ${esc(p.reject.reason)}</span>` : ''}</span>
     <span>SIMMONS 안전보건 통합 플랫폼</span></div>
 </div>`;
@@ -4994,7 +5168,9 @@ function wpOpen(id){
   WP_EDIT_GAS = live && wpGasOn(p.work_types || []) ? JSON.parse(JSON.stringify(p.gas || wpEmptyGas())) : null;
   $('#wpModalGas').innerHTML = WP_EDIT_GAS
     ? `<p class="secttl">가스측정 추가 입력 (2차 ~ 5차)</p>${wpGasHtml(WP_EDIT_GAS, true)}
-       <div style="margin-top:12px"><button class="btn sm brass" data-wpgsave>가스측정 저장</button></div>` : '';
+       <div style="margin-top:12px"><button class="btn sm brass" data-wpgsave>가스측정 저장</button></div>`
+    : p.status === '완료' ? wpFinalHtml(p) : '';
+  if(p.status === '완료') wpSnapshotCheck(p);
   const nx = wpNext(p);
   $('#wpModalActs').innerHTML = [
     nx ? `<button class="btn" data-wpact="${p.id}">${nx.stage === 'approve' ? '결재' : '작업종료 서명'} · ${esc(nx.role.label)}</button>` : '',
@@ -5003,6 +5179,97 @@ function wpOpen(id){
     `<button class="btn sm danger" data-wpdel="${p.id}" style="margin-left:auto">삭제</button>`
   ].join('');
   $('#wpModal').classList.add('on');
+}
+/* ── 최종자료 (작업 완료 후 첨부) ──
+   허가서가 '완료'되면 허가서 아래에 파일을 올릴 수 있습니다. files 에 { final:true } 로 붙습니다.
+   서버 폴더 저장 : 대시보드 PC 의 전자결재_서버동기화.ps1 이 work_permits 를 읽어
+   '대시보드 자료실\안전작업허가\<연-월>\<신청일>_<허가번호>_<작업명>\' 에 첨부 · 최종자료 · 허가서.html 을 저장합니다.
+   허가서.html 은 서명이 들어간 허가서 원본으로, 아래 wpSnapshot 이 permit/docs/<id>.html 로 올려 둡니다. */
+function wpFinalHtml(p){
+  const fin = (p.files || []).map((x, i) => ({ ...x, i })).filter(x => x.final);
+  return `<div class="wpfinal">
+    <p class="secttl">최종자료 첨부 <span class="hint" style="font-weight:400">· 작업 완료 사진 · 점검표 · 결과 보고서 등</span></p>
+    <p class="hint" style="margin:0 0 8px">올린 파일은 허가서 '최종자료' 칸에 붙고, 서버 <b>대시보드 자료실 › 안전작업허가</b> 폴더에도 자동 저장됩니다. (여러 개 가능 · 큰 사진 · PDF 는 자동으로 줄여 올립니다)</p>
+    <ul class="wpfiles">${fin.map(x => `<li><span class="nm"><a href="${esc(x.url)}" target="_blank" rel="noopener" style="color:inherit">📎 ${esc(x.name)}</a></span>
+      <span class="sz">${x.size ? kb(x.size) : ''}</span><button class="btn sm ghost" type="button" data-wpfdelfinal="${x.i}">삭제 🔒</button></li>`).join('')}</ul>
+    <input type="file" id="wpFinalIn" multiple hidden>
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+      <button class="btn sm brass" type="button" data-wpfinalpick>최종자료 올리기</button>
+      <span class="hint" id="wpFinalHint">${fin.length ? `${fin.length}개 첨부됨` : '아직 올린 최종자료가 없습니다'}</span>
+    </div></div>`;
+}
+/* 서명이 들어간 허가서 원본을 permit/docs/<id>.html 로 저장 (서버 폴더의 '허가서.html') */
+function wpSnapshotHtml(p){
+  return `<!doctype html><html lang="ko"><head><meta charset="utf-8">
+    <title>안전작업허가서_${esc(p.permit_no || '')}_${esc(p.work_name || '')}</title>
+    <style>${WP_DOC_CSS} @page{size:A4;margin:10mm} body{margin:0;padding:16px;background:#fff} @media print{body{padding:0}}</style>
+    </head><body>${wpDocHtml(p)}</body></html>`;
+}
+async function wpSnapshot(p){
+  try{
+    const blob = new Blob([wpSnapshotHtml(p)], { type:'text/html;charset=utf-8' });
+    const { error } = await db.storage.from(WP_BUCKET).upload(`permit/docs/${p.id}.html`, blob,
+      { upsert:true, contentType:'text/html;charset=utf-8', cacheControl:'60' });
+    return !error;
+  }catch(e){ return false; }
+}
+/* 예전에 완료된 허가서 : 원본이 아직 없으면 한 번 만들어 두고, 서버 폴더가 다시 받도록 updated_at 을 고칩니다 */
+const WP_SNAP_DONE = new Set();
+async function wpSnapshotCheck(p){
+  if(WP_SNAP_DONE.has(p.id)) return;
+  WP_SNAP_DONE.add(p.id);
+  try{
+    const url = db.storage.from(WP_BUCKET).getPublicUrl(`permit/docs/${p.id}.html`).data.publicUrl;
+    const r = await fetch(url, { method:'HEAD', cache:'no-store' });
+    if(r.ok) return;
+    if(await wpSnapshot(p)) await db.from('work_permits').update({ updated_at:new Date().toISOString() }).eq('id', p.id);
+  }catch(e){}
+}
+async function wpFinalUpload(list){
+  const p = WP_ALL.find(x => x.id === WP_CUR);
+  if(!p || !list.length) return;
+  const hint = $('#wpFinalHint'), btn = document.querySelector('[data-wpfinalpick]');
+  if(btn) btn.disabled = true;
+  const up = [];
+  try{
+    let i = 0;
+    for(const f of list){
+      if(hint) hint.textContent = `올리는 중… (${++i}/${list.length})`;
+      const path = `permit/files/${TODAY}/${p.permit_no || 'wp'}_final_${safeName(f.name)}`;
+      const { error } = await db.storage.from(WP_BUCKET).upload(path, f, { cacheControl:'3600' });
+      if(error) throw new Error('파일 업로드 실패 (' + f.name + '): ' + error.message);
+      up.push({ path, url: db.storage.from(WP_BUCKET).getPublicUrl(path).data.publicUrl, name:f.name, size:f.size, final:true, at:new Date().toISOString() });
+    }
+    /* 다른 사람이 그사이 올렸을 수 있으므로 최신 목록에 덧붙입니다 */
+    const { data, error: e1 } = await db.from('work_permits').select('files').eq('id', p.id).single();
+    if(e1) throw new Error(e1.message);
+    const files = [...(data.files || []), ...up];
+    await wpSnapshot({ ...p, files });              // 원본을 먼저 고쳐 두고 표를 고칩니다 (서버 폴더가 새 원본을 받도록)
+    const { error: e2 } = await db.from('work_permits').update({ files, updated_at:new Date().toISOString() }).eq('id', p.id);
+    if(e2) throw new Error('저장 실패: ' + e2.message);
+    toast(`최종자료 ${up.length}개를 올렸습니다 · 서버 폴더에도 곧 저장됩니다`, 'ok');
+    await loadPermits();
+    wpOpen(p.id);
+  }catch(e){
+    if(up.length) db.storage.from(WP_BUCKET).remove(up.map(x => x.path));
+    toast(e.message, 'err');
+    if(btn) btn.disabled = false;
+    if(hint) hint.textContent = '';
+  }
+}
+async function wpFinalDel(idx){
+  const p = WP_ALL.find(x => x.id === WP_CUR);
+  const f = p && (p.files || [])[idx];
+  if(!f || !f.final) return;
+  if(!checkDeletePw()) return;
+  const files = (p.files || []).filter((x, i) => i !== idx);
+  await wpSnapshot({ ...p, files });
+  const { error } = await db.from('work_permits').update({ files, updated_at:new Date().toISOString() }).eq('id', p.id);
+  if(error) return toast('삭제 실패: ' + error.message, 'err');
+  if(f.path) db.storage.from(WP_BUCKET).remove([f.path]);
+  toast('최종자료를 삭제했습니다', 'ok');
+  await loadPermits();
+  wpOpen(p.id);
 }
 async function wpGasSave(){
   const p = WP_ALL.find(x => x.id === WP_CUR);
@@ -5253,7 +5520,12 @@ function wpInit(){
     const a = e.target.closest('[data-wpact]');   if(a) return wpAct(a.dataset.wpact);
     const pr = e.target.closest('[data-wpprint]'); if(pr) return wpPrint(pr.dataset.wpprint);
     const d = e.target.closest('[data-wpdel]');   if(d) return wpDel(d.dataset.wpdel);
-    if(e.target.closest('[data-wpgsave]')) wpGasSave();
+    if(e.target.closest('[data-wpgsave]')) return wpGasSave();
+    if(e.target.closest('[data-wpfinalpick]')){ const inp = $('#wpFinalIn'); if(inp) inp.click(); return; }
+    const fd = e.target.closest('[data-wpfdelfinal]'); if(fd) return wpFinalDel(+fd.dataset.wpfdelfinal);
+  });
+  $('#wpModal').addEventListener('change', e => {
+    if(e.target.id === 'wpFinalIn' && e.target.files.length){ const l = [...e.target.files]; e.target.value = ''; wpFinalUpload(l); }
   });
   $('#btnWpSearch').onclick = renderWpRecords;
   ['#wqFrom','#wqTo','#wqKind','#wqStatus','#wqType'].forEach(s => $(s).addEventListener('change', renderWpRecords));
@@ -10525,7 +10797,6 @@ function ctRenderForm(){
     + `<option value="${CT_ETC_OPT}">명단에 없음 (직접 입력)</option>`;
   if(CT_PEOPLE.some(p => p[0] === saved)) sel.value = saved;
   ctWriterToggle();
-  $('#ctNeed').innerHTML = CT_ITEMS.map(it => `<div><b>${it.no}. ${esc(it.t)}</b>${it.need.map(n => '· ' + esc(n)).join('<br>')}</div>`).join('');
   ctRenderFiles();
 }
 function ctWriterToggle(){
@@ -10544,10 +10815,10 @@ function ctRenderFiles(){
 function ctAddFiles(list){
   const big = [];
   [...list].forEach(f => {
-    if(f.size > CT_FILE_MAX) big.push(f.name);
+    if(f.size > CT_FILE_MAX && !canShrink(f)) big.push(f.name);   // 사진 · PDF 는 올릴 때 자동으로 줄입니다
     else if(!CT_FILES.some(x => x.name === f.name && x.size === f.size)) CT_FILES.push(f);
   });
-  if(big.length) toast(`20MB 를 넘는 파일은 뺐습니다: ${big.join(', ')}`, 'err');
+  if(big.length) toast(`20MB 를 넘는 한글 · 워드 · 엑셀 · 압축파일은 뺐습니다 (용량을 줄이거나 PDF 로 바꿔 올려 주세요): ${big.join(', ')}`, 'err');
   ctRenderFiles();
 }
 function ctResetForm(){
