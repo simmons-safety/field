@@ -10486,7 +10486,9 @@ const ctStatusTxt = s => s === '발송완료' ? '발송완료' : s === '평가�
 const ctStatusCls = s => s === '발송완료' ? 's3' : s === '평가완료' ? 's2' : 's1';
 const ctTableMissing = err => err && /contractor_evals|42P01|PGRST205/.test(String(err.code) + ' ' + err.message);
 const ctMissingMsg = '적격수급인 평가 표가 없습니다. schema_contractor.sql 을 먼저 실행해 주세요.';
-const ctPlatformUrl = () => (location.protocol.startsWith('http') ? location.origin + location.pathname : '');
+/* 메일 링크에 쓰는 플랫폼 주소 (어디서 제출하든 항상 실제 배포 주소로 연결) */
+const CT_PLATFORM_URL = 'https://simmons-safety.github.io/field/';
+const ctPlatformUrl = () => CT_PLATFORM_URL;
 /* 메일 링크 (?go=ctr&ct=ID) : 제출 현황 · 평가 탭(비밀번호)으로 가서 그 건의 평가 창을 바로 엽니다 */
 const ctLink = r => ctPlatformUrl() ? `${ctPlatformUrl()}?go=ctr&ct=${encodeURIComponent(r.id)}` : '';
 async function ctDeepLink(id){
@@ -10652,7 +10654,8 @@ function ctSubmitHtml(r){
       (r.files || []).map(f => `📎 <a href="${esc(f.url)}" style="color:#0b57d0">${esc(f.name)}</a>`).join('<br>')
       || '<span style="color:#c0392b">첨부 없음</span>'}</div>
     ${url ? `<p style="margin:18px 0 0"><a href="${esc(url)}" style="display:inline-block;background:#000;color:#fff;text-decoration:none;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700">평가하러 가기</a>
-      <span style="font-size:12px;color:#888;margin-left:8px">적격수급인평가 → 제출 현황 · 평가 🔒</span></p>` : ''}
+      <span style="font-size:12px;color:#888;margin-left:8px">적격수급인평가 → 제출 현황 · 평가 🔒</span></p>
+      <p style="margin:8px 0 0;font-size:12px;color:#888">버튼이 안 눌리면 : <a href="${esc(url)}" style="color:#0b57d0;word-break:break-all">${esc(url)}</a></p>` : ''}
   </div>`;
 }
 
