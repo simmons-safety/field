@@ -1715,7 +1715,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ TBM ═══════════ -->
 <section class="panel" id="p-tbm" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">TBM 기록관리</span>
     <span class="pe">Tool Box Meeting</span>
   </div>
@@ -1803,7 +1802,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 화재예방점검 ═══════════ -->
 <section class="panel" id="p-fire" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">화재예방점검</span>
     <span class="pe">Fire Prevention</span>
   </div>
@@ -1862,7 +1860,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 보호구 신청 ═══════════ -->
 <section class="panel" id="p-ppe" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">보호구 신청</span>
     <span class="pe">PPE Request</span>
   </div>
@@ -1936,7 +1933,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 안전보건 교육자료 모음 (교육자료 · 소식지 · MSDS 3분할) ═══════════ -->
 <section class="panel" id="p-library" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">안전보건 교육자료</span>
     <span class="pe">Library</span>
   </div>
@@ -1951,7 +1947,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 경영방침 및 안전보건방침 ═══════════ -->
 <section class="panel" id="p-policy" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">경영방침 및 안전보건방침</span>
     <span class="pe">Safety Policy</span>
   </div>
@@ -1993,7 +1988,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 사업장 안내도 ═══════════ -->
 <section class="panel" id="p-guide" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">사업장 안내도</span>
     <span class="pe">Site Guide</span>
   </div>
@@ -2040,7 +2034,6 @@ button.b.wpbb.done:hover{opacity:.85}
      (schema_safetyday.sql 실행 필요) -->
 <section class="panel" id="p-safeday" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">안전보건의 날</span>
     <span class="pe">Safety Day</span>
   </div>
@@ -2061,7 +2054,6 @@ button.b.wpbb.done:hover{opacity:.85}
      (schema_health.sql 실행 필요) -->
 <section class="panel" id="p-health" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">보건활동</span>
     <span class="pe">Health Activity</span>
   </div>
@@ -2077,7 +2069,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 근로자의견청취 ═══════════ -->
 <section class="panel" id="p-voice" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">근로자의견청취</span>
     <span class="pe">Worker Voice</span>
   </div>
@@ -2140,7 +2131,6 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 안전보건협의체 ═══════════ -->
 <section class="panel" id="p-council" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">안전보건협의체</span>
     <button class="btn sm ghost" id="btnCcNotice" style="margin-left:auto">공지 팝업 작성</button>
     <span class="pe" style="margin-left:0">Safety Council</span>
@@ -2437,8 +2427,8 @@ button.b.wpbb.done:hover{opacity:.85}
 <!-- ═══════════ 안전작업허가 (임직원용 · 협력사용 · 긴급) ═══════════ -->
 <section class="panel" id="p-permit" hidden>
   <div class="pagetop">
-    <button class="homebtn" data-go="home"><span class="hi">←</span>홈으로</button>
     <span class="pt">안전작업허가</span>
+    <button class="btn sm ghost" id="wpPickTop" type="button" style="margin-left:4px">기록 대장</button>
     <span class="pe">Work Permit</span>
   </div>
 
@@ -4061,11 +4051,19 @@ function wpNext(p){
 /* ── 첫 화면 : 임직원용 · 협력사용 · 긴급 ── */
 function wpShowPick(){
   $('#wpPick').hidden = false;
+  $('#wpPickTop').hidden = false;
   $('#wpMain').hidden = true;
+}
+/* 첫 화면 오른쪽 위 '기록 대장' : 구분을 고르지 않고 기록 대장으로 바로 */
+function wpGoRecords(){
+  wpSetMode('임직원');
+  $('#wpModeLbl').textContent = '안전작업허가 · 기록 대장';
+  const b = $('#p-permit .subnav [data-s="records"]'); if(b) b.click();
 }
 function wpSetMode(mode){
   WP_URGENT = mode === '긴급';
   $('#wpPick').hidden = true;
+  $('#wpPickTop').hidden = true;
   $('#wpMain').hidden = false;
   $('#wpKindBox').hidden = !WP_URGENT;
   $('#wpTypesTtl').style.marginTop = WP_URGENT ? '' : '0';
@@ -5068,6 +5066,7 @@ function wpInit(){
   $('#wpKind').onclick = e => { const b = e.target.closest('[data-wpkind]'); if(b) wpSetKind(b.dataset.wpkind); };
   $('#wpPick').onclick = e => { const b = e.target.closest('[data-wpmode]'); if(b) wpSetMode(b.dataset.wpmode); };
   $('#btnWpRepick').onclick = wpShowPick;
+  $('#wpPickTop').onclick = wpGoRecords;
   ['#wpStart','#wpEnd'].forEach(s => $(s).addEventListener('change', wpExtHint));
   /* 신청일자를 바꾸면 작업 시작 · 종료 날짜도 같은 날로 맞춥니다 (시각은 그대로, 밤샘 작업이면 날짜 차이 유지) */
   $('#wpDate').addEventListener('change', () => {
