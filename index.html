@@ -36,7 +36,7 @@
 
 <!-- 알림 메일 : 여기에 넣어 두면 파일을 새로 받아도 설정이 유지됩니다 -->
 <meta name="tbm-mail-to"       content="hk7149@simmons.co.kr">
-<meta name="tbm-mail-endpoint" content="https://script.google.com/macros/s/AKfycbxoxiThgwquxIpimpEFdhRbyaf2EvTb3QNdCsvcjOsPBmTxOEl7JQkxZoBzR91GytrJQQ/exec"><!-- Google Apps Script (mail_webhook.gs) · 예전 Make: https://hook.us2.make.com/9frcxsboo2gs042apvsmip2wx76oj4i7 -->
+<meta name="tbm-mail-endpoint" content="https://script.google.com/macros/s/AKfycbyUKuNOB_NPdd2NZeCYW5TafCbGvNLDUaMKVJ5RWXhKLnS7hPHxAR2TPAiHhcOCUrBPhA/exec"><!-- Google Apps Script (mail_webhook.gs) · 예전 Make: https://hook.us2.make.com/9frcxsboo2gs042apvsmip2wx76oj4i7 -->
 
 <!-- 배포 주소 : 카톡으로 받은 파일 등 웹 주소가 아닌 곳에서 열었을 때 갤럭시 앱(simmons-walk.apk)을 이 주소에서 받습니다 -->
 <meta name="tbm-site-url"      content="https://misty-hat-76c7.hk7149.workers.dev/">
@@ -10615,6 +10615,9 @@ document.addEventListener('DOMContentLoaded', () => {
   $$('.modal').forEach(m => bindOverlayClose(m, () => m.classList.remove('on')));
   $('#cfgMailTo').value  = STORE.get('mailto');
   $('#cfgMailUrl').value = STORE.get('mailurl');
+  /* 비워 두면 index.html 기본값을 씁니다 → 안내 글씨로 기본값을 보여 줍니다 */
+  if(meta('tbm-mail-to'))       $('#cfgMailTo').placeholder  = '비우면 기본값 : ' + meta('tbm-mail-to');
+  if(meta('tbm-mail-endpoint')) $('#cfgMailUrl').placeholder = '비우면 기본값 : ' + meta('tbm-mail-endpoint');
   $('#btnMailSave').onclick = () => {
     STORE.set('mailto',  $('#cfgMailTo').value.trim());
     STORE.set('mailurl', $('#cfgMailUrl').value.trim());
