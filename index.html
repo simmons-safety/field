@@ -1298,6 +1298,13 @@ table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#F
 .wpck.off::before{display:none}
 .wpck.off:hover{color:var(--ink3);border-color:transparent}
 @media (max-width:480px){ .wprow .col{width:68px} }
+/* 목록의 연장허가 · 연장결재 버튼 : 상태 배지와 같은 크기 */
+button.b.wpbb{font-family:inherit;line-height:inherit;cursor:pointer;margin:0;vertical-align:middle}
+button.b.wpbb.gray{transition:background .15s,border-color .15s,color .15s}
+button.b.wpbb.gray:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+button.b.wpbb.done:hover{opacity:.85}
+/* 서명 창 : 결재자 이름 고르기 버튼 */
+.wpnames{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 8px}
 /* 안전관리자 결재 : 해당 항목 확인 체크 */
 .wpsc{border:1px solid var(--line);border-radius:var(--r-m);padding:10px 14px;margin-bottom:16px;max-height:320px;overflow:auto}
 .wpsc-h{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:13px;font-weight:700}
@@ -2805,6 +2812,7 @@ table.wpgas input.bad{border-color:var(--human);color:var(--human);background:#F
     <div class="mbody">
       <p class="hint" id="wpSignSub" style="margin:0 0 16px"></p>
       <div style="margin-bottom:16px"><label>이름 <em>*</em></label>
+        <div class="wpnames" id="wpSignNames" hidden></div>
         <input type="text" id="wpSignName" placeholder="예) 홍길동"></div>
       <div id="wpSignExtra"></div>
       <p class="hint" style="margin:0 0 4px">직접 서명하지 않고, 완료를 누르면 이름과 날짜로 <b>승인 도장</b>이 자동으로 찍힙니다.</p>
@@ -3992,7 +4000,7 @@ const WP_CLOSE = [ { k:'close_dept', label:'작업부서 담당자', note:'dept'
    작업완료 : 작업부서 담당자 · 작업부서 팀장 */
 const WP_APPROVE_N = [
   { k:'dept_head', label:'작업부서팀장', step:'1차 결재', note:'dept' },
-  { k:'safety',    label:'안전관리자',   step:'2차 결재', note:'safety', ext:true },
+  { k:'safety',    label:'안전관리자',   step:'2차 결재', note:'safety' },   // 시간연장은 최종 결재 후 따로 신청 (wpExtReq)
   { k:'hs_head',   label:'안전보건팀장', step:'3차 결재' }
 ];
 const WP_FLOW_N = {
@@ -4088,7 +4096,7 @@ function wpExtHint(){
   const over = wpOverTime($('#wpStart').value, $('#wpEnd').value), el = $('#wpExtHint');
   el.classList.toggle('over', over);
   el.textContent = over
-    ? '일과시간(08:30 ~ 17:30)을 넘는 작업입니다 · 안전관리자 결재 때 시간연장 허가 확인이 필요합니다.'
+    ? '일과시간(08:30 ~ 17:30)을 넘는 작업입니다 · 최종 결재 후 「시간 연장 허가 신청」으로 안전보건팀장 결재를 받아 주세요.'
     : `※ 작업허용시간 : ${WP_WORK_HOURS}`;
 }
 function wpRenderForm(){
@@ -4167,16 +4175,20 @@ const WP_HEADS = {
   '마케팅팀':   { name:'이정은', mail:'jungeunlee@simmons.co.kr' },
   'VMD팀':      { name:'지인영', mail:'inyoung@simmons.co.kr' }
 };
-const WP_SAFETY_MGR = { name:'김관수', mail:'gwansoo.kim@simmons.co.kr' };
+/* 안전관리자 : 여러 명 (메일은 모두에게, 결재 서명은 그중 한 명을 눌러 고름) */
+const WP_SAFETY_MGRS = [
+  { name:'김관수', mail:'gwansoo.kim@simmons.co.kr' },
+  { name:'한승배', mail:'gkswkdsl1@simmons.co.kr' }
+];
 const WP_HS_HEAD    = { name:'최은성', mail:'eschoi@simmons.co.kr' };
 /* 안전작업허가 메일은 모두 이 주소에도 함께 보냅니다 */
 const WP_MAIL_ALWAYS = ['hk7149@simmons.co.kr'];
-/* 결재 단계(k) → 담당자 { name, mail } (작업부서 팀장은 허가서의 부서로 찾음) */
+/* 결재 단계(k) → 담당자 목록 [{ name, mail }] (작업부서 팀장은 허가서의 부서로 찾음) */
 function wpApprover(p, k){
-  if(k === 'dept_head' || k === 'close_head') return WP_HEADS[p.dept] || null;
-  if(k === 'safety' || k === 'close_safety') return WP_SAFETY_MGR;
-  if(k === 'hs_head') return WP_HS_HEAD;
-  return null;
+  if(k === 'dept_head' || k === 'close_head') return WP_HEADS[p.dept] ? [WP_HEADS[p.dept]] : [];
+  if(k === 'safety' || k === 'close_safety') return WP_SAFETY_MGRS;
+  if(k === 'hs_head') return [WP_HS_HEAD];
+  return [];
 }
 /* 결재 알림 메일 : to = 받는 사람 목록, head = 첫 줄 안내 */
 async function wpMail(p, to, subj, head){
@@ -4382,7 +4394,7 @@ function wpSubmit(){
       else STORE.set('wpDept', f.dept);
       /* 제출 알림 : 작업부서 팀장 · 안전관리자 · 안전보건팀장 */
       const first = flow.approve[0];
-      const sent = await wpMail(row, [WP_HEADS[f.dept], WP_SAFETY_MGR, WP_HS_HEAD], `결재 요청 (${first.label})`,
+      const sent = await wpMail(row, [WP_HEADS[f.dept], ...WP_SAFETY_MGRS, WP_HS_HEAD], `결재 요청 (${first.label})`,
         `안전작업허가서가 제출되었습니다. 결재 순서 : ${flow.approve.map(r => r.label).join(' → ')} (현재 ${first.label} 결재 차례)`);
       toast(`${permit_no} 허가서를 제출했습니다 · 결재 대기${mailTail(sent)}`
         + (WP_HEADS[f.dept] ? '' : ' (기타 부서라 팀장 메일은 보내지 않았습니다)'), sent === false ? 'err' : 'ok');
@@ -4418,7 +4430,13 @@ function openWpSign(opts){
   WP_PAD.opts = opts;
   $('#wpSignTitle').textContent = opts.title;
   $('#wpSignSub').textContent = opts.sub || '';
-  $('#wpSignName').value = opts.name || STORE.get('wpName');   // 결재자는 부서별 이름 자동 기입
+  /* 결재자는 부서별 이름 자동 기입 · 여러 명(안전관리자)이면 이름 버튼을 눌러 고름 */
+  const nm = $('#wpSignNames');
+  nm.hidden = !opts.names;
+  nm.innerHTML = opts.names ? opts.names.map(n =>
+    `<button type="button" class="wpchip" data-wpname="${esc(n)}" aria-pressed="false">${esc(n)}</button>`).join('') : '';
+  $('#wpSignName').value = opts.names ? '' : (opts.name || STORE.get('wpName'));
+  $('#wpSignName').placeholder = opts.names ? '위에서 이름을 눌러 주세요' : '예) 홍길동';
   $('#wpSignExtra').innerHTML = opts.extra || '';
   $('#wpSignAfter').innerHTML = opts.after || '';
   $('#btnWpReject').hidden = !opts.onReject;
@@ -4436,7 +4454,7 @@ async function wpSignOk(){
   btn.disabled = true; btn.textContent = '저장 중…';
   try{
     await o.onOk({ name });
-    if(!o.name) STORE.set('wpName', name);   // 자동 기입된 결재자 이름은 신청자 이름으로 기억하지 않음
+    if(!o.name && !o.names) STORE.set('wpName', name);   // 자동 기입된 결재자 이름은 신청자 이름으로 기억하지 않음
     WP_PAD.opts = null;
     $('#wpSignModal').classList.remove('on');
   }catch(e){ toast(e.message,'err'); }
@@ -4451,7 +4469,7 @@ async function wpRejectClick(){
   if(!reason) return;
   try{
     await o.onReject({ name, reason });
-    if(!o.name) STORE.set('wpName', name);
+    if(!o.name && !o.names) STORE.set('wpName', name);
     WP_PAD.opts = null;
     $('#wpSignModal').classList.remove('on');
   }catch(e){ toast(e.message,'err'); }
@@ -4506,10 +4524,12 @@ function wpAct(id){
     await loadPermits();
     if($('#wpModal').classList.contains('on')) wpOpen(p.id);
   };
+  /* 결재자 이름 : 한 명이면 자동 기입, 여러 명(안전관리자)이면 이름 버튼 중 하나를 눌러 고름 */
   const who = wpApprover(p, r.k);
   openWpSign({
-    name: who ? who.name : '',
-    title: `${nx.stage === 'approve' ? (r.step || '결재') : '작업종료 서명'} · ${r.label}${who ? ` (${who.name})` : ''}`,
+    name: who.length === 1 ? who[0].name : '',
+    names: who.length > 1 ? who.map(x => x.name) : null,
+    title: `${nx.stage === 'approve' ? (r.step || '결재') : '작업종료 서명'} · ${r.label}${who.length === 1 ? ` (${who[0].name})` : ''}`,
     sub: `${p.permit_no} ${p.work_name} (${wpWho(p)})`,
     okText: nx.stage === 'approve' ? '승인 (결재)' : '승인 (완료 확인)',
     extra: extra.join(''),
@@ -4547,10 +4567,10 @@ function wpAct(id){
       const np = { ...p, ...patch };
       let sent = null;
       if(nx.stage === 'approve' && nn && nn.stage === 'approve')
-        sent = await wpMail(np, [wpApprover(p, nn.role.k)], `결재 요청 (${nn.role.label})`,
+        sent = await wpMail(np, wpApprover(p, nn.role.k), `결재 요청 (${nn.role.label})`,
           `${r.label} ${sg.name} 님이 결재했습니다. ${nn.role.label} 결재 차례입니다.`);
       else if(nx.stage === 'approve')
-        sent = await wpMail(np, [WP_HEADS[p.dept], WP_SAFETY_MGR, WP_HS_HEAD], '결재 완료 · 작업 시작 가능',
+        sent = await wpMail(np, [WP_HEADS[p.dept], ...WP_SAFETY_MGRS, WP_HS_HEAD], '결재 완료 · 작업 시작 가능',
           `${r.label} ${sg.name} 님의 최종 결재로 안전작업허가 결재가 모두 끝났습니다. 작업을 시작할 수 있습니다.`);
       toast((patch.status === '작업중' ? '결재가 끝났습니다 · 작업을 시작할 수 있습니다'
           : patch.status === '완료' ? '작업 완료 처리했습니다' : `결재했습니다 · 다음 ${nn.role.label}`) + mailTail(sent),
@@ -4565,6 +4585,120 @@ function wpAct(id){
       if(error) throw new Error('반려 실패: '+error.message);
       toast('반려했습니다','ok');
       await afterSave();
+    }
+  });
+}
+
+/* ── 시간 연장 허가 (일반 허가서) ──
+   최종 결재가 끝난 뒤(작업중 · 완료) 작업 담당자가 신청 → 안전보건팀장이 결재
+   signs.ext_req = { name, at, until, reason, reject? } · signs.ext_ok = 승인 도장 · ext_ok 칸 = true
+   (예전 기록 : 안전관리자 결재 때 ext_ok 만 true) */
+const WP_EXT_LABEL = '안전보건팀장';
+function wpExtState(p){
+  const s = p.signs || {};
+  if(s.ext_ok || (p.ext_ok && !s.ext_req)) return '승인';
+  if(!s.ext_req) return '';
+  return s.ext_req.reject ? '반려' : '신청';
+}
+const wpCanExt = p => !wpIsUrg(p) && (p.status === '작업중' || p.status === '완료') && !['신청','승인'].includes(wpExtState(p));
+const wpExtBadge = p => {
+  const st = wpExtState(p), q = (p.signs || {}).ext_req;
+  if(st === '승인') return `<span class="b done">연장 승인${q && q.until ? ' ~' + esc(wpDT(q.until)) : ''}</span>`;
+  if(st === '신청') return `<span class="b prog">연장 결재대기</span>`;
+  if(st === '반려') return `<span class="b rej">연장 반려</span>`;
+  return '';
+};
+const wpPlanBadge = p => (p.files || []).length
+  ? `<span class="b prog">제출</span>` : `<span class="b gray">없음</span>`;
+/* 목록 · 허가서 보기에 붙는 연장 버튼 (cls : 버튼 크기) */
+/* cls 'sm' = 목록용 (상태 배지와 같은 크기) · '' = 허가서 보기 창 버튼 */
+function wpExtBtn(p, cls){
+  const sm = cls === 'sm';
+  if(wpExtState(p) === '신청') return sm
+    ? `<button type="button" class="b done wpbb" data-wpextok="${p.id}">연장결재</button>`
+    : `<button class="btn" data-wpextok="${p.id}">연장허가 결재 · ${WP_EXT_LABEL}</button>`;
+  if(wpCanExt(p)) return sm
+    ? `<button type="button" class="b gray wpbb" data-wpextreq="${p.id}">연장허가</button>`
+    : `<button class="btn ghost" data-wpextreq="${p.id}">연장허가 신청</button>`;
+  return '';
+}
+/* 다른 사람이 먼저 처리했는지 확인하고 최신 서명을 받아 옵니다 */
+async function wpFreshSigns(id){
+  const { data, error } = await db.from('work_permits').select('signs,status,ext_ok').eq('id', id).single();
+  if(error) throw new Error(error.message);
+  return data;
+}
+async function wpExtAfter(id){
+  await loadPermits();
+  if($('#wpModal').classList.contains('on')) wpOpen(id);
+}
+function wpExtReq(id){
+  const p = WP_ALL.find(x => x.id === id);
+  if(!p || !wpCanExt(p)) return;
+  const prev = (p.signs || {}).ext_req;
+  openWpSign({
+    title: '시간 연장 허가 신청 · 작업 담당자',
+    sub: `${p.permit_no} ${p.work_name} · 현재 작업시간 ${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}`,
+    okText: '연장 신청',
+    extra: `${prev && prev.reject ? `<p class="hint" style="margin:0 0 12px;color:var(--human)">이전 신청 반려 · ${esc(prev.reject.name)} — ${esc(prev.reject.reason)}</p>` : ''}
+      <div class="wpx"><label>연장 작업 종료 일시 <em>*</em></label>
+        <input type="datetime-local" id="wpxUntil" step="600" value="${esc(p.end_at || '')}"></div>
+      <div class="wpx"><label>연장 사유</label>
+        <textarea id="wpxReason" placeholder="예) 자재 입고 지연으로 20:00 까지 작업 필요"></textarea></div>
+      <p class="hint" style="margin:0 0 12px">※ ${WP_WORK_HOURS} · 신청하면 ${WP_EXT_LABEL}에게 결재 메일이 갑니다.</p>`,
+    check(){
+      const u = $('#wpxUntil').value;
+      if(!u) return '연장 작업 종료 일시를 입력해 주세요';
+      if(p.end_at && u <= p.end_at) return `연장 종료는 현재 작업 종료(${wpDT(p.end_at)})보다 늦어야 합니다`;
+      return '';
+    },
+    async onOk(sg){
+      const cur = await wpFreshSigns(p.id), signs = cur.signs || {};
+      if(signs.ext_ok || (signs.ext_req && !signs.ext_req.reject)){ wpExtAfter(p.id); throw new Error('이미 연장 신청된 허가서입니다. 목록을 새로 불러옵니다.'); }
+      const until = $('#wpxUntil').value, reason = $('#wpxReason').value.trim();
+      signs.ext_req = { name:sg.name, at:new Date().toISOString(), until, reason };
+      const { error } = await db.from('work_permits').update({ signs, updated_at:new Date().toISOString() }).eq('id', p.id);
+      if(error) throw new Error('신청 실패: '+error.message);
+      const sent = await wpMail({ ...p, signs }, [WP_HS_HEAD], '시간 연장 허가 신청',
+        `${sg.name} 님이 시간 연장 허가를 신청했습니다. ${WP_EXT_LABEL} 결재 차례입니다.\n연장 : ${wpDT(p.end_at)} → ${wpDT(until)} 까지${reason ? `\n사유 : ${reason}` : ''}`);
+      toast('시간 연장 허가를 신청했습니다' + mailTail(sent), sent === false ? 'err' : 'ok');
+      await wpExtAfter(p.id);
+    }
+  });
+}
+function wpExtApprove(id){
+  const p = WP_ALL.find(x => x.id === id);
+  if(!p || wpExtState(p) !== '신청') return;
+  const q = p.signs.ext_req;
+  openWpSign({
+    name: WP_HS_HEAD.name,
+    title: `시간 연장 허가 결재 · ${WP_EXT_LABEL} (${WP_HS_HEAD.name})`,
+    sub: `${p.permit_no} ${p.work_name}`,
+    okText: '연장 승인',
+    extra: `<div class="wpx"><p class="hint" style="margin:0">신청 : <b>${esc(q.name)}</b> (${wpAt(q.at)})<br>
+      작업시간 : ${wpDT(p.start_at)} ~ ${wpDT(p.end_at)} → <b>${esc(wpDT(q.until))} 까지 연장</b>
+      ${q.reason ? `<br>사유 : ${esc(q.reason)}` : ''}</p></div>`,
+    async onOk(sg){
+      const cur = await wpFreshSigns(p.id), signs = cur.signs || {};
+      if(!signs.ext_req || signs.ext_req.reject || signs.ext_ok){ wpExtAfter(p.id); throw new Error('이미 처리된 연장 신청입니다. 목록을 새로 불러옵니다.'); }
+      signs.ext_ok = await wpUploadSign(sg, '시간연장 허가');
+      const { error } = await db.from('work_permits').update({ signs, ext_ok:true, updated_at:new Date().toISOString() }).eq('id', p.id);
+      if(error) throw new Error('저장 실패: '+error.message);
+      const sent = await wpMail({ ...p, signs }, [WP_HEADS[p.dept], ...WP_SAFETY_MGRS, WP_HS_HEAD], '시간 연장 허가 승인',
+        `${WP_EXT_LABEL} ${sg.name} 님이 시간 연장을 허가했습니다.\n연장 : ${wpDT(p.end_at)} → ${wpDT(q.until)} 까지 (신청 ${q.name})`);
+      toast('시간 연장을 허가했습니다' + mailTail(sent), sent === false ? 'err' : 'ok');
+      await wpExtAfter(p.id);
+    },
+    async onReject({ name, reason }){
+      const cur = await wpFreshSigns(p.id), signs = cur.signs || {};
+      if(!signs.ext_req || signs.ext_req.reject || signs.ext_ok){ wpExtAfter(p.id); throw new Error('이미 처리된 연장 신청입니다.'); }
+      signs.ext_req.reject = { name, reason, at:new Date().toISOString() };
+      const { error } = await db.from('work_permits').update({ signs, updated_at:new Date().toISOString() }).eq('id', p.id);
+      if(error) throw new Error('반려 실패: '+error.message);
+      const sent = await wpMail({ ...p, signs }, [WP_HEADS[p.dept]], '시간 연장 허가 반려',
+        `${WP_EXT_LABEL} ${name} 님이 시간 연장 신청을 반려했습니다.\n사유 : ${reason}\n(신청 ${q.name} · ${wpDT(q.until)} 까지)`);
+      toast('연장 신청을 반려했습니다' + mailTail(sent), 'ok');
+      await wpExtAfter(p.id);
     }
   });
 }
@@ -4644,8 +4778,15 @@ function wpDocHtml(p){
     ? `<tr><th>작업시간</th><td colspan="5">${wpDT(p.start_at)} 부터 ~ ${wpDT(p.end_at)} 까지</td></tr>`
     : `<tr><th>작업시간</th><td colspan="3">${wpDT(p.start_at)} 부터 ~ ${wpDT(p.end_at)} 까지
         <div class="sm">※ 작업허용시간 : ${WP_WORK_HOURS}</div></td>
-      <td colspan="2" class="c">( ${p.ext_ok ? '✓' : '&nbsp;&nbsp;'} ) 시간연장 허가 확인
-        <div class="sm">${p.ext_ok ? `안전관리자 ${esc((s.safety || {}).name || '')} · 전자결재` : over ? '확인 대기' : '해당없음 (일과시간 내)'}</div></td></tr>`;
+      <td colspan="2" class="c">( ${wpExtState(p) === '승인' ? '✓' : '&nbsp;&nbsp;'} ) 시간연장 허가 확인
+        <div class="sm">${(() => {
+          const q = s.ext_req, st = wpExtState(p);
+          if(st === '승인' && !s.ext_ok) return `안전관리자 ${esc((s.safety || {}).name || '')} · 전자결재`;   // 예전 기록
+          if(st === '승인') return `${WP_EXT_LABEL} ${esc(s.ext_ok.name)} 승인 (${wpStampDate(s.ext_ok.at)}) · ${esc(wpDT(q.until))} 까지 연장<br>신청 ${esc(q.name)}${q.reason ? ' · ' + esc(q.reason) : ''}`;
+          if(st === '신청') return `${esc(q.name)} 신청 · ${esc(wpDT(q.until))} 까지 · ${WP_EXT_LABEL} 결재대기`;
+          if(st === '반려') return `<span class="bad">연장 반려 · ${esc(q.reject.name)} — ${esc(q.reject.reason)}</span>`;
+          return over ? '해당 · 연장 신청 전' : '해당없음 (일과시간 내)';
+        })()}</div></td></tr>`;
   const chkGroups = WP_GROUPS.filter(g => types.includes(g.type));
   const grp = g => {
     const a = (p.checks || {})[g.key] || [];
@@ -4722,6 +4863,7 @@ function wpOpen(id){
   const nx = wpNext(p);
   $('#wpModalActs').innerHTML = [
     nx ? `<button class="btn" data-wpact="${p.id}">${nx.stage === 'approve' ? '결재' : '작업종료 서명'} · ${esc(nx.role.label)}</button>` : '',
+    wpExtBtn(p, ''),
     `<button class="btn ghost" data-wpprint="${p.id}">인쇄 · PDF 저장</button>`,
     `<button class="btn sm danger" data-wpdel="${p.id}" style="margin-left:auto">삭제</button>`
   ].join('');
@@ -4830,7 +4972,7 @@ function renderWpFlow(){
     return `<div class="rec">
       <div class="rec-top">
         <span class="rec-d">${esc(p.permit_no || '-')}</span>
-        <span class="b gray">${esc(wpKindLbl(p))}</span>${wpBadge(p.status)}
+        <span class="b gray">${esc(wpKindLbl(p))}</span>${wpBadge(p.status)}${wpPlanBadge(p)}${wpExtBadge(p)}
         ${(p.work_types || []).map(t => `<span class="b gray">${esc(t)}</span>`).join('')}
         <span class="meta">${esc(wpWho(p))} · ${esc(p.apply_date)}</span>
       </div>
@@ -4840,6 +4982,7 @@ ${wpDT(p.start_at)} ~ ${wpDT(p.end_at)} ·${esc(p.workers || '')}</p>
       <div class="wpflow">${wpSteps(p)}</div>
       <div class="rec-acts">
         ${nx ? `<button class="btn sm" data-wpopen="${p.id}">${nx.stage === 'approve' ? '결재하기' : '작업종료 서명'} · ${esc(nx.role.label)}</button>` : ''}
+        ${wpExtBtn(p, 'sm')}
         <button class="btn sm ghost" data-wpopen="${p.id}">허가서 보기</button>
       </div>
     </div>`;
@@ -4865,10 +5008,12 @@ function renderWpRecords(){
     return;
   }
   $('#wpRecList').innerHTML = `<div class="wptbl-wrap"><table class="wptbl"><thead><tr>
-    <th>허가번호</th><th>신청일</th><th>구분</th><th>상태</th><th>협력사 · 부서</th><th>작업명</th><th>작업 종류</th>
+    <th>허가번호</th><th>신청일</th><th>구분</th><th>상태</th><th>계획서</th><th>시간 연장</th><th>협력사 · 부서</th><th>작업명</th><th>작업 종류</th>
     <th>작업시간</th><th>신청자</th><th>안전관리자 결재</th><th>완료일시</th><th>삭제</th></tr></thead><tbody>
     ${list.map(p => { const s = p.signs || {}; return `<tr data-wpopen="${p.id}">
       <td><b>${esc(p.permit_no || '')}</b></td><td>${esc(p.apply_date)}</td><td>${esc(wpKindLbl(p))}</td><td>${wpBadge(p.status)}</td>
+      <td>${wpPlanBadge(p)}</td>
+      <td style="white-space:nowrap">${wpExtBadge(p)} ${wpExtState(p) === '승인' ? '' : wpExtBtn(p, 'sm')}${!wpExtBadge(p) && !wpCanExt(p) ? '<span class="in" style="color:var(--ink3)">-</span>' : ''}</td>
       <td>${esc(wpWho(p))}</td><td class="ell">${esc(p.work_name)}</td><td>${esc((p.work_types || []).join(', '))}</td>
       <td>${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}</td><td>${esc(s.applicant ? s.applicant.name : '')}</td>
       <td>${s.safety ? esc(s.safety.name)+' · '+wpAt(s.safety.at) : ''}</td><td>${wpDT(p.done_at)}</td>
@@ -4892,7 +5037,11 @@ function wpExportCsv(){
       (p.work_types || []).join(', '), wpDT(p.start_at), wpDT(p.end_at), p.workers,
       p.equipment || '', (p.files || []).map(x => x.name).join(' / '),
       nm(s.applicant), nm(s.dept_head || s.dept_mgr), nm(s.safety), nm(s.hs_head),
-      wpIsUrg(p) ? '' : p.ext_ok ? '허가' : wpOverTime(p.start_at, p.end_at) ? '미확인' : '해당없음',
+      wpIsUrg(p) ? '' : (() => { const st = wpExtState(p), q = s.ext_req;
+        return st === '승인' ? '허가' + (q && q.until ? ` (~${wpDT(q.until)}, ${s.ext_ok ? s.ext_ok.name : ''})` : '')
+          : st === '신청' ? `결재대기 (~${wpDT(q.until)}, 신청 ${q.name})`
+          : st === '반려' ? `반려 (${q.reject.name}: ${q.reject.reason})`
+          : wpOverTime(p.start_at, p.end_at) ? '미신청' : '해당없음'; })(),
       p.safety_note || '', p.dept_note || '', chk, p.chem ? '전 항목 양호' : '해당없음', wpGasBad(p.gas).join(' / '),
       wpDT(p.done_at), nm(s.close_dept), nm(s.close_head), nm(s.close_safety), p.reject ? `${p.reject.name}: ${p.reject.reason}` : ''];
   }));
@@ -4950,13 +5099,21 @@ function wpInit(){
 
   $('#wpFlowTabs').onclick = e => { const b = e.target.closest('[data-wpff]'); if(b){ WP_FLOW_F = b.dataset.wpff; renderWpFlow(); } };
   const openRow = e => { const o = e.target.closest('[data-wpopen]'); if(o) wpOpen(o.dataset.wpopen); };
-  $('#wpFlowList').onclick = openRow;
+  /* 시간 연장 신청 · 결재 버튼 (목록 · 허가서 보기 공통) */
+  const extClick = e => {
+    const rq = e.target.closest('[data-wpextreq]'); if(rq){ e.stopPropagation(); wpExtReq(rq.dataset.wpextreq); return true; }
+    const ok = e.target.closest('[data-wpextok]');  if(ok){ e.stopPropagation(); wpExtApprove(ok.dataset.wpextok); return true; }
+    return false;
+  };
+  $('#wpFlowList').onclick = e => { if(!extClick(e)) openRow(e); };
   $('#wpRecList').onclick = e => {
+    if(extClick(e)) return;
     const d = e.target.closest('[data-wprecdel]');
     if(d){ e.stopPropagation(); return wpDel(d.dataset.wprecdel); }
     openRow(e);
   };
   $('#wpModal').addEventListener('click', e => {
+    if(extClick(e)) return;
     const a = e.target.closest('[data-wpact]');   if(a) return wpAct(a.dataset.wpact);
     const pr = e.target.closest('[data-wpprint]'); if(pr) return wpPrint(pr.dataset.wpprint);
     const d = e.target.closest('[data-wpdel]');   if(d) return wpDel(d.dataset.wpdel);
@@ -4968,6 +5125,13 @@ function wpInit(){
   $('#btnWpCsv').onclick = wpExportCsv;
 
   $('#btnWpSignOk').onclick = wpSignOk;
+  $('#wpSignNames').onclick = e => {
+    const b = e.target.closest('[data-wpname]'); if(!b) return;
+    $('#wpSignName').value = b.dataset.wpname;
+    $$('#wpSignNames [data-wpname]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  };
+  $('#wpSignName').addEventListener('input', () =>
+    $$('#wpSignNames [data-wpname]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.wpname === $('#wpSignName').value.trim()))));
   $('#btnWpReject').onclick = wpRejectClick;
 }
 
