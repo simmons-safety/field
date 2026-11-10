@@ -4169,6 +4169,8 @@ const WP_HEADS = {
 };
 const WP_SAFETY_MGR = { name:'김관수', mail:'gwansoo.kim@simmons.co.kr' };
 const WP_HS_HEAD    = { name:'최은성', mail:'eschoi@simmons.co.kr' };
+/* 안전작업허가 메일은 모두 이 주소에도 함께 보냅니다 */
+const WP_MAIL_ALWAYS = ['hk7149@simmons.co.kr'];
 /* 결재 단계(k) → 담당자 { name, mail } (작업부서 팀장은 허가서의 부서로 찾음) */
 function wpApprover(p, k){
   if(k === 'dept_head' || k === 'close_head') return WP_HEADS[p.dept] || null;
@@ -4178,21 +4180,30 @@ function wpApprover(p, k){
 }
 /* 결재 알림 메일 : to = 받는 사람 목록, head = 첫 줄 안내 */
 async function wpMail(p, to, subj, head){
-  const list = [...new Set(to.filter(x => x && x.mail).map(x => x.mail))];
+  const list = [...new Set([...to.filter(x => x && x.mail).map(x => x.mail), ...WP_MAIL_ALWAYS])];
   if(!list.length) return null;
-  const link = /^https?:/.test(location.protocol) ? location.origin + location.pathname : '';
-  const body = [head, '',
-    `허가번호 : ${p.permit_no || ''}`,
-    `구분 : ${wpKindLbl(p)}`,
-    `부서 : ${wpWho(p)}`,
-    `작업명 : ${p.work_name || ''}`,
-    `작업종류 : ${(p.work_types || []).join(', ')}`,
-    `작업시간 : ${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}`,
-    `작업인원 : ${p.workers || ''}` + (p.equipment ? ` / 반입장비 : ${p.equipment}` : ''),
-    `신청자 : ${((p.signs || {}).applicant || {}).name || ''}`,
-    '', link ? `플랫폼에서 확인 · 결재 : ${link} → 안전작업허가 → 결재 · 진행` : '플랫폼 → 안전작업허가 → 결재 · 진행 에서 확인해 주세요.'
+  /* 링크를 누르면 안전작업허가 → 결재 · 진행 → 이 허가서가 바로 열립니다 */
+  const link = /^https?:/.test(location.protocol) && p.id
+    ? `${location.origin}${location.pathname}?go=permit&wp=${encodeURIComponent(p.id)}` : '';
+  const rows = [
+    ['허가번호', p.permit_no || ''], ['구분', wpKindLbl(p)], ['부서', wpWho(p)], ['작업명', p.work_name || ''],
+    ['작업종류', (p.work_types || []).join(', ')], ['작업시간', `${wpDT(p.start_at)} ~ ${wpDT(p.end_at)}`],
+    ['작업인원', p.workers || ''], ...(p.equipment ? [['반입장비', p.equipment]] : []),
+    ['신청자', ((p.signs || {}).applicant || {}).name || '']
+  ];
+  const body = [head, '', ...rows.map(([k, v]) => `${k} : ${v}`), '',
+    link ? '▶ 허가서 바로 열기 (확인 · 결재)' : '플랫폼 → 안전작업허가 → 결재 · 진행 에서 확인해 주세요.',
+    ...(link ? [link] : [])
   ].join('\n');
-  try{ return await notifyMail(`[안전작업허가] ${subj} · ${p.permit_no || ''} ${p.work_name || ''}`, body, list); }
+  const html = `<div style="font-family:'Malgun Gothic',sans-serif;font-size:14px;color:#111;line-height:1.6">
+    <p style="margin:0 0 14px">${esc(head)}</p>
+    <table style="border-collapse:collapse;font-size:13px">${rows.map(([k, v]) =>
+      `<tr><th style="text-align:left;padding:5px 14px 5px 0;color:#555;font-weight:600;white-space:nowrap">${esc(k)}</th><td style="padding:5px 0">${esc(v)}</td></tr>`).join('')}</table>
+    ${link ? `<p style="margin:20px 0 6px"><a href="${esc(link)}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:11px 20px;border-radius:8px;font-weight:700">허가서 바로 열기 (확인 · 결재)</a></p>
+    <p style="margin:0;font-size:12px;color:#777">버튼이 안 눌리면 : <a href="${esc(link)}" style="color:#2F6FD6">${esc(link)}</a></p>`
+      : '<p style="margin:20px 0 0">플랫폼 → 안전작업허가 → 결재 · 진행 에서 확인해 주세요.</p>'}
+  </div>`;
+  try{ return await notifyMail(`[안전작업허가] ${subj} · ${p.permit_no || ''} ${p.work_name || ''}`, body, list, html); }
   catch(e){ return false; }
 }
 function wpDeptSet(id, val){
@@ -4358,7 +4369,8 @@ function wpSubmit(){
       const row = { ...f, permit_no, status:'결재대기', signs:{ applicant:sign }, created_by:sg.name };
       if(files.length) row.files = files;
       if(!row.equipment) delete row.equipment;   // 비어 있으면 칸을 보내지 않음 (예전 표와도 호환)
-      const { error } = await db.from('work_permits').insert(row);
+      const { data:saved, error } = await db.from('work_permits').insert(row).select('id').single();
+      if(saved) row.id = saved.id;   // 메일의 '허가서 바로 열기' 링크에 씀
       if(error){
         if(sign.path) db.storage.from(WP_BUCKET).remove([sign.path]);
         if(files.length) db.storage.from(WP_BUCKET).remove(files.map(x => x.path));
@@ -4772,6 +4784,25 @@ async function loadPermits(){
   renderWpFlow(); renderWpRecords();
 }
 function wpEnter(){ wpShowPick(); loadPermits(); }
+/* 메일 링크 (?go=permit&wp=ID) : 결재 · 진행 화면으로 가서 그 허가서를 바로 엽니다 */
+async function wpDeepLink(id){
+  await loadPermits();
+  const p = WP_ALL.find(x => x.id === id);
+  if(!p) return toast('허가서를 찾을 수 없습니다 · 삭제되었거나 주소가 잘못되었습니다','err');
+  wpSetMode(wpIsUrg(p) ? '긴급' : p.kind);
+  if(wpIsUrg(p)) wpSetKind(p.kind);
+  if(p.status === '결재대기' || p.status === '작업중' || p.status === '반려'){
+    WP_FLOW_F = '';
+    if(p.status === '반려') WP_FLOW_F = '반려';
+    const b = $('#p-permit .subnav [data-s="flow"]'); if(b) b.click();
+    renderWpFlow();
+  }else{
+    const b = $('#p-permit .subnav [data-s="records"]'); if(b) b.click();
+  }
+  wpOpen(p.id);
+  /* 주소창의 wp= 는 지워 둡니다 (새로고침해도 다시 열리지 않게) */
+  try{ history.replaceState(history.state, '', location.pathname + '?go=permit'); }catch(e){}
+}
 function wpSteps(p){
   const s = p.signs || {}, f = wpFlowOf(p), nx = wpNext(p);
   const steps = [f.apply, ...f.approve].map(r => [r, '']).concat(wpCloseOf(p).map(r => [r, '종료 ']));
@@ -6233,7 +6264,7 @@ const mailCfg = () => ({
 });
 let MAIL_LOG = '';
 /* toOverride : 받는 사람을 직접 지정 (안전작업허가 결재 알림 등). 없으면 설정의 받는 주소 */
-async function notifyMail(subject, body, toOverride){
+async function notifyMail(subject, body, toOverride, html){
   const cfg = mailCfg(), url = cfg.url;
   const to = toOverride ? [].concat(toOverride).filter(Boolean).join(',') : cfg.to;
   if(!url || !to) return null;                     // 설정 전이면 조용히 넘어갑니다
@@ -6246,7 +6277,7 @@ async function notifyMail(subject, body, toOverride){
       const head = { 'Content-Type':'application/json' };
       if(CONFIG.key){ head['Authorization'] = 'Bearer ' + CONFIG.key; head['apikey'] = CONFIG.key; }
       const r = await fetch(url, { method:'POST', headers: head,
-        body: JSON.stringify({ to:list, subject, text:body,
+        body: JSON.stringify({ to:list, subject, text:body, html:html || undefined,
           site: CONFIG.site.name, sent_at: new Date().toISOString() }) });
       return r.ok;
     }catch(e){ return false; }
@@ -6260,6 +6291,7 @@ async function notifyMail(subject, body, toOverride){
   form.set('to', list.join(','));
   form.set('subject', subject);
   form.set('text', body);
+  if(html) form.set('html', html);          // 링크를 누를 수 있는 HTML 본문 (mail_webhook.gs 가 사용)
   form.set('site', CONFIG.site.name);
   form.set('sent_at', new Date().toISOString());
   const tail = '…' + url.slice(-12);
@@ -10611,6 +10643,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* QR · 바로가기 링크 (예: ?go=voice → 근로자의견청취로 바로 이동) */
   const goParam = new URLSearchParams(location.search).get('go');
   if(goParam && document.getElementById('p-' + goParam)) go(goParam);
+  const wpParam = new URLSearchParams(location.search).get('wp');
+  if(goParam === 'permit' && wpParam && db) wpDeepLink(wpParam);
 
   /* 앱으로 설치 */
   if('serviceWorker' in navigator && location.protocol === 'https:'){
