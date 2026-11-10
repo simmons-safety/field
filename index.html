@@ -1427,6 +1427,54 @@ button.b.wpbb.done:hover{opacity:.85}
 .scobox textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:13px;resize:vertical}
 .scobox .bt{display:flex;gap:8px;margin-top:14px;align-items:center}
 .scot .tot{font-family:var(--fd);font-size:15px;font-weight:800}
+/* 적격수급인 평가 */
+.ctmailin{display:flex;align-items:center;gap:6px;margin-top:8px}
+.ctmailin input{flex:1;min-width:0}
+.ctmailin span{font-size:13px;color:var(--ink3);white-space:nowrap}
+.ctneed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 18px;background:var(--panel2);border-radius:12px;padding:12px 14px;margin:8px 0 12px;font-size:12px;color:var(--ink2);line-height:1.6}
+.ctneed b{display:block;font-size:12.5px;color:var(--ink);margin-top:4px}
+@media (max-width:760px){ .ctneed{grid-template-columns:1fr} }
+.ctev .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:14px}
+.ctitem .hd .pt,.ctev .hd .pt{font-style:normal;font-family:var(--fd);font-size:12px;font-weight:700;color:var(--ink3)}
+.ctitem .q{font-size:12.5px;color:var(--ink2);margin:3px 0 6px}
+.ctitem .need{margin:0 0 10px;padding-left:18px;font-size:12px;color:var(--ink3);line-height:1.6}
+.ctrow{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:110px 1.2fr 1.6fr 70px 50px 96px 90px;gap:10px;align-items:center;width:100%;padding:12px 6px;border-top:1px solid var(--line2);font-size:13px}
+.ctrow:hover{background:var(--panel2)}
+.ctrow .no{font-family:var(--fd);font-size:11.5px;color:var(--ink3);line-height:1.4}
+.ctrow .pj{color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctrow .sc{font-family:var(--fd);font-weight:800;text-align:right}
+.ctst{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;text-align:center;background:var(--panel2);color:var(--ink2)}
+.ctst.s1{background:#FDECEA;color:var(--human)}
+.ctst.s2{background:#FFF4D6;color:#8a5a00}
+.ctst.s3{background:#000;color:#fff}
+@media (max-width:760px){
+  .ctrow{grid-template-columns:1fr auto;gap:4px 10px}
+  .ctrow .pj,.ctrow .no{grid-column:1}
+  .ctrow .fc{display:none}
+}
+.scobox.ctbox{max-width:880px;max-height:92vh;overflow:auto}
+.ctbox .ctmeta{font-size:12px;color:var(--ink3);margin:4px 0 12px;line-height:1.6}
+.ctbox .ctmemo{font-size:12.5px;background:var(--panel2);border-radius:8px;padding:8px 10px;margin:0 0 12px;white-space:pre-wrap}
+.ctev{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.ctev .hd span{font-size:12.5px;color:var(--ink2);font-weight:400}
+.ctev .fl{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px}
+.ctev .fl a{font-size:12px;background:var(--panel2);border-radius:8px;padding:5px 9px;color:var(--ink);text-decoration:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctev .fl a:hover{background:var(--ink);color:#fff}
+.ctev .fl .none{font-size:12px;color:var(--human);font-weight:600}
+.ctev .auto{margin:8px 0}
+.ctev input.ctnote{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:12.5px}
+.ctbox .opt small{min-height:30px}
+.ctsum{display:grid;grid-template-columns:repeat(4,1fr) 1.4fr;gap:8px;margin:4px 0 14px}
+.ctsum div{background:var(--panel2);border-radius:12px;padding:10px;font-size:11.5px;color:var(--ink2)}
+.ctsum div b{display:block;font-family:var(--fd);font-size:18px;color:var(--ink);margin-top:2px}
+.ctsum .tot{background:#000;color:#fff}
+.ctsum .tot b{color:#fff}
+@media (max-width:760px){ .ctsum{grid-template-columns:repeat(2,1fr)} .ctsum .tot{grid-column:1/-1} }
+.ctbox .ctin{display:grid;grid-template-columns:200px 1fr;gap:10px}
+.ctbox .ctin input,.ctbox .ctin textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:13px}
+@media (max-width:760px){ .ctbox .ctin{grid-template-columns:1fr} }
+.ctbox .bt{flex-wrap:wrap}
+.ctbox .ctwarn{font-size:12px;color:var(--human);margin:8px 0 0}
 .scot .tot small{font-size:10.5px;color:var(--ink3);font-weight:500}
 .scot .rk{font-family:var(--fd);font-weight:700;color:var(--ink3)}
 .scot .bar{display:block;height:4px;background:var(--panel3);border-radius:2px;margin-top:4px;overflow:hidden}
@@ -1704,6 +1752,13 @@ button.b.wpbb.done:hover{opacity:.85}
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3.5H7a1.5 1.5 0 0 0-1.5 1.5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3.5V8h4.5"/><path d="m8.8 12.4 1.6 1.6 3.2-3.2"/><path d="M8.6 17.6c1-.9 1.7-.9 2.4 0s1.5.9 2.4 0 1.6-.6 2.2.1"/></svg></span>
         <span class="ttl">안전작업허가</span>
         <span class="en">Work Permit</span>
+      </button>
+
+      <button class="mbtn" data-go="ctr">
+        <span class="arw">↗</span>
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5V9.5l5-3v3l5-3v3l5-3v14z"/><path d="M4 20.5h16"/><path d="m9.2 15 1.8 1.8 3.8-3.8"/></svg></span>
+        <span class="ttl">적격수급인평가</span>
+        <span class="en">Contractor Evaluation</span>
       </button>
 
     </div>
@@ -2558,6 +2613,87 @@ button.b.wpbb.done:hover{opacity:.85}
     </div>
   </div>
   </div><!-- /wpMain -->
+</section>
+
+<!-- ═══════════ 적격수급인 평가 ═══════════ -->
+<section class="panel" id="p-ctr" hidden>
+  <div class="pagetop">
+    <span class="pt">적격수급인 평가</span>
+    <span class="pe">Contractor Evaluation</span>
+  </div>
+
+  <div class="subnav">
+    <button data-s="ctrnew" aria-pressed="true">평가 자료 제출</button>
+    <button data-s="ctrlist" data-lock="ctr" aria-pressed="false">제출 현황 · 평가 🔒</button>
+  </div>
+
+  <div data-sp="ctrnew">
+    <div class="card">
+      <header><h2>피평가업체 정보</h2><span class="note">CONTRACTOR</span></header>
+      <div class="grid">
+        <div><label>작성자 <em>*</em></label><select id="ctWriter"></select>
+          <div id="ctWriterEtc" hidden>
+            <input type="text" id="ctWriterName" placeholder="이름 직접 입력" style="margin-top:8px">
+            <div class="ctmailin"><input type="text" id="ctWriterMail" placeholder="메일 아이디 (결과표 받을 주소)"><span>@simmons.co.kr</span></div>
+          </div>
+        </div>
+        <div><label>평가 일자 <em>*</em></label>
+          <div class="datefield">
+            <span class="dtext" id="ctDateText">—</span>
+            <input type="date" id="ctDate">
+          </div>
+        </div>
+        <div><label>업체명 <em>*</em></label><input type="text" id="ctCompany" placeholder="예) 트웰브디자인"></div>
+        <div><label>공사명 <em>*</em></label><input type="text" id="ctProject" placeholder="예) 맨션 안산점 신규공사"></div>
+        <div class="wide"><label>메모 (선택)</label>
+          <textarea id="ctMemo" rows="2" placeholder="공사 기간 · 금액 · 작업 내용 등 참고 사항"></textarea></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h2>증빙서류 첨부</h2><span class="note" id="ctFileNote">0개</span></header>
+      <p class="hint" style="margin:0 0 6px">아래 평가 필요자료를 한 번에 올려 주세요. (여러 개 가능 · 파일당 20MB 이하 · 사진 · PDF · 한글 · 워드 · 엑셀 · 압축파일)
+        빠진 자료가 있는 항목은 <b>미흡</b>으로 평가될 수 있습니다.</p>
+      <div class="ctneed" id="ctNeed"></div>
+      <div class="drop" id="ctDrop">
+        <div class="big">증빙서류 선택 또는 끌어다 놓기</div>
+        <div class="hint">여러 파일을 한꺼번에 선택할 수 있습니다</div>
+        <input type="file" id="ctFileIn" multiple hidden>
+      </div>
+      <div class="foot" style="margin-top:8px" id="ctFileBar" hidden>
+        <span class="hint" id="ctFileSum"></span>
+        <button class="btn ghost sm" type="button" id="btnCtFileClear">전체 삭제</button>
+      </div>
+      <ul class="wpfiles" id="ctFileList"></ul>
+    </div>
+
+    <div class="card">
+      <div class="foot" style="margin-top:0">
+        <button class="btn" id="btnCtSubmit">제출</button>
+        <button class="btn ghost" id="btnCtReset">지우기</button>
+        <span class="hint" id="ctHint"></span>
+      </div>
+    </div>
+  </div>
+
+  <div data-sp="ctrlist" hidden>
+    <div class="card">
+      <header><h2>제출 현황</h2><span class="note" id="ctCount">—</span></header>
+      <div class="hstabs" id="ctTabs" style="margin-bottom:8px">
+        <button data-ctf="" aria-pressed="true">전체</button>
+        <button data-ctf="접수" aria-pressed="false">평가 대기</button>
+        <button data-ctf="평가완료" aria-pressed="false">평가완료 (미발송)</button>
+        <button data-ctf="발송완료" aria-pressed="false">발송완료</button>
+      </div>
+      <div class="grid" style="margin-bottom:6px">
+        <div class="wide"><input type="text" id="ctQ" placeholder="업체명 · 공사명 · 작성자 검색"></div>
+      </div>
+      <div id="ctList"></div>
+      <div class="foot">
+        <button class="btn ghost sm" id="btnCtCsv">CSV 내려받기</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 </main>
@@ -3417,6 +3553,7 @@ function go(p){
   if(p === 'permit') wpEnter();
   if(p === 'safeday') sdEnter();
   if(p === 'health') hbEnter();
+  if(p === 'ctr') ctEnter();
 }
 
 /* ===================== 부서 ===================== */
@@ -10266,6 +10403,565 @@ function resetHome(){
   go('home');
 }
 
+/* ===================== 적격수급인 평가 =====================
+   '공사계약(일반작업) 적격 수급인 선정 평가표 · 평가 지표'
+   (5. 적격수급인 평가 / 도급사업 안전보건수준 평가표 및 기준.xlsx) 를 그대로 옮겼습니다.
+   ① 작성자가 피평가업체 정보 + 항목별 증빙서류를 올려 제출 → CT_ADMIN_MAIL 로 자동 알림
+   ② 제출 현황 🔒 에서 항목마다 우수 · 보통 · 미흡을 골라 점수화 → 최종 확정
+   ③ 최종 확정한 건만 '메일 보내기' → 작성자(CT_PEOPLE 에서 이름으로 찾은 주소)에게 평가결과표 발송
+   표 : contractor_evals (schema_contractor.sql) · 파일 : tbm-materials 버킷 contractor/ 폴더 */
+const CT_ADMIN_MAIL = 'hk7149@simmons.co.kr';     // 제출 알림 받는 주소
+const CT_PEOPLE = [                               // 작성자 이름 ↔ 결과표 받는 주소 (자동 연동)
+  ['오지석','ysppg60@simmons.co.kr'], ['임재석','usopp@simmons.co.kr'], ['강석규','ksg7395@simmons.co.kr'],
+  ['조승환','sh.cho11@simmons.co.kr'], ['조영욱','cadcho@simmons.co.kr'], ['황민준','minjun0313@simmons.co.kr'],
+  ['김태미','taemi@simmons.co.kr'], ['이소연','yeoniflower@simmons.co.kr'], ['김병옥','okkim@simmons.co.kr'],
+  ['이관형','lkh1204@simmons.co.kr'], ['정광석','ksjeong@simmons.co.kr'], ['권정재','jungjae.kwon@simmons.co.kr'],
+  ['김민우','kmw0416@simmons.co.kr'], ['이동찬','ehdehd4449@simmons.co.kr'], ['노창완','ncw1018@simmons.co.kr'],
+  ['정다니','dani.jung@simmons.co.kr'], ['장한나','hanna.jang@simmons.co.kr'], ['박지영','young@simmons.co.kr'],
+  ['박유진','yujinp@simmons.co.kr'], ['한기선','hk7149@simmons.co.kr'],
+  ['트웰브디자인','12design@teamtwelve.co.kr']     // 외부 주소 : mail_webhook.gs ALLOWED_DOMAINS 에 teamtwelve.co.kr 추가 필요
+];
+const ctMail = name => (CT_PEOPLE.find(p => p[0] === name) || [])[1] || '';
+const CT_GRADES = ['우수','보통','미흡'];
+const CT_GROUPS = [
+  { k:'g1', t:'1. 안전보건 관리체제', max:10 },
+  { k:'g2', t:'2. 실행수준',          max:50 },
+  { k:'g3', t:'3. 운영관리',          max:20 },
+  { k:'g4', t:'4. 재해발생 수준',     max:20 }
+];
+const CT_ITEMS = [
+  { k:'r1', gk:'g1', no:'1-1', t:'역할 및 책임', q:'안전 업무 담당자 등 계획추진 조직 구성', pts:[10,5,1],
+    need:['보호구 지급, TBM 실시 등 안전보건 활동 계획별 담당자 등 업무분장'],
+    rule:['안전보건 관리(총괄)책임자, 안전보건 총괄책임자, 안전/보건관리자 및 관리감독자 등 안전보건 조직의 구성, 역할, 책임이 규정됨',
+          '안전보건 조직은 구성되었으나, 일부가 누락됨',
+          '안전보건 조직이 구성되지 아니함'] },
+  { k:'r2', gk:'g2', no:'2-1', t:'위험성평가', q:'도급 대상 작업의 유해·위험요인 이해도 및 평가수준', pts:[40,20,1],
+    need:['공정표 (또는 작업계획서)', '공정 위험성평가 결과'],
+    rule:['도급작업에 대한 위험성평가에 유해·위험요인이 반영되었음',
+          '도급작업에 대한 위험성평가에 유해·위험요인이 일부 누락되었음',
+          '도급작업에 대한 위험성평가가 미실시됨'] },
+  { k:'r3', gk:'g2', no:'2-2', t:'안전점검', q:'보호구 착용 확인 등 안전점검 및 모니터링 계획', pts:[10,5,1],
+    need:['현장 안전점검 계획'],
+    rule:['도급작업이 지닌 유해·위험요인별 작업 전·중·후 등 점검 및 모니터링 계획이 수립됨',
+          '도급작업이 지닌 유해·위험요인별 작업 전·중·후 등 점검 및 모니터링 계획이 수립되었으나 일부 항목이 누락됨',
+          '도급작업이 지닌 유해·위험요인별 작업 전·중·후 등 점검 및 모니터링 계획이 미수립됨'] },
+  { k:'r4', gk:'g3', no:'3-1', t:'위험물질 및 설비', q:'취급 유해·위험물질, 기계·기구 등 안전운용 대책', pts:[10,5,1],
+    need:['작업 공도구 리스트', '종사자 지급 예정 보호구 리스트', '보호구 안전인증서', '사용 화학물질 리스트 및 MSDS',
+          '유해·위험물질, 기계·기구 사용 시 안전지침 또는 수칙 등', '지게차 등 차량계 하역 운반/건설 기계 리스트',
+          '지게차 작업 계획서 등 장비작업 계획서'],
+    rule:['유해·위험물질 및 취급 기계설비에 대한 점검, 정비 등의 관리방법과 주체가 규정됨',
+          '유해·위험물질 및 취급 기계설비에 대한 점검, 정비 등의 관리방법이 수립되었으나 주체가 규정되지 아니함',
+          '유해·위험물질 및 취급 기계설비에 대한 점검, 정비 등의 관리방법과 주체가 규정되지 아니함'] },
+  { k:'r5', gk:'g3', no:'3-2', t:'비상대책', q:'관계기관 비상연락망 등 비상대피 및 피해 최소화 대책', pts:[10,5,1],
+    need:['비상 대응 매뉴얼 등 비상 시 대응계획 관련 문서'],
+    rule:['사고유형별 비상연락체계, 대응 가이드 및 사후조치 등 비상대응 계획이 수립됨',
+          '비상연락체계, 대응 가이드 및 사후조치 등 비상대응 계획이 수립되었으나, 소방 등 일부 유형만 수립됨',
+          '비상연락체계, 대응 가이드 및 사후조치 등 비상대응 계획이 수립되지 아니함'] },
+  { k:'r6', gk:'g4', no:'4-1', t:'산업재해 현황', q:'최근 3년간 산업재해 발생 현황', pts:[20,10,1],
+    need:['최근 3년 산업재해율 확인서'],
+    rule:['최근 3년 연속 동종업종 평균 재해율 미만',
+          '최근 2년 연속 동종업종 평균재해율 미만',
+          '최근 3년 내 중대재해 발생이력이 있거나, 동종업종 평균재해율 이상임'] }
+];
+const CT_ETC = { k:'etc', t:'기타 자료 (선택)', need:['사업자등록증, 안전보건 관련 인증서 등 추가 자료'] };
+/* 지침(S-SI-S14) 8.3 등급 기준. 이 게시판은 80점(A등급) 이상만 적격 · 최종 확정 가능 */
+const CT_GRADE_TXT = { S:'매우 우수', A:'우수', B:'역량을 갖춤', C:'미흡', D:'매우 미흡' };
+const CT_PASS = 80;   // 이 점수 미만은 최종 확정 불가 (A등급 이상만 적격)
+const CT_FILE_MAX = 20 * 1024 * 1024;
+let CT_FILES = [], CT_ALL = [], CT_FILTER = '', CT_READY = false;
+
+function ctCalc(scores){
+  const sub = {}; CT_GROUPS.forEach(g => sub[g.k] = 0);
+  let total = 0, done = 0;
+  CT_ITEMS.forEach(it => {
+    const s = scores && scores[it.k];
+    const i = s ? CT_GRADES.indexOf(s.g) : -1;
+    if(i < 0) return;
+    sub[it.gk] += it.pts[i]; total += it.pts[i]; done++;
+  });
+  const grade = total >= 90 ? 'S' : total >= 80 ? 'A' : total >= 70 ? 'B' : total >= 60 ? 'C' : 'D';
+  return { sub, total, done, all: done === CT_ITEMS.length, grade, pass: total >= CT_PASS };
+}
+const ctStatusTxt = s => s === '발송완료' ? '발송완료' : s === '평가완료' ? '평가완료' : '평가 대기';
+const ctStatusCls = s => s === '발송완료' ? 's3' : s === '평가완료' ? 's2' : 's1';
+const ctTableMissing = err => err && /contractor_evals|42P01|PGRST205/.test(String(err.code) + ' ' + err.message);
+const ctMissingMsg = '적격수급인 평가 표가 없습니다. schema_contractor.sql 을 먼저 실행해 주세요.';
+const ctPlatformUrl = () => (location.protocol.startsWith('http') ? location.origin + location.pathname : '');
+/* 메일 링크 (?go=ctr&ct=ID) : 제출 현황 · 평가 탭(비밀번호)으로 가서 그 건의 평가 창을 바로 엽니다 */
+const ctLink = r => ctPlatformUrl() ? `${ctPlatformUrl()}?go=ctr&ct=${encodeURIComponent(r.id)}` : '';
+async function ctDeepLink(id){
+  try{ history.replaceState(history.state, '', location.pathname + '?go=ctr'); }catch(e){}
+  if(!UNLOCKED.ctr){
+    if(!checkPw('제출 현황 · 평가 비밀번호를 입력하세요')) return;
+    UNLOCKED.ctr = true;
+  }
+  const tab = $('#p-ctr .subnav [data-s="ctrlist"]');
+  if(tab) tab.click();               // 탭 전환 (이미 잠금 해제되어 비밀번호를 다시 묻지 않음)
+  await ctLoad();
+  if(!id) return;
+  if(CT_ALL.some(x => String(x.id) === String(id))) ctOpen(id);
+  else toast('해당 제출 건을 찾지 못했습니다 (삭제되었을 수 있습니다)', 'err');
+}
+
+/* ── 제출 화면 ── */
+/* 통합 업로드 파일을 파일 이름으로 평가 항목에 짝지어 보여 줍니다 (평가 창의 자동 제안용) */
+const CT_KW = {
+  r1:['조직','업무분장','분장','담당자','역할','책임','R&R'],
+  r2:['위험성','공정표','작업계획','공정','JSA','위험요인'],
+  r3:['점검','모니터링','순회','체크리스트'],
+  r4:['공도구','공구','보호구','인증','MSDS','화학','지침','수칙','지게차','장비','기계','차량'],
+  r5:['비상','대응','연락망','매뉴얼','대피','소방'],
+  r6:['재해','재해율','산재','확인서']
+};
+const ctMatch = (k, name) => (CT_KW[k] || []).some(w => String(name).toLowerCase().includes(w.toLowerCase()));
+const CT_ETC_OPT = '__etc';
+function ctRenderForm(){
+  const sel = $('#ctWriter');
+  const saved = STORE.get('ctwriter');
+  sel.innerHTML = '<option value="">작성자 선택</option>'
+    + [...CT_PEOPLE].sort((a, b) => a[0].localeCompare(b[0], 'ko')).map(([n]) =>`<option value="${esc(n)}">${esc(n)}</option>`).join('')
+    + `<option value="${CT_ETC_OPT}">명단에 없음 (직접 입력)</option>`;
+  if(CT_PEOPLE.some(p => p[0] === saved)) sel.value = saved;
+  ctWriterToggle();
+  $('#ctNeed').innerHTML = CT_ITEMS.map(it => `<div><b>${it.no}. ${esc(it.t)}</b>${it.need.map(n => '· ' + esc(n)).join('<br>')}</div>`).join('');
+  ctRenderFiles();
+}
+function ctWriterToggle(){
+  const etc = $('#ctWriter').value === CT_ETC_OPT;
+  $('#ctWriterEtc').hidden = !etc;
+  if(etc && !$('#ctWriterName').value) $('#ctWriterName').focus();
+}
+function ctRenderFiles(){
+  const n = CT_FILES.length;
+  $('#ctFileList').innerHTML = CT_FILES.map((f, i) => `<li><span class="nm">📎 ${esc(f.name)}</span><span class="sz">${kb(f.size)}</span>
+    <button class="btn sm ghost" type="button" data-ctdel="${i}">삭제</button></li>`).join('');
+  $('#ctFileNote').textContent = `${n}개`;
+  $('#ctFileBar').hidden = !n;
+  $('#ctFileSum').textContent = `${n}개 · ${kb(CT_FILES.reduce((s, f) => s + f.size, 0))}`;
+}
+function ctAddFiles(list){
+  const big = [];
+  [...list].forEach(f => {
+    if(f.size > CT_FILE_MAX) big.push(f.name);
+    else if(!CT_FILES.some(x => x.name === f.name && x.size === f.size)) CT_FILES.push(f);
+  });
+  if(big.length) toast(`20MB 를 넘는 파일은 뺐습니다: ${big.join(', ')}`, 'err');
+  ctRenderFiles();
+}
+function ctResetForm(){
+  CT_FILES = [];
+  $('#ctCompany').value = ''; $('#ctProject').value = ''; $('#ctMemo').value = '';
+  $('#ctDate').value = TODAY; $('#ctDate').onchange && $('#ctDate').onchange();
+  ctRenderFiles();
+}
+async function ctNextNo(){
+  const pre = TODAY.slice(2).replace(/-/g, '');
+  const { data, error } = await db.from('contractor_evals').select('eval_no').like('eval_no', pre + '-%');
+  if(error) throw (ctTableMissing(error) ? new Error(ctMissingMsg) : new Error('조회 실패: ' + error.message));
+  const max = (data || []).reduce((m, r) => Math.max(m, parseInt(String(r.eval_no).split('-')[1], 10) || 0), 0);
+  return `${pre}-${String(max + 1).padStart(2, '0')}`;
+}
+const ctItemLabel = k => { const it = CT_ITEMS.find(x => x.k === k); return it ? `${it.no}. ${it.t}` : '기타 자료'; };
+
+async function ctSubmit(){
+  const pick = $('#ctWriter').value, date = $('#ctDate').value;
+  const company = $('#ctCompany').value.trim(), project = $('#ctProject').value.trim(), memo = $('#ctMemo').value.trim();
+  const fail = (msg, sel) => { toast(msg, 'err'); const el = sel && $(sel); if(el){ el.focus(); el.scrollIntoView({ behavior:'smooth', block:'center' }); } };
+  if(!pick) return fail('작성자를 선택해 주세요', '#ctWriter');
+  let writer = pick, writerMail = ctMail(pick);
+  if(pick === CT_ETC_OPT){
+    writer = $('#ctWriterName').value.trim();
+    const id = $('#ctWriterMail').value.trim().replace(/\s/g, '');
+    if(!writer) return fail('작성자 이름을 입력해 주세요', '#ctWriterName');
+    if(!id) return fail('결과표를 받을 메일 아이디를 입력해 주세요', '#ctWriterMail');
+    writerMail = id.includes('@') ? id : id + '@simmons.co.kr';
+    if(!/^[^@\s]+@simmons\.co\.kr$/i.test(writerMail)) return fail('메일은 @simmons.co.kr 주소만 쓸 수 있습니다', '#ctWriterMail');
+  }
+  if(!date) return fail('평가 일자를 선택해 주세요', '#ctDate');
+  if(!company) return fail('업체명을 입력해 주세요', '#ctCompany');
+  if(!project) return fail('공사명을 입력해 주세요', '#ctProject');
+  const all = CT_FILES.map(f => ({ k:'all', f }));
+  if(!all.length) return fail('증빙서류를 하나 이상 첨부해 주세요', '#ctDrop');
+
+  const btn = $('#btnCtSubmit'), hint = $('#ctHint');
+  btn.disabled = true;
+  const uploaded = [];
+  try{
+    const no = await ctNextNo();
+    let i = 0;
+    for(const { k, f } of all){
+      hint.textContent = `파일 올리는 중… (${++i}/${all.length})`;
+      const path = `contractor/${TODAY}/${no}_${safeName(f.name)}`;
+      const { error } = await db.storage.from(WP_BUCKET).upload(path, f, { cacheControl:'3600' });
+      if(error) throw new Error('파일 업로드 실패 (' + f.name + '): ' + error.message);
+      uploaded.push({ item:k, name:f.name, size:f.size, path, url: db.storage.from(WP_BUCKET).getPublicUrl(path).data.publicUrl });
+    }
+    hint.textContent = '저장하는 중…';
+    const row = { eval_no:no, writer, writer_email: writerMail, company, project, eval_date:date,
+      memo: memo || null, files: uploaded, status:'접수' };
+    const { data, error } = await db.from('contractor_evals').insert(row).select().single();
+    if(error) throw (ctTableMissing(error) ? new Error(ctMissingMsg) : new Error('저장 실패: ' + error.message));
+    if(pick !== CT_ETC_OPT) STORE.set('ctwriter', writer);
+
+    /* 제출 알림 메일 */
+    hint.textContent = '알림 메일 보내는 중…';
+    const ok = await notifyMail(`[적격수급인 평가 제출] ${company} - ${project}`, ctSubmitText(data), CT_ADMIN_MAIL, ctSubmitHtml(data));
+    toast('제출했습니다' + mailTail(ok), ok === false ? 'err' : 'ok');
+    ctResetForm();
+    if(UNLOCKED.ctr) ctLoad();
+  }catch(e){
+    if(uploaded.length) db.storage.from(WP_BUCKET).remove(uploaded.map(x => x.path));
+    toast(e.message, 'err');
+  }finally{
+    btn.disabled = false;
+    hint.textContent = '';
+  }
+}
+function ctFilesBy(r){
+  const by = {};
+  (r.files || []).forEach(f => (by[f.item] = by[f.item] || []).push(f));
+  return by;
+}
+function ctSubmitText(r){
+  const by = ctFilesBy(r);
+  return [
+    '적격수급인 평가 자료가 제출되었습니다.', '',
+    `접수번호 : ${r.eval_no}`, `작성자 : ${r.writer} (${r.writer_email || '-'})`,
+    `업체명 : ${r.company}`, `공사명 : ${r.project}`, `평가 일자 : ${r.eval_date}`,
+    r.memo ? `메모 : ${r.memo}` : '', '',
+    `[증빙서류 ${(r.files || []).length}개]`,
+    ...(r.files || []).map(f => `· ${f.name} ${f.url}`),
+    '', ctLink(r) ? '평가하기 : ' + ctLink(r) : ''
+  ].filter(s => s !== null).join('\n');
+}
+function ctSubmitHtml(r){
+  const by = ctFilesBy(r);
+  const td = 'border:1px solid #ccc;padding:7px 10px;font-size:13px;vertical-align:top;';
+  const th = td + 'background:#f3f3f3;font-weight:700;white-space:nowrap;';
+  const url = ctLink(r);
+  return `<div style="font-family:'Malgun Gothic',Apple SD Gothic Neo,sans-serif;max-width:720px;color:#111">
+    <p style="font-size:15px;font-weight:700;margin:0 0 12px">적격수급인 평가 자료가 제출되었습니다.</p>
+    <table style="border-collapse:collapse;width:100%;margin-bottom:14px">
+      <tr><td style="${th}">접수번호</td><td style="${td}">${esc(r.eval_no)}</td><td style="${th}">평가 일자</td><td style="${td}">${esc(r.eval_date)}</td></tr>
+      <tr><td style="${th}">업체명</td><td style="${td}">${esc(r.company)}</td><td style="${th}">작성자</td><td style="${td}">${esc(r.writer)}</td></tr>
+      <tr><td style="${th}">공사명</td><td style="${td}" colspan="3">${esc(r.project)}</td></tr>
+      ${r.memo ? `<tr><td style="${th}">메모</td><td style="${td};white-space:pre-wrap" colspan="3">${esc(r.memo)}</td></tr>` : ''}
+    </table>
+    <p style="font-size:13px;font-weight:700;margin:0 0 6px">증빙서류 ${(r.files || []).length}개</p>
+    <div style="border:1px solid #ccc;padding:8px 12px;font-size:13px;line-height:1.9">${
+      (r.files || []).map(f => `📎 <a href="${esc(f.url)}" style="color:#0b57d0">${esc(f.name)}</a>`).join('<br>')
+      || '<span style="color:#c0392b">첨부 없음</span>'}</div>
+    ${url ? `<p style="margin:18px 0 0"><a href="${esc(url)}" style="display:inline-block;background:#000;color:#fff;text-decoration:none;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700">평가하러 가기</a>
+      <span style="font-size:12px;color:#888;margin-left:8px">적격수급인평가 → 제출 현황 · 평가 🔒</span></p>` : ''}
+  </div>`;
+}
+
+/* ── 제출 현황 ── */
+async function ctLoad(){
+  if(!db) return;
+  const { data, error } = await db.from('contractor_evals').select('*').order('created_at', { ascending:false }).limit(500);
+  if(error){
+    $('#ctList').innerHTML = `<p class="hint">${esc(ctTableMissing(error) ? ctMissingMsg : '조회 실패: ' + error.message)}</p>`;
+    return;
+  }
+  CT_ALL = data || [];
+  ctRenderList();
+}
+function ctFiltered(){
+  const q = ($('#ctQ').value || '').trim().toLowerCase();
+  return CT_ALL.filter(r => (!CT_FILTER || (r.status || '접수') === CT_FILTER)
+    && (!q || [r.company, r.project, r.writer, r.eval_no].join(' ').toLowerCase().includes(q)));
+}
+function ctRenderList(){
+  const list = ctFiltered();
+  const wait = CT_ALL.filter(r => (r.status || '접수') === '접수').length;
+  $('#ctCount').textContent = `${list.length}건 · 평가 대기 ${wait}건`;
+  $('#ctList').innerHTML = list.length ? list.map(r => {
+    const c = ctCalc(r.scores);
+    const scored = r.status && r.status !== '접수';
+    return `<button class="ctrow" type="button" data-ctopen="${esc(r.id)}">
+      <span class="no">${esc(r.eval_no || '')}<br>평가일 ${esc(r.eval_date || '')}</span>
+      <b>${esc(r.company)}</b>
+      <span class="pj" title="${esc(r.project)}">${esc(r.project)}</span>
+      <span>${esc(r.writer)}</span>
+      <span class="fc" title="첨부 파일">📎 ${(r.files || []).length}</span>
+      <span><span class="ctst ${ctStatusCls(r.status)}">${ctStatusTxt(r.status)}</span></span>
+      <span class="sc">${scored ? `${r.total ?? c.total}점 · ${esc(r.grade || c.grade)}` : (c.done ? `<span style="color:var(--ink3);font-weight:600">${c.total}점 (임시)</span>` : '—')}</span>
+    </button>`;
+  }).join('') : '<p class="hint">제출된 자료가 없습니다.</p>';
+}
+function ctCsv(){
+  const head = ['접수번호','제출일','평가일자','작성자','작성자 메일','업체명','공사명','첨부 수','상태',
+    ...CT_ITEMS.map(it => `${it.no} ${it.t}`), '합계','등급','적격 여부','평가자','종합 의견','결과표 발송일','받은 주소'];
+  const rows = ctFiltered().map(r => {
+    const c = ctCalc(r.scores);
+    return [r.eval_no, (r.created_at || '').slice(0, 10), r.eval_date, r.writer, r.writer_email, r.company, r.project,
+      (r.files || []).length, ctStatusTxt(r.status),
+      ...CT_ITEMS.map(it => { const s = (r.scores || {})[it.k]; const i = s ? CT_GRADES.indexOf(s.g) : -1; return i < 0 ? '' : `${s.g} ${it.pts[i]}`; }),
+      c.done ? c.total : '', c.done ? c.grade : '', c.all ? (c.pass ? '적격' : '부적격') : '',
+      r.evaluator, r.opinion, (r.mailed_at || '').slice(0, 10), r.mailed_to];
+  });
+  csvDown(`적격수급인평가_${TODAY}.csv`, head, rows);
+}
+
+/* ── 평가결과표 (화면 · 인쇄 · 메일 공용, 글꼴 · 선은 메일에서도 깨지지 않게 인라인으로) ── */
+function ctDocHtml(r){
+  const c = ctCalc(r.scores);
+  const sc = r.scores || {};
+  const b = 'border:1px solid #000;padding:7px 9px;font-size:13px;';
+  const hd = b + 'background:#e3e3e3;text-align:center;font-weight:600;';
+  const gr = b + 'background:#f3f3f3;font-weight:700;';
+  const ct = 'text-align:center;';
+  const val = k => { const s = sc[k]; const it = CT_ITEMS.find(x => x.k === k); const i = s ? CT_GRADES.indexOf(s.g) : -1; return i < 0 ? null : { g:s.g, v:it.pts[i], note:s.note || '' }; };
+  const passTxt = !c.all ? '평가 미완료' : c.pass ? '적격' : '부적격';
+  const passColor = !c.all ? '#888' : c.pass ? '#0a7a2f' : '#c0392b';
+  return `<div style="font-family:'Malgun Gothic',Apple SD Gothic Neo,'Batang',serif;color:#000;max-width:780px;margin:0 auto">
+    <div style="text-align:center;font-size:24px;font-weight:700;text-decoration:underline;text-underline-offset:6px;margin:6px 0 26px">공사계약 적격 수급인 선정 평가표</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:10px;font-size:14px">
+      <tr><td style="padding:4px 0">□ 공사명 : <b>${esc(r.project)}</b></td><td style="padding:4px 0;text-align:right">□ 업체명 : <b>${esc(r.company)}</b></td></tr>
+      <tr><td style="padding:2px 0;font-size:12px;color:#555">접수번호 ${esc(r.eval_no || '')} · 평가 일자 ${esc(r.eval_date || '')}</td>
+          <td style="padding:2px 0;font-size:12px;color:#555;text-align:right">작성자 ${esc(r.writer || '')}${r.evaluator ? ' · 평가자 ' + esc(r.evaluator) : ''}</td></tr>
+    </table>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+      <tr><td style="${hd}">구분</td><td style="${hd}width:110px">배점</td><td style="${hd}width:110px">득점</td></tr>
+      <tr><td style="${gr}${ct}">합계</td><td style="${gr}${ct}">100</td><td style="${gr}${ct}">${c.done ? c.total : ''}</td></tr>
+      ${CT_GROUPS.map(g => `<tr><td style="${b}">${g.t}</td><td style="${b}${ct}">${g.max}</td><td style="${b}${ct}">${c.done ? c.sub[g.k] : ''}</td></tr>`).join('')}
+    </table>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:22px">
+      <tr><td style="${b}background:#fafafa;width:50%">등급 : <b style="font-size:15px">${c.done ? c.grade : '-'}</b> ${c.done ? '(' + CT_GRADE_TXT[c.grade] + ')' : ''}</td>
+          <td style="${b}background:#fafafa">판정 : <b style="font-size:15px;color:${passColor}">${passTxt}</b> <span style="font-size:11.5px;color:#555">(A등급 · ${CT_PASS}점 이상 적격)</span></td></tr>
+    </table>
+    <div style="font-size:14px;font-weight:700;margin:0 0 8px">□ 평가항목 및 기준</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+      <tr><td style="${hd}" colspan="2">평가기준</td><td style="${hd}width:56px">배점</td><td style="${hd}width:56px">평가</td><td style="${hd}width:56px">득점</td></tr>
+      ${CT_GROUPS.map(g => `<tr><td style="${gr}" colspan="2">${g.t}</td><td style="${gr}${ct}">${g.max}</td><td style="${gr}"></td><td style="${gr}${ct}">${c.done ? c.sub[g.k] : ''}</td></tr>`
+        + CT_ITEMS.filter(it => it.gk === g.k).map(it => { const v = val(it.k);
+          return `<tr><td style="${b}width:150px">${it.no}. ${esc(it.t)}</td><td style="${b}">${esc(it.q)}</td>
+            <td style="${b}${ct}">${it.pts[0]}</td><td style="${b}${ct}">${v ? v.g : ''}</td><td style="${b}${ct}font-weight:700">${v ? v.v : ''}</td></tr>`
+            + (v && v.note ? `<tr><td style="${b}font-size:12px;color:#444" colspan="5">└ 평가 근거 : ${esc(v.note)}</td></tr>` : '');
+        }).join('')).join('')}
+    </table>
+    <div style="font-size:11px;color:#666;margin:0 0 20px">등급 기준 : S 90점 이상 · A 80점 이상 · B 70점 이상 · C 60점 이상 · D 60점 미만 (C~D 등급 : 도급계약 미체결 또는 미연장)</div>
+    ${r.opinion ? `<div style="font-size:14px;font-weight:700;margin:0 0 8px">□ 종합 의견</div>
+      <div style="border:1px solid #000;padding:10px 12px;font-size:13px;white-space:pre-wrap;margin-bottom:20px">${esc(r.opinion)}</div>` : ''}
+    <div style="font-size:12px;color:#555;text-align:right">${r.evaluated_at ? '평가 확정 ' + esc(String(r.evaluated_at).slice(0, 10)) + ' · ' : ''}시몬스 안전보건 통합 플랫폼</div>
+  </div>`;
+}
+function ctPrint(r){
+  const w = window.open('', '_blank');
+  if(!w) return toast('팝업이 막혀 있습니다. 팝업을 허용해 주세요', 'err');
+  w.document.write(`<!doctype html><html lang="ko"><head><meta charset="utf-8">
+    <title>적격수급인평가표_${esc(r.company)}_${esc(r.project)}</title>
+    <style>@page{size:A4;margin:14mm} body{margin:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style>
+    </head><body>${ctDocHtml(r)}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.focus(); w.print(); }, 400);
+}
+
+/* ── 평가 창 ── */
+function ctOpen(id){
+  const r = CT_ALL.find(x => String(x.id) === String(id));
+  if(!r) return;
+  const allFiles = r.files || [];
+  /* 항목별 관련 파일 : 파일 이름에 항목 낱말(CT_KW)이 들어 있으면 그 항목 자료로 봅니다 */
+  const by = {};
+  CT_ITEMS.forEach(it => by[it.k] = allFiles.filter(f => f.item === it.k || (f.item === 'all' && ctMatch(it.k, f.name))));
+  const fresh = !r.scores || !Object.keys(r.scores).length;
+  /* 처음 여는 건은 관련 파일이 보이는 항목만 '우수'로 자동 제안하고, 나머지는 비워 둡니다. 자료를 보고 바꿔 주세요 */
+  const sugg = k => by[k].length ? '우수' : '';
+  const sc = {};
+  CT_ITEMS.forEach(it => {
+    const s = (r.scores || {})[it.k];
+    sc[it.k] = s ? { g:s.g, note:s.note || '' } : { g: fresh ? sugg(it.k) : '', note:'' };
+  });
+  let dirty = fresh;      // 자동 제안만 채운 상태는 저장 전이므로 '변경 있음'
+  let status = r.status || '접수';
+  const fileLinks = arr => arr.length
+    ? arr.map(f => `<a href="${esc(f.url)}" target="_blank" rel="noopener" title="${esc(f.name)}">📎 ${esc(f.name)}</a>`).join('')
+    : '<span class="none">첨부 없음</span>';
+  const bg = document.createElement('div');
+  bg.className = 'scomod';
+  bg.innerHTML = `<div class="scobox ctbox" role="dialog" aria-label="적격수급인 평가">
+    <div class="h"><b>${esc(r.company)}</b><span>${esc(r.project)}</span></div>
+    <div class="ctmeta">접수번호 ${esc(r.eval_no || '')} · 작성자 <b>${esc(r.writer)}</b>
+      · 평가 일자 ${esc(r.eval_date)} · 제출 ${esc(String(r.created_at || '').slice(0, 16).replace('T', ' '))}
+      · <span class="ctst ${ctStatusCls(status)}" data-ctstat>${ctStatusTxt(status)}</span></div>
+    ${r.memo ? `<div class="ctmemo">${esc(r.memo)}</div>` : ''}
+    <div class="ctev"><div class="hd"><b>제출 증빙서류</b><em class="pt">${allFiles.length}개</em></div><div class="fl">${fileLinks(allFiles)}</div></div>
+    ${fresh ? '<p class="auto" style="margin:0 0 12px">처음 여는 건이라 <b>파일 이름으로 관련 자료가 보이는 항목만 우수</b>로 자동 제안해 두었습니다. 나머지 항목은 위 자료를 열어 보고 직접 골라 주세요.</p>' : ''}
+    ${CT_ITEMS.map(it => `<div class="ctev" data-k="${it.k}">
+      <div class="hd"><b>${it.no}. ${esc(it.t)}</b><span>${esc(it.q)}</span><em class="pt">배점 ${it.pts[0]}</em></div>
+      ${by[it.k].length ? `<div class="fl">${fileLinks(by[it.k])}</div>` : '<div class="fl"><span class="none" style="color:var(--ink3);font-weight:400">이름으로 찾은 관련 파일 없음 — 위 증빙서류에서 확인</span></div>'}
+      <div class="opts">${CT_GRADES.map((g, i) => `<button type="button" class="opt o${[10,7,4][i]}" data-g="${g}" aria-pressed="${sc[it.k].g === g}">
+        <b>${g}</b><em>${it.pts[i]}점</em><small>${esc(it.rule[i])}</small></button>`).join('')}</div>
+      <p class="auto">필요자료 : ${esc(it.need.join(', '))}${sugg(it.k) ? ' · 자동 제안 <b>우수</b>' : ''}</p>
+      <input type="text" class="ctnote" data-note="${it.k}" placeholder="평가 근거 · 메모 (선택 — 결과표에 함께 나갑니다)" value="${esc(sc[it.k].note)}">
+    </div>`).join('')}
+    <div class="ctsum" data-ctsum></div>
+    <p class="ctwarn" data-ctwarn hidden></p>
+    <div class="bt">
+      <button type="button" class="btn sm ghost" data-a="del">삭제 🔒</button>
+      <button type="button" class="btn sm ghost" data-a="print">평가결과표 보기 · 인쇄</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn sm ghost" data-a="close">닫기</button>
+      <button type="button" class="btn sm ghost" data-a="save">임시 저장</button>
+      <button type="button" class="btn sm" data-a="final">최종 확정</button>
+      <button type="button" class="btn sm" data-a="mail" hidden>메일 보내기</button>
+    </div></div>`;
+  document.body.appendChild(bg);
+  const box = bg.querySelector('.ctbox');
+  const cur = () => ({ ...r, scores: sc, status });
+  const paint = () => {
+    const c = ctCalc(sc);
+    box.querySelector('[data-ctsum]').innerHTML = CT_GROUPS.map(g => `<div>${g.t}<b>${c.sub[g.k]} <small style="font-size:11px;color:var(--ink3)">/ ${g.max}</small></b></div>`).join('')
+      + `<div class="tot">합계 · 등급 · 판정<b>${c.total}점 · ${c.grade} · ${!c.all ? '미완료' : c.pass ? '적격' : '부적격'}</b></div>`;
+    const st = box.querySelector('[data-ctstat]');
+    st.className = 'ctst ' + ctStatusCls(status); st.textContent = ctStatusTxt(status);
+    const mail = box.querySelector('[data-a="mail"]');
+    const to = ctMail(r.writer) || r.writer_email;
+    const confirmed = status === '평가완료' || status === '발송완료';
+    mail.hidden = !confirmed;
+    mail.disabled = dirty;
+    mail.textContent = status === '발송완료' ? `메일 다시 보내기 → ${r.writer}` : `메일 보내기 → ${r.writer}`;
+    const warn = box.querySelector('[data-ctwarn]');
+    const msg = confirmed && dirty ? '바꾼 내용이 있습니다. 최종 확정을 다시 눌러야 메일을 보낼 수 있습니다.'
+      : confirmed && !to ? `${r.writer} 님의 메일 주소가 명단에 없습니다.`
+      : status === '발송완료' && r.mailed_at ? `${String(r.mailed_at).slice(0, 16).replace('T', ' ')} 에 ${r.mailed_to || to} 로 발송했습니다.` : '';
+    warn.hidden = !msg; warn.textContent = msg;
+  };
+  paint();
+  const close = () => {
+    if(dirty && !confirm('저장하지 않은 평가 내용이 있습니다. 닫을까요?')) return;
+    bg.remove();
+  };
+  const save = async final => {
+    const c = ctCalc(sc);
+    if(final && !c.all){
+      const miss = CT_ITEMS.filter(it => !sc[it.k].g).map(it => it.no).join(', ');
+      return toast(`평가하지 않은 항목이 있습니다: ${miss}`, 'err');
+    }
+    if(final && c.total < CT_PASS)
+      return toast(`최종 점수 ${c.total}점 — ${CT_PASS}점 미만은 최종 확정할 수 없습니다`, 'err');
+    const v = cur();
+    const scores = {};
+    CT_ITEMS.forEach(it => { const s = sc[it.k]; const i = CT_GRADES.indexOf(s.g);
+      if(i >= 0) scores[it.k] = { g:s.g, v:it.pts[i], note:s.note || '' }; });
+    const now = new Date().toISOString();
+    const patch = { scores, total: c.done ? c.total : null, grade: c.done ? c.grade : null,
+      evaluator: v.evaluator || null, opinion: v.opinion || null, updated_at: now,
+      status: final ? '평가완료' : '접수' };
+    if(final) patch.evaluated_at = now;
+    const { error } = await db.from('contractor_evals').update(patch).eq('id', r.id);
+    if(error) return toast('저장 실패: ' + error.message, 'err');
+    Object.assign(r, patch);
+    status = patch.status; dirty = false;
+    if(v.evaluator) STORE.set('ctevaluator', v.evaluator);
+    toast(final ? `최종 확정했습니다 · ${c.total}점 ${c.grade}등급 — 이제 메일을 보낼 수 있습니다` : '임시 저장했습니다 (평가 대기 상태)', 'ok');
+    paint(); ctRenderList();
+  };
+  const sendMail = async () => {
+    const to = ctMail(r.writer) || r.writer_email;
+    if(!to) return toast(`${r.writer} 님의 메일 주소가 명단(CT_PEOPLE)에 없습니다`, 'err');
+    if(!confirm(`${r.writer} (${to}) 님께 평가결과표를 메일로 보낼까요?`)) return;
+    const c = ctCalc(r.scores);
+    const btn = box.querySelector('[data-a="mail"]');
+    btn.disabled = true; btn.textContent = '보내는 중…';
+    const passTxt = c.pass ? '적격' : '부적격';
+    const subject = `[적격수급인 평가 결과] ${r.company} - ${r.project} (${c.total}점 · ${passTxt})`;
+    /* 회신 인사말 · 맺음말 (결과표는 그 사이에 들어갑니다) */
+    const CT_MAIL_HEAD = ['안녕하세요. 안전보건기획팀입니다.',
+      "제출해 주신 자료에 대한 '적격수급인 평가' 결과를 본 메일로 안내해 드립니다."];
+    const CT_MAIL_TAIL = ['안전사고 없이 무사히 완공될 수 있도록 현장 안전관리에 각별한 유의를 부탁드립니다.',
+      '본 메일의 내용이나 기타 문의 사항에 대해서는 아래 담당자에게 연락해 주시면 신속하게 답변해 드리겠습니다.'];
+    const CT_MAIL_CONTACT = ['■ 문의처: 한기선 차장 (안전보건기획팀)', '■ 연락처: 010-4501-7149 / hk7149@simmons.co.kr'];
+    const text = [...CT_MAIL_HEAD.flatMap(s => [s, '']),
+      `업체명 : ${r.company}`, `공사명 : ${r.project}`, `평가 일자 : ${r.eval_date}`,
+      ...CT_GROUPS.map(g => `${g.t} : ${c.sub[g.k]} / ${g.max}`),
+      `합계 : ${c.total}점 / 판정 : ${passTxt}`, '',
+      ...CT_MAIL_TAIL.flatMap(s => [s, '']), ...CT_MAIL_CONTACT, '', '감사합니다.'].join('\n');
+    const p = 'font-size:14px;line-height:1.7;margin:0 0 14px';
+    const html = `<div style="font-family:'Malgun Gothic',Apple SD Gothic Neo,sans-serif;color:#111;max-width:780px">
+      ${CT_MAIL_HEAD.map(s => `<p style="${p}">${esc(s)}</p>`).join('')}
+      <div style="margin:22px 0 26px">${ctDocHtml(r)}</div>
+      ${CT_MAIL_TAIL.map(s => `<p style="${p}">${esc(s)}</p>`).join('')}
+      <p style="${p}">${CT_MAIL_CONTACT.map(esc).join('<br>')}</p>
+      <p style="${p}">감사합니다.</p></div>`;
+    const ok = await notifyMail(subject, text, to, html);
+    if(ok === null){ paint(); return toast('메일 발송 주소(웹훅)가 설정되지 않았습니다. 설정에서 확인해 주세요', 'err'); }
+    if(!ok){ paint(); return toast('메일 발송 실패 · ' + MAIL_LOG, 'err'); }
+    const patch = { status:'발송완료', mailed_at: new Date().toISOString(), mailed_to: to };
+    const { error } = await db.from('contractor_evals').update(patch).eq('id', r.id);
+    if(!error){ Object.assign(r, patch); status = '발송완료'; }
+    toast(`${r.writer} 님께 평가결과표를 보냈습니다`, 'ok');
+    paint(); ctRenderList();
+  };
+  bg.addEventListener('click', async e => {
+    if(e.target === bg) return close();
+    const o = e.target.closest('[data-g]');
+    if(o){
+      const k = o.closest('[data-k]').dataset.k;
+      sc[k].g = o.dataset.g; dirty = true;
+      o.parentElement.querySelectorAll('[data-g]').forEach(x => x.setAttribute('aria-pressed', String(x === o)));
+      return paint();
+    }
+    const a = e.target.closest('[data-a]'); if(!a || a.disabled) return;
+    const act = a.dataset.a;
+    if(act === 'close') return close();
+    if(act === 'print') return ctPrint(cur());
+    if(act === 'save' || act === 'final'){ a.disabled = true; try{ await save(act === 'final'); } finally { a.disabled = false; } return; }
+    if(act === 'mail') return sendMail();
+    if(act === 'del'){
+      if(!checkDeletePw()) return;
+      if(!confirm(`${r.company} - ${r.project} 제출 건과 첨부 파일을 모두 삭제할까요?`)) return;
+      const paths = (r.files || []).map(f => f.path).filter(Boolean);
+      if(paths.length) await db.storage.from(WP_BUCKET).remove(paths);
+      const { error } = await db.from('contractor_evals').delete().eq('id', r.id);
+      if(error) return toast('삭제 실패: ' + error.message, 'err');
+      dirty = false; bg.remove();
+      CT_ALL = CT_ALL.filter(x => x.id !== r.id); ctRenderList();
+      toast('삭제했습니다', 'ok');
+    }
+  });
+  bg.addEventListener('input', e => {
+    const n = e.target.closest('[data-note]');
+    if(n) sc[n.dataset.note].note = n.value;
+    if(n || e.target.closest('[data-ctf]')){ dirty = true; paint(); }
+  });
+}
+
+function ctEnter(){
+  if(!CT_READY){ CT_READY = true; ctRenderForm(); }
+  if(UNLOCKED.ctr && !$('#p-ctr [data-sp="ctrlist"]').hidden) ctLoad();
+}
+function ctInit(){
+  $('#ctDate').value = TODAY; bindDate('#ctDate', '#ctDateText');
+  $('#btnCtSubmit').onclick = ctSubmit;
+  $('#btnCtReset').onclick = () => { if(confirm('입력한 내용과 첨부 파일을 모두 지울까요?')) ctResetForm(); };
+  $('#ctWriter').onchange = ctWriterToggle;
+  const drop = $('#ctDrop'), fin = $('#ctFileIn');
+  drop.onclick = () => fin.click();
+  fin.onchange = () => { if(fin.files.length) ctAddFiles(fin.files); fin.value = ''; };
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { if(e.dataTransfer.files.length) ctAddFiles(e.dataTransfer.files); });
+  $('#ctFileList').onclick = e => {
+    const d = e.target.closest('[data-ctdel]');
+    if(d){ CT_FILES.splice(+d.dataset.ctdel, 1); ctRenderFiles(); }
+  };
+  $('#btnCtFileClear').onclick = () => {
+    if(CT_FILES.length && confirm(`첨부한 ${CT_FILES.length}개 파일을 모두 뺄까요?`)){ CT_FILES = []; ctRenderFiles(); }
+  };
+  $('#ctTabs').onclick = e => {
+    const b = e.target.closest('[data-ctf]'); if(!b) return;
+    CT_FILTER = b.dataset.ctf;
+    $$('#ctTabs [data-ctf]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    ctRenderList();
+  };
+  $('#ctQ').addEventListener('input', ctRenderList);
+  $('#ctList').onclick = e => { const b = e.target.closest('[data-ctopen]'); if(b) ctOpen(b.dataset.ctopen); };
+  $('#btnCtCsv').onclick = ctCsv;
+}
+
 /* ===================== 이벤트 ===================== */
 document.addEventListener('DOMContentLoaded', () => {
  try{
@@ -10348,7 +11044,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if(s.dataset && s.dataset.sp) s.hidden = (s.dataset.sp !== b.dataset.s);
     });
     if(b.dataset.s === 'daily' && !DAILY) pickDaily(false);
+    if(b.dataset.s === 'ctrlist') ctLoad();
   });
+
+  /* 적격수급인 평가 */
+  try{ ctInit(); }catch(e){ console.error('적격수급인 평가 초기화 실패', e); }
 
   /* TBM */
   $('#fDate').value = TODAY; bindDate('#fDate','#fDateText');
@@ -10811,6 +11511,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if(goParam && document.getElementById('p-' + goParam)) go(goParam);
   const wpParam = new URLSearchParams(location.search).get('wp');
   if(goParam === 'permit' && wpParam && db) wpDeepLink(wpParam);
+  const ctParam = new URLSearchParams(location.search).get('ct');
+  if(goParam === 'ctr' && ctParam && db) setTimeout(() => ctDeepLink(ctParam), 300);
 
   /* 앱으로 설치 */
   if('serviceWorker' in navigator && location.protocol === 'https:'){
