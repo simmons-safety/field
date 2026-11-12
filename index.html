@@ -11825,6 +11825,8 @@ const CT_PEOPLE = [                               // 작성자 이름 ↔ 결과
   ['김민우','kmw0416@simmons.co.kr'], ['이동찬','ehdehd4449@simmons.co.kr'], ['노창완','ncw1018@simmons.co.kr'],
   ['정다니','dani.jung@simmons.co.kr'], ['장한나','hanna.jang@simmons.co.kr'], ['박지영','young@simmons.co.kr'],
   ['박유진','yujinp@simmons.co.kr'], ['한기선','hk7149@simmons.co.kr'],
+  ['김성길','seonggil@simmons.co.kr'], ['송석준','songsj93@simmons.co.kr'], ['이정훈','ljh5806@simmons.co.kr'],
+  ['정성민','min520752@simmons.co.kr'],
   ['트웰브디자인','12design@teamtwelve.co.kr']     // 외부 주소 : mail_webhook.gs ALLOWED_DOMAINS 에 teamtwelve.co.kr 추가 필요
 ];
 const ctMail = name => (CT_PEOPLE.find(p => p[0] === name) || [])[1] || '';
@@ -11926,11 +11928,10 @@ const ctMatch = (k, name) => (CT_KW[k] || []).some(w => String(name).toLowerCase
 const CT_ETC_OPT = '__etc';
 function ctRenderForm(){
   const sel = $('#ctWriter');
-  const saved = STORE.get('ctwriter');
   sel.innerHTML = '<option value="">작성자 선택</option>'
     + [...CT_PEOPLE].sort((a, b) => a[0].localeCompare(b[0], 'ko')).map(([n]) =>`<option value="${esc(n)}">${esc(n)}</option>`).join('')
     + `<option value="${CT_ETC_OPT}">명단에 없음 (직접 입력)</option>`;
-  if(CT_PEOPLE.some(p => p[0] === saved)) sel.value = saved;
+  sel.value = '';                                 // 첫 화면은 늘 '작성자 선택' (이전 선택 자동 채움 안 함)
   ctWriterToggle();
   /* 오른쪽 참고 : 항목별 평가 필요자료 (간단히 한 줄씩) */
   $('#ctRef').innerHTML = CT_ITEMS.map(it => `<li><span class="no">${it.no}</span><span class="t">${esc(it.t)}</span>
