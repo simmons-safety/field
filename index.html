@@ -1862,6 +1862,7 @@ html.pf-locked #pfGate,.pfg.on{display:block}
 .pfg-f label{margin-bottom:7px}
 .pfg input[type=password]{letter-spacing:.3em}
 .pfg input[type=password]::placeholder{letter-spacing:.05em}
+#pfPin:placeholder-shown,#pfPin::placeholder{letter-spacing:normal}
 .pfg-chk{display:flex!important;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px!important;font-weight:600;color:var(--ink)!important;margin:4px 0 14px!important;cursor:pointer}
 .pfg-chk input{width:18px;height:18px;padding:0;margin:0;accent-color:var(--ink);flex:none}
 .pfg-chk span{font-weight:400;color:var(--ink3);font-size:12px}
@@ -3432,7 +3433,7 @@ html.pf-locked #pfGate,.pfg.on{display:block}
       <div class="pfg-f"><label for="pfEmp">아이디 (사번)</label>
         <input id="pfEmp" name="username" type="text" inputmode="numeric" autocomplete="username" placeholder="사번 입력"></div>
       <div class="pfg-f"><label for="pfPin">비밀번호 (숫자 4자리)</label>
-        <input id="pfPin" name="password" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="숫자 4자리"></div>
+        <input id="pfPin" name="password" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="0000"></div>
       <label class="pfg-chk"><input type="checkbox" id="pfSave" checked> 로그인 정보 저장 <span>다음부터 로그인 버튼만 누르면 입장</span></label>
       <p class="pfg-msg" id="pfMsg" role="alert"></p>
       <button class="btn pfg-main" id="pfBtnLogin" type="submit">로그인</button>
@@ -3441,10 +3442,8 @@ html.pf-locked #pfGate,.pfg.on{display:block}
         <button class="btn ghost" type="button" id="pfGoChange">비밀번호 변경</button>
       </div>
       <ul class="pfg-info">
-        <li><b>최초 아이디는 사번, 비밀번호는 0000</b> 입니다. 처음 로그인하면 비밀번호를 숫자 4자리로 꼭 변경해 주세요.</li>
-        <li>비밀번호를 <b>3회 틀리면</b> 최초 발급된 비밀번호(0000)로 자동 초기화됩니다. <span>회원가입한 분은 가입할 때 정한 비밀번호로 초기화됩니다.</span></li>
-        <li>명단에 없는 분(신규 입사자 · 협력사 등)은 <b>회원가입</b> 후 관리자 승인을 받으면 이용할 수 있습니다.</li>
-        <li>로그인 관련 문의는 <b>안전보건기획팀 한기선 차장</b>에게 연락해 주세요.</li>
+        <li>신규 입사자 · 협력사 등은 <b>회원가입</b> 후 관리자 승인을 받으면 이용할 수 있습니다.</li>
+        <li>로그인 관련 문의 : <b>안전보건기획팀 한기선 차장</b>(hk7149@simmons.co.kr)</li>
       </ul>
     </form>
 
@@ -3456,10 +3455,13 @@ html.pf-locked #pfGate,.pfg.on{display:block}
         <input id="pfChgEmp" type="text" inputmode="numeric" autocomplete="username" placeholder="사번 입력"></div>
       <div class="pfg-f" id="pfChgCurF"><label for="pfChgCur">현재 비밀번호</label>
         <input id="pfChgCur" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="숫자 4자리"></div>
+      <div id="pfChgNewBox">
       <div class="pfg-f"><label for="pfChgNew">새 비밀번호 (숫자 4자리)</label>
         <input id="pfChgNew" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="숫자 4자리"></div>
       <div class="pfg-f"><label for="pfChgNew2">새 비밀번호 확인</label>
         <input id="pfChgNew2" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="한 번 더 입력"></div>
+      </div>
+      <label class="pfg-chk" id="pfLaterF"><input type="checkbox" id="pfLater"> 3개월 뒤에 변경 <span>지금은 그대로 로그인하고, 3개월 뒤에 다시 안내</span></label>
       <p class="pfg-msg" id="pfChgMsg" role="alert"></p>
       <button class="btn pfg-main" id="pfChgOk" type="submit">비밀번호 변경</button>
       <button class="btn ghost pfg-main" type="button" id="pfChgBack">돌아가기</button>
@@ -4085,14 +4087,16 @@ function pfChangeOpen(o){
   PF_CHG = o || {};
   const forced = !!PF_CHG.forced, inApp = !!PF_CHG.inApp;
   $('#pfChgLead').textContent = forced
-    ? '처음 로그인하셨거나 비밀번호가 초기화되었습니다. 보안을 위해 새 비밀번호(숫자 4자리)로 변경해야 입장할 수 있습니다.'
+    ? '처음 로그인하셨거나 비밀번호가 초기화되었습니다. 보안을 위해 새 비밀번호(숫자 4자리)로 변경해 주세요. 나중에 바꾸려면 아래 \'3개월 뒤에 변경\'을 체크하고 로그인하세요.'
     : inApp ? '현재 비밀번호를 넣고 새 비밀번호(숫자 4자리)를 정하세요.'
             : '사번과 현재 비밀번호를 넣고 새 비밀번호(숫자 4자리)를 정하세요.';
   $('#pfChgEmpF').hidden = forced || inApp;
   $('#pfChgCurF').hidden = forced;
   $('#pfChgEmp').value = PF_CHG.emp || '';
   ['#pfChgCur','#pfChgNew','#pfChgNew2'].forEach(s => $(s).value = '');
-  $('#pfChgOk').textContent = forced ? '변경하고 입장' : '비밀번호 변경';
+  $('#pfLaterF').hidden = !forced;
+  $('#pfLater').checked = false;
+  pfLaterSync();
   $('#pfChgBack').textContent = inApp ? '닫기' : '로그인으로 돌아가기';
   pfMsg('#pfChgMsg', '');
   if(inApp) $('#pfGate').classList.add('on');
@@ -4105,8 +4109,27 @@ function pfChangeBack(){
   if(o.inApp){ $('#pfGate').classList.remove('on'); return; }
   if(o.forced) pfMsg('#pfMsg', '비밀번호를 변경해야 입장할 수 있습니다.');
 }
+/* '3개월 뒤에 변경' 체크 → 새 비밀번호 칸을 접고 버튼을 '로그인하기'로 */
+function pfLaterSync(){
+  const later = !!PF_CHG.forced && $('#pfLater').checked;
+  $('#pfChgNewBox').hidden = later;
+  $('#pfChgOk').textContent = later ? '로그인하기' : PF_CHG.forced ? '변경하고 입장' : '비밀번호 변경';
+  pfMsg('#pfChgMsg', '');
+}
+async function pfChangeLater(){
+  const o = PF_CHG, f = $('#pfChgForm');
+  pfBusy(f, true);
+  const res = await pfRpc('pf_change_later', { p_emp: o.emp, p_pin: o.old });
+  pfBusy(f, false);
+  if(res.error) return pfMsg('#pfChgMsg', db ? pfRpcErr(res.error) : res.error.message);
+  if(!(res.data && res.data.ok)) return pfMsg('#pfChgMsg', '처리하지 못했습니다. 다시 로그인해 주세요.');
+  PF_CHG = {};
+  pfEnter(o.user);
+  toast('비밀번호 변경은 3개월 뒤에 다시 안내합니다');
+}
 async function pfChange(){
   const o = PF_CHG, f = $('#pfChgForm');
+  if(o.forced && $('#pfLater').checked) return pfChangeLater();
   const emp = o.forced || o.inApp ? o.emp : $('#pfChgEmp').value.trim();
   const old = o.forced ? o.old : $('#pfChgCur').value.trim();
   const n1 = $('#pfChgNew').value.trim(), n2 = $('#pfChgNew2').value.trim();
@@ -4139,11 +4162,9 @@ async function pfChange(){
 }
 
 /* 회원가입 → 승인 대기 + 관리자 메일 */
-function pfSiteBase(){
-  if(/^https?:$/.test(location.protocol)) return location.origin + location.pathname;
-  return meta('tbm-site-url') || '';
-}
-const pfAdminUrl = emp => pfSiteBase() + '?admin=users' + (emp ? '&emp=' + encodeURIComponent(emp) : '');
+/* 승인 메일 링크는 어디서 가입했든 항상 이 주소의 회원 관리 화면으로 엽니다 */
+const PF_ADMIN_PAGE = 'https://simmons-safety.github.io/field/';
+const pfAdminUrl = emp => PF_ADMIN_PAGE + '?admin=users' + (emp ? '&emp=' + encodeURIComponent(emp) : '');
 let PF_SENT_EMP = '';
 async function pfSignup(){
   const f = $('#pfSuForm');
@@ -4278,7 +4299,7 @@ function pfAdminRender(){
   $('#pfaList').innerHTML = show.length ? show.map(u => {
     const info = u.status === 'pending' ? `신청 ${d(u.created_at)}`
       : u.status === 'active' ? (u.last_login ? `최근 로그인 ${d(u.last_login)}` : '로그인 기록 없음')
-          + (u.must_change ? ' · 비밀번호 미변경' : '') + (u.fail ? ` · 비밀번호 오류 ${u.fail}회` : '')
+          + (u.must_change ? (u.later_until && new Date(u.later_until) > new Date() ? ` · 비밀번호 변경 미룸(~${d(u.later_until)})` : ' · 비밀번호 미변경') : '') + (u.fail ? ` · 비밀번호 오류 ${u.fail}회` : '')
       : u.status === 'retired' ? `삭제(퇴사) ${d(u.retired_at)}` : '가입 반려';
     const acts = u.status === 'pending' ? [['approve','승인',''], ['reject','반려','ghost']]
       : u.status === 'active' ? [['reset','비번 초기화','ghost'], ['retire','삭제(퇴사)','warn']]
@@ -4328,6 +4349,7 @@ function pfInit(){
   $('#pfGoSignup').onclick = () => { pfMsg('#pfSuMsg', ''); pfShow('signup'); };
   $('#pfGoChange').onclick = () => pfChangeOpen({ emp: $('#pfEmp').value.trim() });
   $('#pfChgBack').onclick  = pfChangeBack;
+  $('#pfLater').onchange   = pfLaterSync;
   $('#pfSuBack').onclick   = () => pfShow('login');
   $('#pfSentBack').onclick = () => { $('#pfEmp').value = PF_SENT_EMP; $('#pfPin').value = ''; pfMsg('#pfMsg', ''); pfShow('login'); };
   ['#pfPin','#pfChgCur','#pfChgNew','#pfChgNew2','#pfSuPin','#pfSuPin2'].forEach(s =>
