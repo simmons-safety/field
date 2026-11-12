@@ -1928,12 +1928,6 @@ html.pf-locked #pfGate,.pfg.on{display:block}
         <path d="M9 17.5 10 21h2l-.6-3"/>
       </svg>
     </button>
-    <button class="hdr-ic" id="btnPfMe" title="내 계정" aria-label="내 계정 (비밀번호 변경 · 로그아웃)" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 21a8 8 0 0 1 16 0"/>
-      </svg>
-    </button>
     <button class="hdr-ic" id="btnSettings" title="설정" aria-label="설정">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"/>
@@ -4359,7 +4353,6 @@ function pfInit(){
   $('#pfaTabs').onclick = e => { const b = e.target.closest('[data-t]'); if(!b) return; PFA.tab = b.dataset.t; PFA.focus = ''; pfAdminRender(); };
   $('#pfaQ').oninput = () => pfAdminRender();
   $('#pfaList').onclick = e => { const b = e.target.closest('[data-a]'); if(b) pfAdminDo(b.dataset.e, b.dataset.a); };
-  $('#btnPfMe').onclick = pfMeOpen;
   pfMeBtn();
   pfShow('login');
   /* 저장된 정보가 있으면 로그인 버튼에 바로 초점 → 엔터 · 터치 한 번으로 입장 */
@@ -12560,7 +12553,17 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 공용 */
   $('#lightbox').onclick = () => $('#lightbox').classList.remove('on');
   /* 홈 팝업 공지 */
-  $('#btnNoticePop').onclick = openNoticeEditor;
+  /* 공지 팝업 작성 : 비밀번호 1004 (새로고침 전까지 한 번만 입력) */
+  const NOTICE_PW = '1004';
+  $('#btnNoticePop').onclick = () => {
+    if(!UNLOCKED.notice){
+      const pw = prompt('공지 팝업 비밀번호를 입력하세요');
+      if(pw === null) return;
+      if(pw !== NOTICE_PW) return toast('비밀번호가 올바르지 않습니다', 'err');
+      UNLOCKED.notice = true;
+    }
+    openNoticeEditor();
+  };
   $('#btnNoticeCancel').onclick = closeNoticeEditor;
   $('#btnNoticeSave').onclick = saveNoticeContent;
   $('#btnNoticeClose').onclick = () => $('#noticeModal').classList.remove('on');
