@@ -1459,6 +1459,8 @@ table.cctb,table.svtb,table.svheat{background:#fff}
   font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;transition:.15s;color:var(--ink)}
 .wppick button:hover,.wppick button:focus-visible{background:#000;border-color:#000;color:#fff}
 .wppick b{font-size:20px;letter-spacing:-.03em;color:inherit}
+.wppick .wpsub{font-size:11.5px;font-weight:500;letter-spacing:-.01em;color:#8a8a8e;transition:color .15s}
+.wppick button:hover .wpsub,.wppick button:focus-visible .wpsub{color:rgba(255,255,255,.7)}
 @media(max-width:640px){.wppick{grid-template-columns:1fr}.wppick button{padding:24px 16px}}
 .wpmodebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
 .wpmodebar .md{font-size:15px;font-weight:700;letter-spacing:-.03em}
@@ -2869,14 +2871,26 @@ img,video,canvas,iframe{max-width:100%}
 <section class="panel" id="p-permit" hidden>
   <div class="pagetop">
     <span class="pt">안전작업허가</span>
-    <button class="btn sm ghost" id="wpPickTop" type="button" style="margin-left:4px">기록 대장</button>
+    <span style="display:inline-flex;align-items:center;gap:8px;margin-left:4px">
+      <button class="btn sm ghost" id="wpPickTop" type="button">기록 대장</button>
+      <!-- 안전작업허가서 안내 포스터 (PDF 는 index.html 과 같은 폴더) -->
+      <a id="wpPoster" href="안전작업허가서_안내_포스터%20(1).pdf" target="_blank" rel="noopener"
+         title="안전작업허가서 안내 포스터 열기"
+         style="display:inline-flex;align-items:center;gap:6px;padding:0 4px;color:inherit;font-size:12px;font-weight:600;text-decoration:none;background:none;border:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>
+          <path d="M9 13h6M9 17h6M9 9h1"/>
+        </svg>
+        안전작업허가서 안내 포스터
+      </a>
+    </span>
     <span class="pe">Work Permit</span>
   </div>
 
   <div class="wppick" id="wpPick">
     <button data-wpmode="임직원"><b>임직원용</b></button>
     <button data-wpmode="협력사"><b>협력사용</b></button>
-    <button data-wpmode="긴급"><b>긴급</b></button>
+    <button data-wpmode="긴급"><b>긴급</b><small class="wpsub">(작업부서 담당자 ↔ 안전관리자)</small></button>
   </div>
 
   <div id="wpMain" hidden>
