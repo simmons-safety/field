@@ -1835,6 +1835,75 @@ button.b.wpbb.done:hover{opacity:.85}
 </head>
 <body>
 
+<!-- ═══════════ 로그인 잠금 (schema_login.sql) ═══════════
+     화면이 그려지기 전에 잠가 두고, 로그인하면 풉니다. 같은 창(탭)에서 이미 로그인했거나 차량 QR 날씨(?wx)면 잠그지 않습니다. -->
+<script>
+(function(){
+  if(/[?&]wx(=|&|$)/.test(location.search)) return;
+  var ok = false;
+  try{ var s = JSON.parse(sessionStorage.getItem('pf_sess') || 'null'); ok = !!(s && s.emp); }catch(e){}
+  if(!ok) document.documentElement.classList.add('pf-locked');
+})();
+</script>
+<style>
+html.pf-locked body{overflow:hidden}
+.pfg{position:fixed;inset:0;z-index:9500;background:var(--paper,#fff);overflow-y:auto;display:none;-webkit-overflow-scrolling:touch}
+html.pf-locked #pfGate,.pfg.on{display:block}
+#pfAdmin{z-index:9600}
+.toast{z-index:9800}
+.pfg-in{width:100%;max-width:440px;margin:0 auto;padding:clamp(28px,7vh,72px) 16px 48px;box-sizing:border-box}
+.pfg-logo{height:26px;width:auto;display:block;margin-bottom:26px}
+.pfg-logo:not([src]){visibility:hidden}
+.pfg-eyebrow{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--ink3)}
+.pfg-ttl{margin:0 0 22px;font-size:26px;font-weight:800;letter-spacing:-.045em;color:var(--ink)}
+.pfg-h{margin:0 0 6px;font-size:19px;font-weight:700;letter-spacing:-.04em;color:var(--ink)}
+.pfg-sub{margin:0 0 20px;font-size:13.5px;color:var(--ink2);line-height:1.65}
+.pfg-f{margin-bottom:12px}
+.pfg-f label{margin-bottom:7px}
+.pfg input[type=password]{letter-spacing:.3em}
+.pfg input[type=password]::placeholder{letter-spacing:.05em}
+.pfg-chk{display:flex!important;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px!important;font-weight:600;color:var(--ink)!important;margin:4px 0 14px!important;cursor:pointer}
+.pfg-chk input{width:18px;height:18px;padding:0;margin:0;accent-color:var(--ink);flex:none}
+.pfg-chk span{font-weight:400;color:var(--ink3);font-size:12px}
+.pfg-msg{margin:0 0 12px;font-size:13px;line-height:1.6;color:var(--human);white-space:pre-line;font-weight:600}
+.pfg-msg:empty{display:none}
+.pfg-msg.ok{color:#1E7B45}
+.pfg-main{width:100%;margin-bottom:8px}
+.pfg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pfg-row .btn{width:100%;padding-left:8px;padding-right:8px}
+.pfg-info{margin:22px 0 0;padding:16px 18px 16px 34px;background:var(--panel2);border-radius:var(--r-m,14px);font-size:12.5px;line-height:1.7;color:var(--ink2)}
+.pfg-info li+li{margin-top:6px}
+.pfg-info b{color:var(--ink)}
+.pfg-info span{color:var(--ink3)}
+.pfg-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pfa-in{max-width:980px;margin:0 auto;padding:24px 16px 48px;box-sizing:border-box}
+.pfa-top{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.pfa-top h2{margin:0;font-size:21px;font-weight:700;letter-spacing:-.045em}
+.pfa-top h2 small{font-size:12px;font-weight:500;color:var(--ink3);margin-left:6px}
+.pfa-top .btn{margin-left:auto}
+#pfaLock{max-width:360px}
+.pfa-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pfa-tab{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border-radius:999px;background:var(--panel2);font-size:13px;font-weight:600;color:var(--ink)}
+.pfa-tab[aria-pressed="true"]{background:var(--ink);color:#fff}
+.pfa-tab em{font-style:normal;opacity:.6;margin-left:5px}
+#pfaQ{margin-bottom:10px}
+.pfa-list{border-top:1px solid var(--line)}
+.pfa-r{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 4px;border-bottom:1px solid var(--line2);font-size:13.5px}
+.pfa-r.focus{background:#FFF6D6}
+.pfa-who{flex:1 1 220px;min-width:0}
+.pfa-who b{font-weight:700}
+.pfa-who .e{font-variant-numeric:tabular-nums;color:var(--ink2);margin-left:7px}
+.pfa-who small{display:block;color:var(--ink3);font-size:12px;margin-top:3px;line-height:1.5}
+.pfa-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--panel2);color:var(--ink2);margin-left:7px}
+.pfa-act{display:flex;gap:6px;flex-wrap:wrap}
+.pfa-act .btn{padding:8px 13px;font-size:12.5px}
+.pfa-act .btn.warn{background:#fff;color:var(--human);border-color:var(--human)}
+.pfa-act .btn.warn:hover{background:var(--human);color:#fff}
+.pfa-empty{padding:30px 0;text-align:center;color:var(--ink3);font-size:13px;margin:0}
+.pfme-b{display:grid;gap:8px;margin-top:6px}
+.pfme-b .btn{width:100%}
+</style>
+
 <!-- ═══════════ 상단 고정 바 ═══════════ -->
 <header class="topbar">
   <div class="tb-in">
@@ -1856,6 +1925,12 @@ button.b.wpbb.done:hover{opacity:.85}
         <path d="M15 8a4 4 0 0 1 0 8"/>
         <path d="M18 5a8 8 0 0 1 0 14"/>
         <path d="M9 17.5 10 21h2l-.6-3"/>
+      </svg>
+    </button>
+    <button class="hdr-ic" id="btnPfMe" title="내 계정" aria-label="내 계정 (비밀번호 변경 · 로그아웃)" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21a8 8 0 0 1 16 0"/>
       </svg>
     </button>
     <button class="hdr-ic" id="btnSettings" title="설정" aria-label="설정">
@@ -3031,6 +3106,10 @@ button.b.wpbb.done:hover{opacity:.85}
         <button class="btn sm" id="btnReconnect">다시 연결</button>
         <button class="btn sm ghost" id="btnForget">저장 정보 지우기</button>
       </div>
+
+      <p class="secttl">로그인 회원 관리</p>
+      <p class="hint" style="margin:0 0 11px">회원가입 승인 · 퇴사자 삭제 · 비밀번호 초기화 (관리자 비밀번호 필요)</p>
+      <button class="btn sm" type="button" onclick="document.getElementById('setModal').classList.remove('on'); pfAdminOpen();">회원 관리 열기</button>
     </div>
   </div>
 </div>
@@ -3340,6 +3419,114 @@ button.b.wpbb.done:hover{opacity:.85}
 </div>
 
 <div class="lightbox" id="lightbox"><img id="lightboxImg" alt="사진"></div>
+<!-- ═══════════ 로그인 · 회원가입 · 비밀번호 변경 (schema_login.sql) ═══════════ -->
+<div class="pfg" id="pfGate" role="dialog" aria-modal="true" aria-label="로그인">
+  <div class="pfg-in">
+    <img class="pfg-logo" id="pfLogo" alt="SIMMONS">
+    <p class="pfg-eyebrow">We believe in safety.</p>
+    <p class="pfg-ttl">안전보건 통합 플랫폼</p>
+
+    <!-- 로그인 -->
+    <form class="pfg-view" data-pfv="login" id="pfLoginForm" autocomplete="on">
+      <p class="pfg-sub">보안을 위해 로그인 후 이용할 수 있습니다.</p>
+      <div class="pfg-f"><label for="pfEmp">아이디 (사번)</label>
+        <input id="pfEmp" name="username" type="text" inputmode="numeric" autocomplete="username" placeholder="사번 입력"></div>
+      <div class="pfg-f"><label for="pfPin">비밀번호 (숫자 4자리)</label>
+        <input id="pfPin" name="password" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="숫자 4자리"></div>
+      <label class="pfg-chk"><input type="checkbox" id="pfSave" checked> 로그인 정보 저장 <span>다음부터 로그인 버튼만 누르면 입장</span></label>
+      <p class="pfg-msg" id="pfMsg" role="alert"></p>
+      <button class="btn pfg-main" id="pfBtnLogin" type="submit">로그인</button>
+      <div class="pfg-row">
+        <button class="btn ghost" type="button" id="pfGoSignup">회원가입</button>
+        <button class="btn ghost" type="button" id="pfGoChange">비밀번호 변경</button>
+      </div>
+      <ul class="pfg-info">
+        <li><b>최초 아이디는 사번, 비밀번호는 0000</b> 입니다. 처음 로그인하면 비밀번호를 숫자 4자리로 꼭 변경해 주세요.</li>
+        <li>비밀번호를 <b>3회 틀리면</b> 최초 발급된 비밀번호(0000)로 자동 초기화됩니다. <span>회원가입한 분은 가입할 때 정한 비밀번호로 초기화됩니다.</span></li>
+        <li>명단에 없는 분(신규 입사자 · 협력사 등)은 <b>회원가입</b> 후 관리자 승인을 받으면 이용할 수 있습니다.</li>
+        <li>로그인 관련 문의는 <b>안전보건기획팀 한기선 차장</b>에게 연락해 주세요.</li>
+      </ul>
+    </form>
+
+    <!-- 비밀번호 변경 -->
+    <form class="pfg-view" data-pfv="change" id="pfChgForm" hidden>
+      <p class="pfg-h">비밀번호 변경</p>
+      <p class="pfg-sub" id="pfChgLead"></p>
+      <div class="pfg-f" id="pfChgEmpF"><label for="pfChgEmp">아이디 (사번)</label>
+        <input id="pfChgEmp" type="text" inputmode="numeric" autocomplete="username" placeholder="사번 입력"></div>
+      <div class="pfg-f" id="pfChgCurF"><label for="pfChgCur">현재 비밀번호</label>
+        <input id="pfChgCur" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="숫자 4자리"></div>
+      <div class="pfg-f"><label for="pfChgNew">새 비밀번호 (숫자 4자리)</label>
+        <input id="pfChgNew" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="숫자 4자리"></div>
+      <div class="pfg-f"><label for="pfChgNew2">새 비밀번호 확인</label>
+        <input id="pfChgNew2" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="한 번 더 입력"></div>
+      <p class="pfg-msg" id="pfChgMsg" role="alert"></p>
+      <button class="btn pfg-main" id="pfChgOk" type="submit">비밀번호 변경</button>
+      <button class="btn ghost pfg-main" type="button" id="pfChgBack">돌아가기</button>
+    </form>
+
+    <!-- 회원가입 -->
+    <form class="pfg-view" data-pfv="signup" id="pfSuForm" hidden>
+      <p class="pfg-h">회원가입</p>
+      <p class="pfg-sub">아이디는 <b>사번</b>, 비밀번호는 <b>숫자 4자리</b>로 자유롭게 정합니다.<br>
+        <b>관리자 승인 후 이용할 수 있습니다.</b> (승인 : 안전보건기획팀 한기선 차장)</p>
+      <div class="pfg-f"><label for="pfSuEmp">아이디 (사번) <em>*</em></label>
+        <input id="pfSuEmp" type="text" inputmode="numeric" autocomplete="username" placeholder="사번 입력"></div>
+      <div class="pfg-f"><label for="pfSuName">이름 <em>*</em></label>
+        <input id="pfSuName" type="text" autocomplete="name" placeholder="홍길동"></div>
+      <div class="pfg-2">
+        <div class="pfg-f"><label for="pfSuSite">사업장 <em>*</em></label>
+          <select id="pfSuSite"><option value="">선택</option><option>팩토리움</option><option>서울사무소</option><option>협력사</option><option>기타</option></select></div>
+        <div class="pfg-f"><label for="pfSuTeam">소속 (팀 · 업체명)</label>
+          <input id="pfSuTeam" type="text" placeholder="예) 생산팀"></div>
+      </div>
+      <div class="pfg-2">
+        <div class="pfg-f"><label for="pfSuPin">비밀번호 (숫자 4자리) <em>*</em></label>
+          <input id="pfSuPin" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="숫자 4자리"></div>
+        <div class="pfg-f"><label for="pfSuPin2">비밀번호 확인 <em>*</em></label>
+          <input id="pfSuPin2" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="한 번 더"></div>
+      </div>
+      <p class="pfg-msg" id="pfSuMsg" role="alert"></p>
+      <button class="btn pfg-main" type="submit">가입 신청</button>
+      <button class="btn ghost pfg-main" type="button" id="pfSuBack">로그인으로 돌아가기</button>
+      <ul class="pfg-info">
+        <li>가입 신청하면 관리자에게 승인 요청 메일이 갑니다. <b>승인 후</b> 사번과 정한 비밀번호로 로그인하세요.</li>
+        <li>인원현황 명단에 이미 있는 분은 가입하지 않아도 됩니다. <span>(사번 / 0000 으로 바로 로그인)</span></li>
+        <li>문의 : <b>안전보건기획팀 한기선 차장</b></li>
+      </ul>
+    </form>
+
+    <!-- 가입 신청 완료 -->
+    <div class="pfg-view" data-pfv="sent" hidden>
+      <p class="pfg-h">가입 신청이 접수되었습니다</p>
+      <p class="pfg-sub"><b id="pfSentWho"></b> 님의 신청을 관리자에게 보냈습니다.<br>
+        <b>관리자 승인 후</b> 사번과 정한 비밀번호로 로그인할 수 있습니다.<br>
+        승인이 늦어지면 안전보건기획팀 한기선 차장에게 문의해 주세요.</p>
+      <button class="btn pfg-main" type="button" id="pfSentBack">로그인 화면으로</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 회원 관리 (관리자) : 가입 승인 · 퇴사자 삭제 · 비밀번호 초기화 ═══════════ -->
+<div class="pfg" id="pfAdmin" role="dialog" aria-modal="true" aria-label="회원 관리">
+  <div class="pfa-in">
+    <div class="pfa-top"><h2>회원 관리<small>관리자</small></h2>
+      <button class="btn sm ghost" type="button" id="pfaClose">닫기</button></div>
+    <form id="pfaLock">
+      <p class="pfg-sub">관리자 비밀번호를 입력하세요.</p>
+      <div class="pfg-f"><input id="pfaPw" type="password" inputmode="numeric" autocomplete="off" placeholder="관리자 비밀번호"></div>
+      <p class="pfg-msg" id="pfaMsg" role="alert"></p>
+      <button class="btn pfg-main" type="submit">확인</button>
+    </form>
+    <div id="pfaBody" hidden>
+      <p class="pfg-sub">회원가입 신청을 승인하고, 퇴사자는 <b>삭제(퇴사)</b>로 로그인을 막습니다. 삭제한 계정은 '삭제(퇴사) · 반려' 탭에서 복구할 수 있습니다.</p>
+      <div class="pfa-tabs" id="pfaTabs"></div>
+      <input type="search" id="pfaQ" placeholder="이름 · 사번 · 팀 검색">
+      <div class="pfa-list" id="pfaList"></div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -3812,6 +3999,351 @@ async function loadGpsWeather(lat, lon, acc, picked){
   }
 }
 
+/* ===================== 로그인 · 회원가입 · 회원 관리 (schema_login.sql) =====================
+   아이디 = 사번 · 비밀번호 = 숫자 4자리 (인원현황 명단은 최초 0000). 확인은 Supabase 함수(pf_login 등)가 하고,
+   비밀번호는 서버에 암호화해 저장합니다. 3회 틀리면 서버가 최초 발급 비밀번호로 되돌립니다.
+   '로그인 정보 저장'을 켜 두면 이 기기에 사번 · 비밀번호를 기억해 다음부터 로그인 버튼만 누르면 됩니다.
+   같은 창(탭)에서는 새로고침해도 다시 묻지 않습니다. 차량 QR 날씨(?wx)는 로그인 없이 열립니다.
+   회원가입 → PF_ADMIN_MAIL 로 승인 요청 메일 (링크 = ?admin=users&emp=사번 → 회원 관리 화면) */
+const PF_ADMIN_MAIL = 'hk7149@simmons.co.kr';          // 회원가입 승인 요청 메일 받는 주소
+const PF_CONTACT    = '안전보건기획팀 한기선 차장';       // 로그인 문의처
+const PF_AUTH = { ok:false, user:null, waiters:[], inited:false };
+(function(){
+  if(/[?&]wx(=|&|$)/.test(location.search)){ PF_AUTH.ok = true; return; }
+  try{ const s = JSON.parse(sessionStorage.getItem('pf_sess') || 'null'); if(s && s.emp){ PF_AUTH.ok = true; PF_AUTH.user = s; } }catch(e){}
+})();
+/* 로그인한 뒤에 할 일 (자료 불러오기 · 바로가기 링크) */
+function pfWhenIn(fn){ if(PF_AUTH.ok) fn(); else PF_AUTH.waiters.push(fn); }
+function pfEnter(u){
+  PF_AUTH.ok = true; PF_AUTH.user = u;
+  try{ sessionStorage.setItem('pf_sess', JSON.stringify(u)); }catch(e){}
+  document.documentElement.classList.remove('pf-locked');
+  $('#pfGate').classList.remove('on');
+  pfShow('login');
+  pfMeBtn();
+  PF_AUTH.waiters.splice(0).forEach(f => { try{ f(); }catch(e){ console.error(e); } });
+  toast(`${u.name || u.emp}님, 환영합니다`, 'ok');
+}
+function pfMsg(sel, text, ok){ const el = $(sel); el.textContent = text || ''; el.classList.toggle('ok', !!ok); }
+function pfShow(v){
+  $$('#pfGate .pfg-view').forEach(f => f.hidden = (f.dataset.pfv !== v));
+  $('#pfGate').scrollTop = 0;
+}
+const pfPin4 = s => /^\d{4}$/.test(s);
+function pfBusy(form, on){ form.querySelectorAll('button').forEach(b => b.disabled = on); }
+function pfRpcErr(error){
+  const m = (error && (error.message || String(error))) || '';
+  return /pf_|function|schema cache|not find/i.test(m)
+    ? `로그인 설정이 아직 서버에 적용되지 않았습니다 (schema_login.sql).\n${PF_CONTACT}에게 문의해 주세요.`
+    : `서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.\n(${m})`;
+}
+async function pfRpc(fn, args){
+  if(!db) return { error:{ message:'서버에 연결하는 중입니다. 잠시 후 다시 눌러 주세요.' } };
+  try{ return await db.rpc(fn, args); }catch(e){ return { error:e }; }
+}
+/* 3회 틀려 초기화됐을 때 문구 */
+const pfResetMsg = r => `비밀번호를 3회 잘못 입력해 최초 발급 비밀번호${r.source === 'signup' ? '(회원가입 때 정한 비밀번호)' : '(0000)'}로 초기화되었습니다.\n`
+  + '최초 비밀번호로 다시 로그인한 뒤 새 비밀번호로 변경해 주세요.';
+const pfBadMsg = r => `비밀번호가 맞지 않습니다. (${r.fail}/3회)\n`
+  + `${r.left}회 더 틀리면 비밀번호가 최초 발급 비밀번호로 초기화됩니다.`;
+
+async function pfLogin(){
+  const f = $('#pfLoginForm');
+  const emp = $('#pfEmp').value.trim(), pin = $('#pfPin').value.trim();
+  pfMsg('#pfMsg', '');
+  if(!emp) return pfMsg('#pfMsg', '아이디(사번)를 입력하세요.');
+  if(!pfPin4(pin)) return pfMsg('#pfMsg', '비밀번호 숫자 4자리를 입력하세요.');
+  pfBusy(f, true);
+  const res = await pfRpc('pf_login', { p_emp: emp, p_pin: pin });
+  pfBusy(f, false);
+  if(res.error) return pfMsg('#pfMsg', db ? pfRpcErr(res.error) : res.error.message);
+  const r = res.data || {};
+  const save = $('#pfSave').checked;
+  STORE.set('auth_save', save ? '1' : '0');
+  STORE.set('auth_emp', save ? emp : '');
+  if(r.ok){
+    STORE.set('auth_pin', save ? pin : '');
+    const u = { emp: r.emp, name: r.name, site: r.site, team: r.team };
+    if(r.must_change) return pfChangeOpen({ forced:true, user:u, emp:r.emp, old:pin });
+    return pfEnter(u);
+  }
+  STORE.set('auth_pin', '');                         // 틀린 비밀번호는 기억하지 않습니다
+  const M = {
+    nouser:   '등록되지 않은 사번입니다.\n사번을 다시 확인하시거나, 명단에 없는 분은 아래 [회원가입]을 해 주세요.',
+    pending:  '회원가입 승인 대기 중입니다.\n관리자 승인 후 이용할 수 있습니다.',
+    rejected: `회원가입이 승인되지 않았습니다.\n${PF_CONTACT}에게 문의해 주세요.`,
+    retired:  `이용이 중지된 계정입니다.\n${PF_CONTACT}에게 문의해 주세요.`
+  };
+  if(r.code === 'badpin'){ $('#pfPin').value = ''; return pfMsg('#pfMsg', pfBadMsg(r)); }
+  if(r.code === 'reset'){ $('#pfPin').value = ''; return pfMsg('#pfMsg', pfResetMsg(r)); }
+  pfMsg('#pfMsg', M[r.code] || '로그인하지 못했습니다. 다시 시도해 주세요.');
+}
+
+/* 비밀번호 변경 : forced = 최초 · 초기화 비밀번호로 로그인 (변경해야 입장) · inApp = 로그인한 뒤 내 계정에서 */
+let PF_CHG = {};
+function pfChangeOpen(o){
+  PF_CHG = o || {};
+  const forced = !!PF_CHG.forced, inApp = !!PF_CHG.inApp;
+  $('#pfChgLead').textContent = forced
+    ? '처음 로그인하셨거나 비밀번호가 초기화되었습니다. 보안을 위해 새 비밀번호(숫자 4자리)로 변경해야 입장할 수 있습니다.'
+    : inApp ? '현재 비밀번호를 넣고 새 비밀번호(숫자 4자리)를 정하세요.'
+            : '사번과 현재 비밀번호를 넣고 새 비밀번호(숫자 4자리)를 정하세요.';
+  $('#pfChgEmpF').hidden = forced || inApp;
+  $('#pfChgCurF').hidden = forced;
+  $('#pfChgEmp').value = PF_CHG.emp || '';
+  ['#pfChgCur','#pfChgNew','#pfChgNew2'].forEach(s => $(s).value = '');
+  $('#pfChgOk').textContent = forced ? '변경하고 입장' : '비밀번호 변경';
+  $('#pfChgBack').textContent = inApp ? '닫기' : '로그인으로 돌아가기';
+  pfMsg('#pfChgMsg', '');
+  if(inApp) $('#pfGate').classList.add('on');
+  pfShow('change');
+}
+function pfChangeBack(){
+  const o = PF_CHG;
+  PF_CHG = {};
+  pfShow('login');
+  if(o.inApp){ $('#pfGate').classList.remove('on'); return; }
+  if(o.forced) pfMsg('#pfMsg', '비밀번호를 변경해야 입장할 수 있습니다.');
+}
+async function pfChange(){
+  const o = PF_CHG, f = $('#pfChgForm');
+  const emp = o.forced || o.inApp ? o.emp : $('#pfChgEmp').value.trim();
+  const old = o.forced ? o.old : $('#pfChgCur').value.trim();
+  const n1 = $('#pfChgNew').value.trim(), n2 = $('#pfChgNew2').value.trim();
+  pfMsg('#pfChgMsg', '');
+  if(!emp) return pfMsg('#pfChgMsg', '아이디(사번)를 입력하세요.');
+  if(!pfPin4(old)) return pfMsg('#pfChgMsg', '현재 비밀번호 숫자 4자리를 입력하세요.');
+  if(!pfPin4(n1)) return pfMsg('#pfChgMsg', '새 비밀번호는 숫자 4자리로 정해 주세요.');
+  if(n1 !== n2) return pfMsg('#pfChgMsg', '새 비밀번호 두 칸이 서로 다릅니다.');
+  if(n1 === old || n1 === '0000') return pfMsg('#pfChgMsg', '지금 비밀번호 · 0000 과 다른 번호로 정해 주세요.');
+  pfBusy(f, true);
+  const res = await pfRpc('pf_change_pin', { p_emp: emp, p_old: old, p_new: n1 });
+  pfBusy(f, false);
+  if(res.error) return pfMsg('#pfChgMsg', db ? pfRpcErr(res.error) : res.error.message);
+  const r = res.data || {};
+  if(!r.ok){
+    if(r.code === 'reset'){ $('#pfChgCur').value = ''; return pfMsg('#pfChgMsg', pfResetMsg(r)); }
+    if(r.code === 'badpin') return pfMsg('#pfChgMsg', '현재 ' + pfBadMsg(r));
+    return pfMsg('#pfChgMsg', { nouser:'등록되지 않았거나 이용이 중지된 사번입니다.',
+      same:'지금 비밀번호 · 0000 과 다른 번호로 정해 주세요.', format:'새 비밀번호는 숫자 4자리입니다.' }[r.code]
+      || '변경하지 못했습니다. 다시 시도해 주세요.');
+  }
+  /* 저장해 둔 로그인 정보도 새 비밀번호로 */
+  if(STORE.get('auth_save') !== '0' && STORE.get('auth_emp') === emp) STORE.set('auth_pin', n1);
+  if(o.forced){ PF_CHG = {}; $('#pfPin').value = STORE.get('auth_pin'); return pfEnter(o.user); }
+  if(o.inApp){ pfChangeBack(); return toast('비밀번호를 변경했습니다', 'ok'); }
+  PF_CHG = {};
+  $('#pfEmp').value = emp; $('#pfPin').value = '';
+  pfShow('login');
+  pfMsg('#pfMsg', '비밀번호를 변경했습니다. 새 비밀번호로 로그인하세요.', true);
+}
+
+/* 회원가입 → 승인 대기 + 관리자 메일 */
+function pfSiteBase(){
+  if(/^https?:$/.test(location.protocol)) return location.origin + location.pathname;
+  return meta('tbm-site-url') || '';
+}
+const pfAdminUrl = emp => pfSiteBase() + '?admin=users' + (emp ? '&emp=' + encodeURIComponent(emp) : '');
+let PF_SENT_EMP = '';
+async function pfSignup(){
+  const f = $('#pfSuForm');
+  const emp = $('#pfSuEmp').value.trim(), name = $('#pfSuName').value.trim();
+  const site = $('#pfSuSite').value, team = $('#pfSuTeam').value.trim();
+  const p1 = $('#pfSuPin').value.trim(), p2 = $('#pfSuPin2').value.trim();
+  pfMsg('#pfSuMsg', '');
+  if(!/^[0-9A-Za-z-]{4,20}$/.test(emp)) return pfMsg('#pfSuMsg', '아이디(사번)를 정확히 입력하세요.');
+  if(!name) return pfMsg('#pfSuMsg', '이름을 입력하세요.');
+  if(!site) return pfMsg('#pfSuMsg', '사업장을 선택하세요.');
+  if(!pfPin4(p1)) return pfMsg('#pfSuMsg', '비밀번호는 숫자 4자리로 정해 주세요.');
+  if(p1 !== p2) return pfMsg('#pfSuMsg', '비밀번호 두 칸이 서로 다릅니다.');
+  pfBusy(f, true);
+  const res = await pfRpc('pf_signup', { p_emp: emp, p_name: name, p_site: site, p_team: team, p_pin: p1 });
+  if(res.error){ pfBusy(f, false); return pfMsg('#pfSuMsg', db ? pfRpcErr(res.error) : res.error.message); }
+  const r = res.data || {};
+  if(!r.ok){
+    pfBusy(f, false);
+    return pfMsg('#pfSuMsg', {
+      exists:  r.source === 'roster'
+        ? '이미 등록된 사번입니다. 회원가입 없이 사번과 비밀번호 0000(최초)으로 로그인하세요.'
+        : '이미 가입된 사번입니다. 로그인해 주세요.',
+      pending: '이미 가입 신청이 접수되어 관리자 승인을 기다리고 있습니다.',
+      retired: `이용이 중지된 사번입니다. ${PF_CONTACT}에게 문의해 주세요.`,
+      empfmt:  '아이디(사번)를 정확히 입력하세요.', name:'이름을 입력하세요.', format:'비밀번호는 숫자 4자리입니다.'
+    }[r.code] || '신청하지 못했습니다. 다시 시도해 주세요.');
+  }
+  /* 관리자에게 승인 요청 메일 (실패해도 신청은 접수된 상태 — 관리자 화면에 승인 대기로 보입니다) */
+  const link = pfAdminUrl(emp);
+  const when = new Date().toLocaleString('ko-KR');
+  const rows = [['사번(아이디)', emp], ['이름', name], ['사업장', site], ['소속', team || '-'], ['신청 시각', when]];
+  const text = '[안전보건 통합 플랫폼] 회원가입 승인 요청\n\n'
+    + rows.map(([k, v]) => `${k} : ${v}`).join('\n')
+    + `\n\n아래 링크에서 관리자 비밀번호를 넣고 승인해 주세요.\n${link}`;
+  const html = `<div style="font-family:'Malgun Gothic',sans-serif;font-size:14px;color:#111;line-height:1.7">
+    <p style="font-size:16px;font-weight:700;margin:0 0 12px">안전보건 통합 플랫폼 · 회원가입 승인 요청</p>
+    <table style="border-collapse:collapse;margin:0 0 18px">${rows.map(([k, v]) =>
+      `<tr><td style="padding:6px 14px 6px 0;color:#777">${esc(k)}</td><td style="padding:6px 0;font-weight:600">${esc(v)}</td></tr>`).join('')}</table>
+    <a href="${esc(link)}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 22px;font-weight:700">가입 승인하러 가기</a>
+    <p style="color:#888;font-size:12px;margin:16px 0 0">링크를 누르면 회원 관리(관리자) 화면이 열립니다. 관리자 비밀번호를 넣고 [승인]을 누르세요.<br>${esc(link)}</p>
+  </div>`;
+  try{ await notifyMail(`[안전보건 플랫폼] 회원가입 승인 요청 — ${name} (${emp})`, text, PF_ADMIN_MAIL, html); }catch(e){}
+  pfBusy(f, false);
+  PF_SENT_EMP = emp;
+  $('#pfSentWho').textContent = `${name} (${emp})`;
+  ['#pfSuEmp','#pfSuName','#pfSuTeam','#pfSuPin','#pfSuPin2'].forEach(s => $(s).value = '');
+  $('#pfSuSite').value = '';
+  pfShow('sent');
+}
+
+/* 내 계정 (상단 사람 아이콘) */
+function pfMeBtn(){
+  const b = $('#btnPfMe'); if(!b) return;
+  const u = PF_AUTH.user;
+  b.hidden = !u;
+  if(u) b.title = `${u.name || ''} (${u.emp}) · 내 계정`;
+}
+function pfMeOpen(){
+  const u = PF_AUTH.user || {};
+  const m = document.createElement('div');
+  m.className = 'scomod';
+  m.innerHTML = `<div class="scobox" role="dialog" aria-label="내 계정">
+    <div class="h"><b>${esc(u.name || '')}</b><span>${esc(u.emp || '')}</span></div>
+    <p class="it">${esc([u.site, u.team].filter(Boolean).join(' · '))}</p>
+    <div class="pfme-b">
+      <button class="btn ghost" type="button" data-a="pin">비밀번호 변경</button>
+      <button class="btn ghost" type="button" data-a="admin">회원 관리 (관리자)</button>
+      <button class="btn" type="button" data-a="out">로그아웃</button>
+    </div></div>`;
+  bindOverlayClose(m, () => m.remove());
+  m.querySelector('[data-a=pin]').onclick   = () => { m.remove(); pfChangeOpen({ inApp:true, emp:u.emp }); };
+  m.querySelector('[data-a=admin]').onclick = () => { m.remove(); pfAdminOpen(); };
+  m.querySelector('[data-a=out]').onclick   = () => {
+    if(!confirm('로그아웃할까요?\n(저장한 로그인 정보는 남아 있어 다음에 로그인 버튼만 누르면 됩니다)')) return;
+    try{ sessionStorage.removeItem('pf_sess'); }catch(e){}
+    location.replace(location.pathname);
+  };
+  document.body.appendChild(m);
+}
+
+/* 회원 관리 (관리자) : 승인 대기 · 이용 중 · 삭제(퇴사) · 반려 */
+const PFA = { pw:'', users:[], tab:'pending', focus:'' };
+function pfAdminOpen(focus){
+  PFA.focus = focus || '';
+  $('#pfAdmin').classList.add('on');
+  $('#pfAdmin').scrollTop = 0;
+  if(PFA.pw){ pfAdminLoad('', true); return; }
+  $('#pfaLock').hidden = false; $('#pfaBody').hidden = true;
+  $('#pfaPw').value = ''; pfMsg('#pfaMsg', '');
+  setTimeout(() => $('#pfaPw').focus(), 60);
+}
+function pfAdminClose(){
+  $('#pfAdmin').classList.remove('on');
+  if(/[?&]admin=/.test(location.search)) history.replaceState(history.state, '', location.pathname);
+}
+async function pfAdminLoad(pw, first){
+  const res = await pfRpc('pf_admin_list', { p_pw: pw || PFA.pw });
+  if(res.error){
+    const m = db ? pfRpcErr(res.error) : res.error.message;
+    if($('#pfaBody').hidden) pfMsg('#pfaMsg', m); else toast(m, 'err');
+    return false;
+  }
+  const r = res.data || {};
+  if(!r.ok){
+    PFA.pw = '';
+    $('#pfaLock').hidden = false; $('#pfaBody').hidden = true;
+    pfMsg('#pfaMsg', '관리자 비밀번호가 올바르지 않습니다.');
+    return false;
+  }
+  if(pw) PFA.pw = pw;
+  PFA.users = r.users || [];
+  $('#pfaLock').hidden = true; $('#pfaBody').hidden = false;
+  if(first){
+    const fu = PFA.focus && PFA.users.find(u => u.emp === PFA.focus);
+    if(fu) PFA.tab = pfaGrp(fu);
+    else PFA.tab = PFA.users.some(u => u.status === 'pending') ? 'pending' : 'active';
+  }
+  pfAdminRender();
+  return true;
+}
+const pfaGrp = u => u.status === 'rejected' ? 'retired' : u.status;
+function pfAdminRender(){
+  const cnt = { pending:0, active:0, retired:0 };
+  PFA.users.forEach(u => cnt[pfaGrp(u)]++);
+  $('#pfaTabs').innerHTML = [['pending','승인 대기'], ['active','이용 중'], ['retired','삭제(퇴사) · 반려']]
+    .map(([k, t]) => `<button type="button" class="pfa-tab" data-t="${k}" aria-pressed="${PFA.tab === k}">${t}<em>${cnt[k]}</em></button>`).join('');
+  const q = $('#pfaQ').value.trim().toLowerCase();
+  const list = PFA.users.filter(u => pfaGrp(u) === PFA.tab)
+    .filter(u => !q || [u.emp, u.name, u.site, u.team].join(' ').toLowerCase().includes(q));
+  const show = list.slice(0, 300);
+  const d = s => s ? new Date(s).toLocaleDateString('ko-KR') : '';
+  $('#pfaList').innerHTML = show.length ? show.map(u => {
+    const info = u.status === 'pending' ? `신청 ${d(u.created_at)}`
+      : u.status === 'active' ? (u.last_login ? `최근 로그인 ${d(u.last_login)}` : '로그인 기록 없음')
+          + (u.must_change ? ' · 비밀번호 미변경' : '') + (u.fail ? ` · 비밀번호 오류 ${u.fail}회` : '')
+      : u.status === 'retired' ? `삭제(퇴사) ${d(u.retired_at)}` : '가입 반려';
+    const acts = u.status === 'pending' ? [['approve','승인',''], ['reject','반려','ghost']]
+      : u.status === 'active' ? [['reset','비번 초기화','ghost'], ['retire','삭제(퇴사)','warn']]
+      : [['restore', u.status === 'rejected' ? '승인' : '복구', 'ghost'], ['purge','완전 삭제','warn']];
+    return `<div class="pfa-r${u.emp === PFA.focus ? ' focus' : ''}">
+      <div class="pfa-who"><b>${esc(u.name)}</b><span class="e">${esc(u.emp)}</span>${u.source === 'signup' ? '<span class="pfa-tag">회원가입</span>' : ''}
+        <small>${esc([u.site, u.team].filter(Boolean).join(' · ') || '소속 미입력')} · ${info}</small></div>
+      <div class="pfa-act">${acts.map(([a, t, c]) =>
+        `<button type="button" class="btn sm ${c}" data-a="${a}" data-e="${esc(u.emp)}">${t}</button>`).join('')}</div>
+    </div>`;
+  }).join('') + (list.length > show.length ? `<p class="pfa-empty">${list.length - show.length}명 더 있습니다. 검색으로 찾으세요.</p>` : '')
+  : `<p class="pfa-empty">${q ? '검색 결과가 없습니다.' : '해당하는 계정이 없습니다.'}</p>`;
+  const fe = PFA.focus && $('#pfaList .pfa-r.focus');
+  if(fe) fe.scrollIntoView({ block:'center' });
+}
+async function pfAdminDo(emp, a){
+  const u = PFA.users.find(x => x.emp === emp); if(!u) return;
+  const who = `${u.name} (${u.emp})`;
+  const ask = {
+    approve: `${who} 님의 가입을 승인할까요?`,
+    reject:  `${who} 님의 가입 신청을 반려할까요?`,
+    retire:  `${who} 님의 계정을 삭제할까요?\n퇴사 처리되어 더 이상 로그인할 수 없습니다. (나중에 복구 가능)`,
+    restore: `${who} 님이 다시 로그인할 수 있게 할까요?`,
+    reset:   `${who} 님의 비밀번호를 최초 발급 비밀번호${u.source === 'roster' ? '(0000)' : '(가입 때 정한 번호)'}로 초기화할까요?`,
+    purge:   `${who} 님의 계정을 완전히 지울까요? 되돌릴 수 없습니다.`
+  }[a];
+  if(!ask || !confirm(ask)) return;
+  const res = await pfRpc('pf_admin_set', { p_pw: PFA.pw, p_emp: emp, p_action: a });
+  if(res.error || !(res.data && res.data.ok)) return toast('처리하지 못했습니다' + (res.error ? ' : ' + res.error.message : ''), 'err');
+  toast({ approve:'승인했습니다', reject:'반려했습니다', retire:'삭제(퇴사) 처리했습니다', restore:'다시 이용할 수 있게 했습니다',
+          reset:'비밀번호를 초기화했습니다', purge:'계정을 지웠습니다' }[a], 'ok');
+  PFA.focus = '';
+  await pfAdminLoad();
+}
+
+function pfInit(){
+  if(PF_AUTH.inited) return;
+  PF_AUTH.inited = true;
+  const lg = document.querySelector('.wordmark-logo');
+  if(lg) $('#pfLogo').src = lg.src;
+  const save = STORE.get('auth_save') !== '0';
+  $('#pfSave').checked = save;
+  if(save){ $('#pfEmp').value = STORE.get('auth_emp'); $('#pfPin').value = STORE.get('auth_pin'); }
+  $('#pfLoginForm').onsubmit = e => { e.preventDefault(); pfLogin(); };
+  $('#pfChgForm').onsubmit   = e => { e.preventDefault(); pfChange(); };
+  $('#pfSuForm').onsubmit    = e => { e.preventDefault(); pfSignup(); };
+  $('#pfGoSignup').onclick = () => { pfMsg('#pfSuMsg', ''); pfShow('signup'); };
+  $('#pfGoChange').onclick = () => pfChangeOpen({ emp: $('#pfEmp').value.trim() });
+  $('#pfChgBack').onclick  = pfChangeBack;
+  $('#pfSuBack').onclick   = () => pfShow('login');
+  $('#pfSentBack').onclick = () => { $('#pfEmp').value = PF_SENT_EMP; $('#pfPin').value = ''; pfMsg('#pfMsg', ''); pfShow('login'); };
+  ['#pfPin','#pfChgCur','#pfChgNew','#pfChgNew2','#pfSuPin','#pfSuPin2'].forEach(s =>
+    $(s).addEventListener('input', e => { const v = e.target.value.replace(/\D/g, '').slice(0, 4); if(v !== e.target.value) e.target.value = v; }));
+  $('#pfaLock').onsubmit = e => { e.preventDefault(); const pw = $('#pfaPw').value.trim(); if(pw){ pfMsg('#pfaMsg', ''); pfAdminLoad(pw, true); } };
+  $('#pfaClose').onclick = pfAdminClose;
+  $('#pfaTabs').onclick = e => { const b = e.target.closest('[data-t]'); if(!b) return; PFA.tab = b.dataset.t; PFA.focus = ''; pfAdminRender(); };
+  $('#pfaQ').oninput = () => pfAdminRender();
+  $('#pfaList').onclick = e => { const b = e.target.closest('[data-a]'); if(b) pfAdminDo(b.dataset.e, b.dataset.a); };
+  $('#btnPfMe').onclick = pfMeOpen;
+  pfMeBtn();
+  pfShow('login');
+  /* 저장된 정보가 있으면 로그인 버튼에 바로 초점 → 엔터 · 터치 한 번으로 입장 */
+  if(!PF_AUTH.ok && $('#pfEmp').value && $('#pfPin').value) setTimeout(() => $('#pfBtnLogin').focus(), 80);
+}
+
 /* ===================== 연결 ===================== */
 function connect(url, key){
   if(!url || !key){ toast('URL과 키를 모두 넣어 주세요','err'); return false; }
@@ -3822,7 +4354,8 @@ function connect(url, key){
     STORE.set('url', url.trim()); STORE.set('key', key.trim());
     $('#setup').hidden = true; $('#app').hidden = false;
     $('#cfgUrl2').value = url; $('#cfgKey2').value = key;
-    boot();
+    if(!PF_AUTH.ok) document.documentElement.classList.add('pf-locked');   /* 자료는 로그인한 뒤에 불러옵니다 */
+    pfWhenIn(boot);
     return true;
   }catch(e){ toast('연결 실패: '+e.message,'err'); return false; }
 }
@@ -12349,16 +12882,23 @@ document.addEventListener('DOMContentLoaded', () => {
   briefCacheClean();                       /* 어제까지의 브리핑 요약 캐시 정리 */
   loadWeather(); setInterval(loadWeather, 20*60*1000);
 
+  pfInit();                                /* 로그인 화면 (schema_login.sql) */
   if(CONFIG.url && CONFIG.key) connect(CONFIG.url, CONFIG.key);
-  else $('#setup').hidden = false;
+  else { $('#setup').hidden = false; document.documentElement.classList.remove('pf-locked'); }  /* 연결 정보 입력이 먼저 */
 
-  /* QR · 바로가기 링크 (예: ?go=voice → 근로자의견청취로 바로 이동) */
-  const goParam = new URLSearchParams(location.search).get('go');
-  if(goParam && document.getElementById('p-' + goParam)) go(goParam);
-  const wpParam = new URLSearchParams(location.search).get('wp');
-  if(goParam === 'permit' && wpParam && db) wpDeepLink(wpParam);
-  const ctParam = new URLSearchParams(location.search).get('ct');
-  if(goParam === 'ctr' && ctParam && db) setTimeout(() => ctDeepLink(ctParam), 300);
+  /* 회원가입 승인 메일의 링크 (?admin=users&emp=사번) → 회원 관리(관리자) 화면 */
+  const admParam = new URLSearchParams(location.search).get('admin');
+  if(admParam === 'users') pfAdminOpen(new URLSearchParams(location.search).get('emp') || '');
+
+  /* QR · 바로가기 링크 (예: ?go=voice → 근로자의견청취로 바로 이동) — 로그인한 뒤에 엽니다 */
+  pfWhenIn(() => {
+    const goParam = new URLSearchParams(location.search).get('go');
+    if(goParam && document.getElementById('p-' + goParam)) go(goParam);
+    const wpParam = new URLSearchParams(location.search).get('wp');
+    if(goParam === 'permit' && wpParam && db) wpDeepLink(wpParam);
+    const ctParam = new URLSearchParams(location.search).get('ct');
+    if(goParam === 'ctr' && ctParam && db) setTimeout(() => ctDeepLink(ctParam), 300);
+  });
 
   /* 앱으로 설치 */
   if('serviceWorker' in navigator && location.protocol === 'https:'){
