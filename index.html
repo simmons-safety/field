@@ -1872,9 +1872,11 @@ html.pf-locked #pfGate,.pfg.on{display:block}
 .pfg-main{width:100%;margin-bottom:8px}
 .pfg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pfg-row .btn{width:100%;padding-left:8px;padding-right:8px}
-.pfg-info{margin:22px 0 0;padding:16px 18px 16px 34px;background:var(--panel2);border-radius:var(--r-m,14px);font-size:12.5px;line-height:1.7;color:var(--ink2)}
-.pfg-info li+li{margin-top:6px}
-.pfg-info b{color:var(--ink)}
+.pfg-info{margin:24px 0 0;padding:16px 0 0;list-style:none;border-top:1px solid var(--line);font-size:12px;line-height:1.65;color:var(--ink3);letter-spacing:-.01em}
+.pfg-info li{position:relative;padding-left:12px}
+.pfg-info li::before{content:"";position:absolute;left:0;top:.8em;width:5px;height:0;border-top:.5px solid var(--ink3);opacity:.55}
+.pfg-info li+li{margin-top:4px}
+.pfg-info b{font-weight:400;color:inherit}
 .pfg-info span{color:var(--ink3)}
 .pfg-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pfa-in{max-width:980px;margin:0 auto;padding:24px 16px 48px;box-sizing:border-box}
@@ -3418,17 +3420,15 @@ html.pf-locked #pfGate,.pfg.on{display:block}
 <div class="pfg" id="pfGate" role="dialog" aria-modal="true" aria-label="로그인">
   <div class="pfg-in">
     <img class="pfg-logo" id="pfLogo" alt="SIMMONS">
-    <p class="pfg-eyebrow">We believe in safety.</p>
     <p class="pfg-ttl">안전보건 통합 플랫폼</p>
 
     <!-- 로그인 -->
     <form class="pfg-view" data-pfv="login" id="pfLoginForm" autocomplete="on">
-      <p class="pfg-sub">보안을 위해 로그인 후 이용할 수 있습니다.</p>
       <div class="pfg-f"><label for="pfEmp">아이디 (사번)</label>
         <input id="pfEmp" name="username" type="text" inputmode="numeric" autocomplete="username" placeholder="사번 입력"></div>
       <div class="pfg-f"><label for="pfPin">비밀번호 (숫자 4자리)</label>
-        <input id="pfPin" name="password" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="0000"></div>
-      <label class="pfg-chk"><input type="checkbox" id="pfSave" checked> 로그인 정보 저장 <span>다음부터 로그인 버튼만 누르면 입장</span></label>
+        <input id="pfPin" name="password" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="최초 로그인 비밀번호 0000"></div>
+      <label class="pfg-chk"><input type="checkbox" id="pfSave" checked> 로그인 정보 저장</label>
       <p class="pfg-msg" id="pfMsg" role="alert"></p>
       <button class="btn pfg-main" id="pfBtnLogin" type="submit">로그인</button>
       <div class="pfg-row">
@@ -3436,8 +3436,8 @@ html.pf-locked #pfGate,.pfg.on{display:block}
         <button class="btn ghost" type="button" id="pfGoChange">비밀번호 변경</button>
       </div>
       <ul class="pfg-info">
-        <li>신규 입사자 · 협력사 등은 <b>회원가입</b> 후 관리자 승인을 받으면 이용할 수 있습니다.</li>
-        <li>로그인 관련 문의 : <b>안전보건기획팀 한기선 차장</b>(hk7149@simmons.co.kr)</li>
+        <li>신규 입사자 · 협력사 등은 회원가입 후 관리자 승인을 받으면 이용할 수 있습니다.</li>
+        <li>문의 : 안전보건기획팀 한기선 차장 (hk7149@simmons.co.kr)</li>
       </ul>
     </form>
 
@@ -3487,7 +3487,6 @@ html.pf-locked #pfGate,.pfg.on{display:block}
       <button class="btn ghost pfg-main" type="button" id="pfSuBack">로그인으로 돌아가기</button>
       <ul class="pfg-info">
         <li>가입 신청하면 관리자에게 승인 요청 메일이 갑니다. <b>승인 후</b> 사번과 정한 비밀번호로 로그인하세요.</li>
-        <li>인원현황 명단에 이미 있는 분은 가입하지 않아도 됩니다. <span>(사번 / 0000 으로 바로 로그인)</span></li>
         <li>문의 : <b>안전보건기획팀 한기선 차장</b></li>
       </ul>
     </form>
@@ -4081,9 +4080,10 @@ function pfChangeOpen(o){
   PF_CHG = o || {};
   const forced = !!PF_CHG.forced, inApp = !!PF_CHG.inApp;
   $('#pfChgLead').textContent = forced
-    ? '처음 로그인하셨거나 비밀번호가 초기화되었습니다. 보안을 위해 새 비밀번호(숫자 4자리)로 변경해 주세요. 나중에 바꾸려면 아래 \'3개월 뒤에 변경\'을 체크하고 로그인하세요.'
+    ? ''
     : inApp ? '현재 비밀번호를 넣고 새 비밀번호(숫자 4자리)를 정하세요.'
             : '사번과 현재 비밀번호를 넣고 새 비밀번호(숫자 4자리)를 정하세요.';
+  $('#pfChgLead').hidden = forced;
   $('#pfChgEmpF').hidden = forced || inApp;
   $('#pfChgCurF').hidden = forced;
   $('#pfChgEmp').value = PF_CHG.emp || '';
@@ -4132,7 +4132,6 @@ async function pfChange(){
   if(!pfPin4(old)) return pfMsg('#pfChgMsg', '현재 비밀번호 숫자 4자리를 입력하세요.');
   if(!pfPin4(n1)) return pfMsg('#pfChgMsg', '새 비밀번호는 숫자 4자리로 정해 주세요.');
   if(n1 !== n2) return pfMsg('#pfChgMsg', '새 비밀번호 두 칸이 서로 다릅니다.');
-  if(n1 === old || n1 === '0000') return pfMsg('#pfChgMsg', '지금 비밀번호 · 0000 과 다른 번호로 정해 주세요.');
   pfBusy(f, true);
   const res = await pfRpc('pf_change_pin', { p_emp: emp, p_old: old, p_new: n1 });
   pfBusy(f, false);
