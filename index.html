@@ -2933,8 +2933,8 @@ img,video,canvas,iframe{max-width:100%}
         <div data-wpfor="협력사" hidden><label>작업신청부서 <em>*</em></label>
           <select id="wpWorkDeptSel" data-wpdept="wpWorkDept"></select>
           <input type="text" id="wpWorkDept" placeholder="부서명 작성" style="margin-top:8px;display:none"></div>
-        <div><label>작업 시작 <em>*</em></label><input type="datetime-local" id="wpStart" step="600"></div>
-        <div><label>작업 종료 <em>*</em></label><input type="datetime-local" id="wpEnd" step="600"></div>
+        <div><label>작업 시작 <em>*</em></label><input type="datetime-local" id="wpStart" step="1800"></div>
+        <div><label>작업 종료 <em>*</em></label><input type="datetime-local" id="wpEnd" step="1800"></div>
         <div class="wide" id="wpExtBox" hidden><p class="wpext" id="wpExtHint"></p></div>
         <div data-wpfor="협력사" hidden><label>협력사명 <em>*</em></label>
           <input type="text" id="wpCompany"></div>
@@ -5333,7 +5333,7 @@ function wpDeptGet(id){
 function wpGasHtml(gas, editable){
   const cell = (k, i) => {
     const v = gas[k][i] ?? '';
-    if(k === 'times') return editable ? `<input type="time" data-wpgas="times|${i}" value="${esc(v)}">` : esc(v);
+    if(k === 'times') return editable ? `<input type="time" step="1800" data-wpgas="times|${i}" value="${esc(v)}">` : esc(v);
     const g = WP_GASES.find(x => x.key === k);
     const bad = v !== '' && g.bad(parseFloat(v));
     return editable
@@ -5618,7 +5618,7 @@ function wpAct(id){
   if(needDone){
     const n = new Date();
     extra.push(`<div class="wpx"><label>작업 완료일시 <em>*</em></label>
-      <input type="datetime-local" id="wpxDone" step="600" value="${TODAY}T${pad2(n.getHours())}:${pad2(Math.floor(n.getMinutes()/10)*10)}"></div>`);
+      <input type="datetime-local" id="wpxDone" step="1800" value="${TODAY}T${pad2(n.getHours())}:${pad2(Math.floor(n.getMinutes()/30)*30)}"></div>`);
   }
   /* 다른 사람이 먼저 처리했는지 확인하고 최신 서명 목록을 받아 옵니다 */
   const fresh = async () => {
@@ -5752,7 +5752,7 @@ function wpExtReq(id){
     okText: '연장 신청',
     extra: `${prev && prev.reject ? `<p class="hint" style="margin:0 0 12px;color:var(--human)">이전 신청 반려 · ${esc(prev.reject.name)} — ${esc(prev.reject.reason)}</p>` : ''}
       <div class="wpx"><label>연장 작업 종료 일시 <em>*</em></label>
-        <input type="datetime-local" id="wpxUntil" step="600" value="${esc(p.end_at || '')}"></div>
+        <input type="datetime-local" id="wpxUntil" step="1800" value="${esc(p.end_at || '')}"></div>
       <div class="wpx"><label>연장 사유</label>
         <textarea id="wpxReason"></textarea></div>
       <p class="hint" style="margin:0 0 12px">※ ${WP_WORK_HOURS} · 신청하면 ${WP_EXT_LABEL}에게 결재 메일이 갑니다.</p>`,
